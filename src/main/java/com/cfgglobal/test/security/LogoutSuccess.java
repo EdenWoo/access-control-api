@@ -34,12 +34,6 @@ public class LogoutSuccess implements LogoutSuccessHandler {
         response.getWriter().write(objectMapper.writeValueAsString(result));
         response.setStatus(HttpServletResponse.SC_OK);
 
-        String url = httpServletRequest.getParameter("url");
-
-        if (StringUtils.isNotEmpty(url)) {
-            response.sendRedirect("/login");
-        }
-
     }
 
 }
