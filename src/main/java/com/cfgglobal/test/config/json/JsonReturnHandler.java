@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanPostProcessor {
 
-    @Autowired
-    private CustomerJsonSerializer jsonSerializer;
 
     List<ResponseBodyAdvice<Object>> advices = List.empty();
 
@@ -46,6 +44,8 @@ public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanP
         }
 
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
+
+        CustomerJsonSerializer jsonSerializer = new CustomerJsonSerializer();
 
         JsonConfig
                 .get()
