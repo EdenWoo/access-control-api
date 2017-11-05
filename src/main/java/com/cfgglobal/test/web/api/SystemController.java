@@ -1,6 +1,7 @@
 package com.cfgglobal.test.web.api;
 
 import com.cfgglobal.test.base.ClassSearcher;
+import com.cfgglobal.test.config.app.ApplicationProperties;
 import com.cfgglobal.test.dao.PermissionDao;
 import com.cfgglobal.test.dao.RoleDao;
 import com.cfgglobal.test.domain.BaseEntity;
@@ -15,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +29,11 @@ import java.util.function.Consumer;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RestController
 @RequestMapping("/sys")
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class SystemController {
 
+    @Autowired
+    ApplicationProperties applicationProperties;
     @Autowired
     GeneratorService userService;
     @Autowired
@@ -60,12 +65,13 @@ public class SystemController {
             permissionService.save(permissions);
         };
         if (entityName != null) {
-            String name = BaseEntity.class.getPackage().getName() + "." + entityName;
+            Class clazz = Reflect.on(applicationProperties.getUserClass()).get();
+            String name = clazz.getPackage().getName() + "." + entityName;
             System.out.println("entity:  " + name);
             Reflect reflect = Reflect.on(name);
             entityToPermission.accept(reflect.create().get());
         } else {
-            io.vavr.collection.List.ofAll(ClassSearcher.of(BaseEntity.class).search())
+            List.ofAll(ClassSearcher.of(BaseEntity.class).search())
                     .map(e -> {
                         Reflect reflect = Reflect.on(e.getName());
                         return reflect.create().get();
