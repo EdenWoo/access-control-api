@@ -58,6 +58,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             "/v1/transaction/*/receipt", //for email
             //"/v1/transaction//bnz-direct-credits",
             //"/v1/attachment/download"
+            "/v1/beneficiary-bank-account",
             "/v1/payment/*",
             "/less/*",
             "/less/material/*",
