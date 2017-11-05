@@ -76,7 +76,7 @@ public class JacksonJsonFilter extends FilterProvider {
         if (simpleName.endsWith("Dto")) {
             type = Reflect.on(BaseEntity.class.getPackage().getName() + "." + StringUtils.substringBefore(simpleName, "Dto")).get();
         }
-        if (type.getSuperclass() == User.class) {
+        if (type.getSuperclass() == User.class && includeMap.get(type.getSuperclass()) != null) {
             type = User.class;
         }
         Set<String> includeFields = includeMap.get(type);
