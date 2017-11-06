@@ -17,14 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@EnableConfigurationProperties(value = {ApplicationProperties.class})
-
 public class CustomerJsonSerializer {
 
-
-    @Autowired
-    ApplicationProperties applicationProperties;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private JacksonJsonFilter jacksonFilter = new JacksonJsonFilter();
@@ -58,7 +52,7 @@ public class CustomerJsonSerializer {
         Option<Class> dto = JsonConfig.getDto(type);
         List<Path> include = json.include;
         if (type == User.class) {
-            Class extendedUser = Reflect.on(applicationProperties.getUserClass()).get();
+            Class extendedUser = Reflect.on(ApplicationProperties.myUserClass).get();
             include = include.appendAll(JsonConfig.firstLevel(extendedUser).map(MockPath::create));
         }
         if (dto.isDefined()) {
@@ -70,7 +64,7 @@ public class CustomerJsonSerializer {
         }
 
         if (type == User.class) {
-            Class extendedUser = Reflect.on(applicationProperties.getUserClass()).get();
+            Class extendedUser = Reflect.on(ApplicationProperties.myUserClass).get();
             this.filter(extendedUser, include, json.exclude);
         }
 
