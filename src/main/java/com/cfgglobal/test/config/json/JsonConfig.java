@@ -102,6 +102,7 @@ public class JsonConfig {
             JsonConfig jsonConfig = JsonConfig.start();
             Tuple2<Class, EntityPathBase> tuple = tuple2.get();
 
+            //TODO field
             // getFields(tuple._1,fields);
             jsonConfig.include(tuple._1, JsonConfig.firstLevel(tuple._2, "AUDITING".equals(fields)));
 
@@ -178,14 +179,16 @@ public class JsonConfig {
 
     }
 
-    public static List<Path> getFields(Class _2, String fields) {
-     /*   List.of(fields.split(","))
-        .map(e->{
+    public static List<Path> getFields(Class clazz, String fields) {
 
+      /* List.of(fields.split(","))
+        .map(e->{
+            String[] results = e.split("\\.");
+           // if(results.length)
         });*/
 
         return API.TODO();
-        //article.title,article.id,comment.id,comment.user,user.id,user.name
+        //name,article.title,article.id,comment.id,comment.user,user.id,user.name
     }
 
 
