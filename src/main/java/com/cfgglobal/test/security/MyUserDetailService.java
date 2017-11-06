@@ -43,7 +43,7 @@ public class MyUserDetailService implements UserDetailsService {
     @Transactional
     public User loadUserByUsername(String username) {
        // return userService.getUserWithPermissions(username);
-       return cacheClient.get(applicationProperties.getUserClass() + username, () -> userService.getUserWithPermissions(username));
+       return cacheClient.get(applicationProperties.getUserClass() + "-" + username, () -> userService.getUserWithPermissions(username));
     }
 
 
