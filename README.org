@@ -1,0 +1,98 @@
+#+SETUPFILE: ~/github/org-html-themes/setup/theme-readtheorg.setup
+
+* Add to your project
+
+** Git
+
+ 1) git submodule add https://github.com/b1412/access-control-api.git access-control-api
+ 2) git submodule init
+ 3) git submodule update
+
+** Gradle
+
+  build.gradle
+
+#+BEGIN_SRC gradle
+
+   compile project(':access-control-api') 
+
+   include "access-control-api"
+
+   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+
+#+END_SRC    
+  
+   settings.gradle
+
+#+BEGIN_SRC gradle
+
+   include "access-control-api"
+
+   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+
+#+END_SRC
+
+* Remove from your project
+
+** Git
+#+BEGIN_SRC git
+    git submodule deinit -f -- access-control-api 
+    rm -rf .git/modules/access-control-api 
+    git rm  access-control-api 
+#+END_SRC
+
+
+* Permission API
+
+**  Query Api
+
+*** Java 
+
+    non-security
+
+#+BEGIN_SRC kotlin
+     service.findByRequestParameters(request.method, request.requestURI, request.parameterMap.toVavrMap(), pageable))
+#+END_SRC
+
+    security
+
+#+BEGIN_SRC kotlin
+     service.findBySecurity(request.method, request.requestURI, request.parameterMap.toVavrMap(), pageable))
+#+END_SRC
+
+*** URL query
+
+All the fields are able to be searched with different operators.
+
+Supported operators:
+
+ + LIKE
+ + =
+ + between
+ + in
+
+Format 
+
+| f_[field name]=[value]             | f_name=xx            | search name               |
+| f_[field name]_op=[your operators] | f_name_op==          |                           |
+| f_[entity].[field name]_op=[value] | f_nestedEntity.id_op | search id of nestedentity |
+
+
+  
+Example
+
+  Endpoint /order
+| search url                                      | full search url                                           |                                             |
+| /order?f_name=xx                                | /order?f_name=xx&f_name=LIKE                              | 默认op为LIKE                                |
+| /order?f_name=xx&f_name==                       |                                                           |                                             |
+| /order?f_date=2017-01-01&f_type=2017-02-01      | /order?f_type=2017-01-01&f_type=2017-02-01&f_type=between | 字段有2个，默认op为between,通常用于时间查询 |
+| /order?f_type=1&f_type=2&f_type=3               | /order?f_type=1&f_type=2&f_type=3&f_type_op==             | 字段有3个的时候，默认op为in                 |
+| /order?f_username-email-phone=123               |                                                           | 多字段模糊查询                              |
+| /order?f_creator.name=admin&f_creator.name_op== |                                                           | embedded 实体查询                           |
+
+    
+    
+
+
+
+
