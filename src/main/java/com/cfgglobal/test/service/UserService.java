@@ -24,7 +24,7 @@ public class UserService extends BaseService<User, Long> {
     private UserDao userDao;
 
     public User getUserWithPermissions(String username) {
-        User user = userDao.findByUsername(username).filter(User::getVerify).getOrElseThrow((() -> new AccessDeniedException("invalid user information or user is not verified: " + username)));
+        User user = userDao.findByUsername(username).getOrElseThrow((() -> new AccessDeniedException("invalid user information or user is not verified: " + username)));
         java.util.List<Permission> permissions = user.getRole().getRolePermissions().stream().map(RolePermission::getPermission).collect(Collectors.toList());
         java.util.List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Permission permission : permissions) {

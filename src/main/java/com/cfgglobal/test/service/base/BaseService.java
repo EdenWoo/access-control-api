@@ -75,10 +75,10 @@ public abstract class BaseService<T, ID extends Serializable> {
         return baseDao.findByFilter(queryFilters.appendAll(securityFilters));
     }
 
-    public T findOneBySecurity(Long id, String method, String requestURI) {
+    public T findOneBySecurity(ID id, String method, String requestURI) {
         List<Filter> securityFilters = securityFilter.query(method, requestURI);
         List<T> list = baseDao.findByFilter(securityFilters);
-        T entity = baseDao.findById((ID) id).get();
+        T entity = baseDao.findById(id).get();
         if (list.contains(entity)) {
             return entity;
         } else {
@@ -86,10 +86,10 @@ public abstract class BaseService<T, ID extends Serializable> {
         }
     }
 
-    public void deleteBySecurity(Long id, String method, String requestURI) {
+    public void deleteBySecurity(ID id, String method, String requestURI) {
         List<Filter> securityFilters = securityFilter.query(method, requestURI);
         List<T> list = baseDao.findByFilter(securityFilters);
-        T entity = baseDao.findById((ID) id).get();
+        T entity = baseDao.findById(id).get();
         if (list.contains(entity)) {
             baseDao.delete(entity);
         } else {
