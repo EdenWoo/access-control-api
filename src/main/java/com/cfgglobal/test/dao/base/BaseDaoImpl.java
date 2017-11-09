@@ -121,7 +121,7 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                                 if (predicate == null) {
                                     return null;
                                 }
-                                if (condition.getOperator().equalsIgnoreCase(Filter.RELATION_AND)) {
+                                if (condition.getRelation().equalsIgnoreCase(Filter.RELATION_AND)) {
                                     return cb.and(predicate);
                                 } else {
                                     return cb.or(predicate);
