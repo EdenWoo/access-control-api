@@ -24,7 +24,7 @@ public class CodeController {
     @Autowired
     private FreemarkerBuilderUtil freemarkerBuilderUtil;
 
-    @GetMapping("/permission_constant")
+    @GetMapping(value = "/permission_constant",produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String init(ModelMap modelMap) throws IOException {
         List<Map<String, String>> list = getPermissionMap();
@@ -35,7 +35,7 @@ public class CodeController {
     }
 
 
-    @GetMapping("/permission-constant_model_ts")
+    @GetMapping(value = "/permission-constant_model_ts",produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String model(ModelMap modelMap) throws IOException {
         List<Map<String, String>> list = getPermissionMap();
