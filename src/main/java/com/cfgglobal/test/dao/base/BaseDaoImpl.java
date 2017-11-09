@@ -159,7 +159,11 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                 String from = o1.toString();
                 String to = o2.toString();
 
-                if (NumberUtils.isCreatable(from)) {
+                if(condition.getFieldName().equals("verificationDate")||condition.getFieldName().equals("incorporatedDate")){ //
+                    Path<String> t = searchPath;
+                    predicate = cb.between(t, from, to);
+
+                }else if (NumberUtils.isCreatable(from)) {
                     Path<Integer> t = searchPath;
                     predicate = cb.between(t, NumberUtils.toInt(from), NumberUtils.toInt(to));
                 } else {

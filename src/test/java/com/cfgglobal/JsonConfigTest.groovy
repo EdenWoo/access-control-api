@@ -2,7 +2,6 @@ package com.cfgglobal
 
 import com.cfgglobal.test.config.json.JsonConfig
 import com.cfgglobal.test.util.querydsl.Q
-import com.cfgglobal.test.web.api.vo.TransactionDto
 import com.querydsl.core.types.EntityPath
 import com.querydsl.core.types.Path
 import io.vavr.collection.List
