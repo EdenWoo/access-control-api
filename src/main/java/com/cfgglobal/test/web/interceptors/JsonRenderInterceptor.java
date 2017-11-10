@@ -21,7 +21,6 @@ public class JsonRenderInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         String embedded = request.getParameter("embedded");
         String fields = request.getParameter("fields");
-        //List<Path> paths = JsonConfig.getFields(fields);
         Option<JsonConfig> jsonConfig = JsonConfig.create(uri, fields, embedded);
         if (jsonConfig.isDefined()) {
             jsonConfig.get().end();

@@ -4,14 +4,16 @@ import com.cfgglobal.test.config.app.ApplicationProperties;
 import com.cfgglobal.test.domain.BaseEntity;
 import com.cfgglobal.test.domain.User;
 import com.google.common.base.CaseFormat;
+import com.google.common.collect.Lists;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
-import io.vavr.API;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
+import io.vavr.collection.Map;
 import io.vavr.collection.Traversable;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -21,6 +23,7 @@ import org.joor.Reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.CaseFormat.*;
 import static io.vavr.API.*;
@@ -102,8 +105,7 @@ public class JsonConfig {
             JsonConfig jsonConfig = JsonConfig.start();
             Tuple2<Class, EntityPathBase> tuple = tuple2.get();
 
-            //TODO field
-            // getFields(tuple._1,fields);
+            Map<Class, List<Path>> fieldsInRequest = getFields(tuple._1, fields);
             jsonConfig.include(tuple._1, JsonConfig.firstLevel(tuple._2, "AUDITING".equals(fields)));
 
             return Option.of(jsonConfig);
@@ -116,34 +118,33 @@ public class JsonConfig {
             EntityPath rootEntity = rootElement.get()._2;
             JsonConfig jsonConfig = JsonConfig.start();
 
-            jsonConfig.include(rootElement.get()._1, JsonConfig.firstLevel(rootElement.get()._2, true));
+            Map<Class, List<Path>> fieldsInRequest = getFields(rootElement.get()._1, fields);
 
+            jsonConfig.include(rootElement.get()._1, fieldsInRequest.getOrElse(rootElement.get()._1, JsonConfig.firstLevel(rootElement.get()._2, true)));
 
             embeddedEntity.forEach(e -> {
                 Tuple2<String, List<String>> pop = e.pop2();
 
-                Path embbededEntityPath = null;
+                Path embeddedEntityPath = null;
                 try {
-                    embbededEntityPath = Reflect.on(rootEntity).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
+                    embeddedEntityPath = Reflect.on(rootEntity).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
                 } catch (Exception e2) {
                     if (rootEntity.getType() == User.class) {
-                        //TODO fix userClass injection
                         Class userClazz = Reflect.on(ApplicationProperties.myUserClass).get();
-                        embbededEntityPath = Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
-
-
+                        embeddedEntityPath = Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
                     }
                 }
-                jsonConfig.include(rootElement.get()._1, embbededEntityPath);
-                String next = embbededEntityPath.getType().getSimpleName();
-                if (embbededEntityPath instanceof ListPath) {
-                    next = ((Class) Reflect.on(embbededEntityPath).get("elementType")).getSimpleName();
+
+                jsonConfig.include(rootElement.get()._1, embeddedEntityPath);
+                String next = embeddedEntityPath.getType().getSimpleName();
+                if (embeddedEntityPath instanceof ListPath) {
+                    next = ((Class) Reflect.on(embeddedEntityPath).get("elementType")).getSimpleName();
                     //next = next.substring(0, next.length() - 1);
                 }
 
                 next = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, next);
                 Option<Tuple2<Class, EntityPathBase>> nextEntity = endpoints(next);
-                jsonConfig.include(nextEntity.get()._1, JsonConfig.firstLevel(nextEntity.get()._2, true));
+                jsonConfig.include(nextEntity.get()._1, fieldsInRequest.getOrElse(nextEntity.get()._1, JsonConfig.firstLevel(nextEntity.get()._2, true)));
 
 
             });
@@ -179,15 +180,32 @@ public class JsonConfig {
 
     }
 
-    public static List<Path> getFields(Class clazz, String fields) {
+    public static Map<Class, List<Path>> getFields(Class clazz, String fields) {
 
-      /* List.of(fields.split(","))
-        .map(e->{
-            String[] results = e.split("\\.");
-           // if(results.length)
-        });*/
+        List<HashMap<Class, List<Path>>> map = Option.of(fields)
+                .map(e -> e.split(","))
+                .map(List::of).getOrElse(List.empty())
+                .map(e -> {
+                    String[] results = e.split("\\.");
+                    if (results.length == 1) {
+                        String field = results[0];
+                        return HashMap.of(clazz, List.of((Path) MockPath.create(field)));
+                    } else if (results.length == 2) {
+                        String className = results[0];
+                        String field = results[1];
+                        //Class nestedClass = Reflect.on(clazz).get(className);
+                        Class nestedClass = Lists.newArrayList(clazz.getDeclaredFields()).stream().filter(e2 -> e2.getName().equals(className)).collect(Collectors.toList()).get(0).getType();
+                        return HashMap.of(nestedClass, List.of((Path) MockPath.create(field)));
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                });
+        if(map.isEmpty()){
+            return Map();
+        }else {
+            return map.reduce((m1, m2) -> m1.merge(m2, List::appendAll));
+        }
 
-        return API.TODO();
         //name,article.title,article.id,comment.id,comment.user,user.id,user.name
     }
 
