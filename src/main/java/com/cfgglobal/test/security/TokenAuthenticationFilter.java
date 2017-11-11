@@ -1,9 +1,13 @@
 package com.cfgglobal.test.security;
 
 import com.cfgglobal.test.base.ApiResp;
+import com.cfgglobal.test.config.app.ApplicationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.collection.List;
+import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,12 +21,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Slf4j
+@EnableConfigurationProperties(value = ApplicationProperties.class)
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String ROOT_MATCHER = "/";
@@ -38,37 +40,43 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    ApplicationProperties applicationProperties;
     @Autowired
     UserDetailsService userDetailsService;
-    private List<String> pathsToSkip = Arrays.asList(
-            ROOT_MATCHER,
-            HTML_MATCHER,
-            FAVICON_MATCHER,
-            CSS_MATCHER,
-            JS_MATCHER,
-            IMG_MATCHER,
-            LOGIN_MATCHER,
-            LOGOUT_MATCHER,
-            "/v1/payment/*",
-            "/v1/code/*",
-            "/sys/*",
-            //"/v1/nzd-payment/export",
-            "/files/*",
-            "/images/mail/*",
-            "/v1/transaction/*/receipt", //for email
-            //"/v1/transaction//bnz-direct-credits",
-            //"/v1/attachment/download"
-            "/v1/beneficiary-bank-account",
-            "/v1/payment/*",
-            "/less/*",
-            "/less/material/*",
-            "/images/payment/*"
 
-    );
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+
+        List<String> pathsToSkip = Option.of(applicationProperties.getJwt().getAnonymousUrls())
+                .map(url -> url.split(","))
+                .map(List::of)
+                .getOrElse(List.empty());
+
+        pathsToSkip = pathsToSkip.appendAll(List.of(
+                ROOT_MATCHER,
+                HTML_MATCHER,
+                FAVICON_MATCHER,
+                CSS_MATCHER,
+                JS_MATCHER,
+                IMG_MATCHER,
+                LOGIN_MATCHER,
+                LOGOUT_MATCHER,
+                "/v1/payment/*",
+                "/v1/code/*",
+                "/sys/*",
+                "/files/*",
+                "/images/mail/*",
+                "/v1/transaction/*/receipt", //for email
+                "/v1/payment/*",
+                "/less/*",
+                "/less/material/*",
+                "/images/payment/*"
+
+        ));
 
         String authToken = tokenHelper.getToken(request);
         if (skipPathRequest(request, pathsToSkip)) {
@@ -103,8 +111,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean skipPathRequest(HttpServletRequest request, List<String> pathsToSkip) {
-        List<RequestMatcher> m = pathsToSkip.stream().map(AntPathRequestMatcher::new).collect(Collectors.toList());
-        OrRequestMatcher matchers = new OrRequestMatcher(m);
+        List<RequestMatcher> m = pathsToSkip.map(AntPathRequestMatcher::new);
+        OrRequestMatcher matchers = new OrRequestMatcher(m.toJavaList());
         return matchers.matches(request);
     }
 
