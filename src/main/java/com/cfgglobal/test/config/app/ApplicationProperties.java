@@ -36,6 +36,7 @@ public class ApplicationProperties {
         String secret = "queenvictoria";
         String cookie = "AUTH-TOKEN";
         String param = "token";
+        String anonymousUrls;
     }
 
 }
