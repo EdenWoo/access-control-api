@@ -57,19 +57,18 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         String jws = tokenHelper.generateToken(user.getUsername());
 
-        // Create token auth Cookie
         Cookie authCookie = new Cookie(applicationProperties.getJwt().getCookie(), (jws));
         authCookie.setPath("/");
         authCookie.setHttpOnly(true);
         authCookie.setMaxAge(applicationProperties.getJwt().getExpiresIn().intValue());
-        // Create flag Cookie
+
         Cookie userCookie = new Cookie(applicationProperties.getUserCookie(), (user.getUsername()));
         userCookie.setPath("/");
         userCookie.setMaxAge(applicationProperties.getJwt().getExpiresIn().intValue());
-        // Add cookie to response
+
         response.addCookie(authCookie);
         response.addCookie(userCookie);
-        // JWT is also in the response
+
         UserTokenState userTokenState = new UserTokenState();
         userTokenState.setAccess_token(jws);
         userTokenState.setExpires_in(applicationProperties.getJwt().getExpiresIn());
