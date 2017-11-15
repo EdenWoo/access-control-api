@@ -19,7 +19,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
     //configAttributes 为MyInvocationSecurityMetadataSource的getAttributes(Object object)这个方法返回的结果，
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        if (null == configAttributes || configAttributes.size() <= 0) {
+        if (configAttributes.isEmpty() || authentication instanceof AnonAuthentication) {
             return;
         }
         ConfigAttribute c;
