@@ -10,6 +10,7 @@ import com.cfgglobal.test.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -26,6 +27,8 @@ import java.io.IOException;
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Value("spring.profiles.active")
+    String profile;
     @Autowired
     TokenHelper tokenHelper;
     @Autowired
@@ -48,7 +51,9 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         clearAuthenticationAttributes(request);
         User user = (User) authentication.getPrincipal();
 
-        cacheClient.set(applicationProperties.getUserClass() + "-" + user.getUsername(), userService.getUserWithPermissions(user.getUsername()));
+        if("local".equals(profile)) {
+            cacheClient.set(applicationProperties.getUserClass() + "-" + user.getUsername(), userService.getUserWithPermissions(user.getUsername()));
+        }
 
         String jws = tokenHelper.generateToken(user.getUsername());
 
