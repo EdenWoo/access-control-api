@@ -8,6 +8,7 @@ import com.cfgglobal.test.security.TokenHelper;
 import com.cfgglobal.test.security.UserTokenState;
 import com.cfgglobal.test.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.Authentication;
@@ -67,7 +68,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         UserTokenState userTokenState = new UserTokenState();
         userTokenState.setAccess_token(jws);
         userTokenState.setExpires_in(applicationProperties.getJwt().getExpiresIn());
-        userTokenState.setType(user.getUserType().name());
+        userTokenState.setType(Option.of(user.getUserType()).map(Enum::name).getOrElse(""));
 
         String jwtResponse = objectMapper.writeValueAsString(userTokenState);
         response.setContentType("application/json");

@@ -44,7 +44,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
-    @NotNull
+   // @NotNull
     Branch branch;
 
 
