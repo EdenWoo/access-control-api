@@ -47,15 +47,15 @@ public class SystemController {
 
 
     @GetMapping("/entity")
-    public List<String> entity() {
+    public ResponseEntity<List<String>> entity() {
         //permissionService
-        return List.ofAll(ClassSearcher.of(BaseEntity.class).search()).map(e -> e.getSimpleName());
+        return ResponseEntity.ok(List.ofAll(ClassSearcher.of(BaseEntity.class).search()).map(e -> e.getSimpleName()));
 
     }
 
     @RequestMapping(value = "/permission", method = {RequestMethod.GET, RequestMethod.POST})
     @Transactional
-    public java.util.List<Permission> init(String entityName) {
+    public ResponseEntity<java.util.List<Permission>> init(String entityName) {
         java.util.List<Permission> permissions = Lists.newArrayList();
         Consumer<Object> entityToPermission = e -> {
             BaseEntity entity = (BaseEntity) e;
@@ -79,7 +79,7 @@ public class SystemController {
                     .forEach(entityToPermission);
 
         }
-        return permissions;
+        return ResponseEntity.ok(permissions);
     }
 
     @GetMapping("/assign")

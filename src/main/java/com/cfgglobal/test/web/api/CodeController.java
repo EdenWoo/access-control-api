@@ -6,6 +6,7 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class CodeController {
 
     @GetMapping(value = "/permission_constant",produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String init(ModelMap modelMap) throws IOException {
+    public ResponseEntity<String> init(ModelMap modelMap) throws IOException {
         List<Map<String, String>> list = getPermissionMap();
         java.util.Map<String, Object> map = new java.util.HashMap<>();
         map.put("permissions", list.map(Map::toJavaMap).distinctBy(e -> e.get("key")).asJava());
@@ -37,7 +38,7 @@ public class CodeController {
 
     @GetMapping(value = "/permission-constant_model_ts",produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String model(ModelMap modelMap) throws IOException {
+    public ResponseEntity<String> model(ModelMap modelMap) throws IOException {
         List<Map<String, String>> list = getPermissionMap();
         java.util.Map<String, Object> map = new java.util.HashMap<>();
         map.put("permissions", list.map(Map::toJavaMap).distinctBy(e -> e.get("key")).asJava());
