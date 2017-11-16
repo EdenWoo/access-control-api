@@ -54,7 +54,7 @@ public class RoleController extends BaseController {
 
 
     @GetMapping("{id}")
-    public Role get(@PathVariable Long id) {
+    public ResponseEntity<Role> get(@PathVariable Long id) {
 
 
         CLEAN_ROLE.end();
@@ -71,7 +71,7 @@ public class RoleController extends BaseController {
                     return rolePermission;
                 });
         role.setRolePermissions(map.asJava());
-        return role;
+        return ResponseEntity.ok(role);
 
     }
 
