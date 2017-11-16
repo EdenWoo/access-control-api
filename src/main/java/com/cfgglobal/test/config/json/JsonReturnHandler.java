@@ -3,7 +3,6 @@ package com.cfgglobal.test.config.json;
 import io.vavr.collection.List;
 import org.joor.Reflect;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -28,7 +27,18 @@ public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanP
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        return JsonConfig.get().isDefined();
+
+        Object obj = Reflect.on(returnType).get("returnValue");
+        if (obj instanceof ResponseEntity) {
+            return JsonConfig.get().isDefined();
+        } else {
+            if (JsonConfig.get().isDefined()) {
+                Object view = Reflect.on(obj).get("view");
+                System.err.println("exception: " + view);
+            }
+            return false;
+        }
+
     }
 
     @Override
@@ -50,7 +60,7 @@ public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanP
         JsonConfig
                 .get()
                 .map(JsonConfig::getList)
-                .getOrElse(io.vavr.collection.List.empty())
+                .getOrElse(List.empty())
                 .forEach(jsonSerializer::filter);
 
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -70,9 +80,11 @@ public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanP
     @SuppressWarnings("unchecked")
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+
         if (bean instanceof ResponseBodyAdvice) {
             advices = advices.append((ResponseBodyAdvice<Object>) bean);
         } else if (bean instanceof RequestMappingHandlerAdapter) {
+            System.out.println(bean.getClass() + "  " + beanName);
             List<HandlerMethodReturnValueHandler> handlers = List.ofAll(((RequestMappingHandlerAdapter) bean).getReturnValueHandlers());
             JsonReturnHandler jsonHandler = null;
             for (int i = 0; i < handlers.size(); i++) {
