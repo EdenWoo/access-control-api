@@ -32,7 +32,7 @@ public class CodeController {
         java.util.Map<String, Object> map = new java.util.HashMap<>();
         map.put("permissions", list.map(Map::toJavaMap).distinctBy(e -> e.get("key")).asJava());
         modelMap.putAll(map);
-        return freemarkerBuilderUtil.build("/code/permission.ftl", map);
+        return ResponseEntity.ok(freemarkerBuilderUtil.build("/code/permission.ftl", map));
     }
 
 
@@ -43,7 +43,7 @@ public class CodeController {
         java.util.Map<String, Object> map = new java.util.HashMap<>();
         map.put("permissions", list.map(Map::toJavaMap).distinctBy(e -> e.get("key")).asJava());
         modelMap.putAll(map);
-        return freemarkerBuilderUtil.build("/code/permission-constant_model_ts.ftl", map);
+        return ResponseEntity.ok(freemarkerBuilderUtil.build("/code/permission-constant_model_ts.ftl", map));
     }
 
     private List<Map<String, String>> getPermissionMap() {
