@@ -33,8 +33,8 @@ public class JsonReturnHandler implements HandlerMethodReturnValueHandler, BeanP
             return JsonConfig.get().isDefined();
         } else {
             if (JsonConfig.get().isDefined()) {
-                Object view = Reflect.on(obj).get("view");
-                System.err.println("json render exception: " + view + ", " + JsonConfig.get().get().getList());
+           //     Object view = Reflect.on(obj).get("view");
+                System.err.println("json render exception: " + returnType + ", " + JsonConfig.get().get().getList());
             }
             return false;
         }
