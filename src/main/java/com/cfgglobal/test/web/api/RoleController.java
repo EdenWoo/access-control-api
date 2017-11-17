@@ -62,7 +62,8 @@ public class RoleController extends BaseController {
         List<RolePermission> selectedRolePermissions = List.ofAll(role.getRolePermissions());
         List<RolePermission> map = permissionService.findAll()
                 .map(permission -> {
-                    RolePermission rolePermission = new RolePermission().setPermission(permission);
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.setPermission(permission);
                     rolePermission.setRules(selectedRolePermissions
                             .filter(srp -> srp.getPermission().getId().equals(rolePermission.getPermission().getId()))
                             .toOption()
