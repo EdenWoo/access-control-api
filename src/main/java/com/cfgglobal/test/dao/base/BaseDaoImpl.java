@@ -169,7 +169,7 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                 } else {
                     Path<ZonedDateTime> t = searchPath;
                     from += " 00:00:00";
-                    to += " 00:00:00";
+                    to += " 23:59:59";
                     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     ZonedDateTime fromDateTime = LocalDateTime.parse(from, fmt).atZone(ZoneId.systemDefault());
                     ZonedDateTime toDateTime = LocalDateTime.parse(to, fmt).atZone(ZoneId.systemDefault());
