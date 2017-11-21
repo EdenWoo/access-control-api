@@ -29,6 +29,8 @@ public class ApplicationProperties {
 
     Jwt jwt;
 
+    DateSettings dateSettings;
+
     @Data
     public static class Jwt {
         String header = "Authorization";
@@ -39,4 +41,8 @@ public class ApplicationProperties {
         String anonymousUrls;
     }
 
+    @Data
+    public static class DateSettings {
+        String dateType = "ZonedDateTime";
+    }
 }
