@@ -179,8 +179,9 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                         to += " 23:59:59";
                         ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-                        ZonedDateTime fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.of(ApplicationProperties.dbTimeZone));
-                        ZonedDateTime toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.of(ApplicationProperties.dbTimeZone));
+                        ZonedDateTime fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
+
+                        ZonedDateTime toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
                         predicate = cb.between(t, fromDateTime.toLocalDateTime(), toDateTime.toLocalDateTime());
                     }
 
