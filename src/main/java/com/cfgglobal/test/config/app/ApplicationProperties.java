@@ -17,6 +17,12 @@ public class ApplicationProperties {
 
     public static String[] entityScanPackage;
 
+    public static String dateType = "ZonedDateTime";
+
+    public static String displayTimeZone = "Pacific/Auckland";
+
+    public static String dbTimeZone = "UTC";
+
 
     String domain;
 
@@ -29,7 +35,6 @@ public class ApplicationProperties {
 
     Jwt jwt;
 
-    DateSettings dateSettings;
 
     @Data
     public static class Jwt {
@@ -39,10 +44,5 @@ public class ApplicationProperties {
         String cookie = "AUTH-TOKEN";
         String param = "token";
         String anonymousUrls;
-    }
-
-    @Data
-    public static class DateSettings {
-        String dateType = "ZonedDateTime";
     }
 }

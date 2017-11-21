@@ -20,10 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
@@ -139,7 +136,7 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
     }
 
     private Predicate getPredicate(CriteriaBuilder cb, Condition condition, Path searchPath) {
-        Predicate predicate;
+        Predicate predicate = null;
         Object value = condition.getValue();
         String s = value.toString();
         if (isEnum(s)) {
@@ -167,13 +164,25 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                     Path<Integer> t = searchPath;
                     predicate = cb.between(t, NumberUtils.toInt(from), NumberUtils.toInt(to));
                 } else {
-                    Path<ZonedDateTime> t = searchPath;
-                    from += " 00:00:00";
-                    to += " 23:59:59";
-                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    ZonedDateTime fromDateTime = LocalDateTime.parse(from, fmt).atZone(ZoneId.systemDefault());
-                    ZonedDateTime toDateTime = LocalDateTime.parse(to, fmt).atZone(ZoneId.systemDefault());
-                    predicate = cb.between(t, fromDateTime, toDateTime);
+
+                    if("ZonedDateTime".equals(ApplicationProperties.dateType)) {
+                        Path<ZonedDateTime> t = searchPath;
+                        from += " 00:00:00";
+                        to += " 23:59:59";
+                        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        ZonedDateTime fromDateTime = LocalDateTime.parse(from, fmt).atZone(ZoneId.systemDefault());
+                        ZonedDateTime toDateTime = LocalDateTime.parse(to, fmt).atZone(ZoneId.systemDefault());
+                        predicate = cb.between(t, fromDateTime, toDateTime);
+                    }else if("LocalDateTime".equals(ApplicationProperties.dateType)){
+                        Path<LocalDateTime> t = searchPath;
+                        from += " 00:00:00";
+                        to += " 23:59:59";
+                        ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+                        ZonedDateTime fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.of(ApplicationProperties.dbTimeZone));
+                        ZonedDateTime toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.of(ApplicationProperties.dbTimeZone));
+                        predicate = cb.between(t, fromDateTime.toLocalDateTime(), toDateTime.toLocalDateTime());
+                    }
 
                 }
                 break;
