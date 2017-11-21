@@ -100,6 +100,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //objectMapper.findAndRegisterModules();
         objectMapper.registerModule(new Jdk8Module());
         objectMapper.registerModule(new JavaTimeModule());
+
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         jsonConverter.setObjectMapper(objectMapper);

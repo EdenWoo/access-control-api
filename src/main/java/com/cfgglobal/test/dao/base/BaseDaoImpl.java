@@ -164,15 +164,20 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                     Path<Integer> t = searchPath;
                     predicate = cb.between(t, NumberUtils.toInt(from), NumberUtils.toInt(to));
                 } else {
-
                     if("ZonedDateTime".equals(ApplicationProperties.dateType)) {
                         Path<ZonedDateTime> t = searchPath;
                         from += " 00:00:00";
                         to += " 23:59:59";
-                        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        ZonedDateTime fromDateTime = LocalDateTime.parse(from, fmt).atZone(ZoneId.systemDefault());
-                        ZonedDateTime toDateTime = LocalDateTime.parse(to, fmt).atZone(ZoneId.systemDefault());
+                        ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        ZonedDateTime fromDateTime = LocalDateTime.parse(from, formatter).atZone(ZoneId.systemDefault());
+                        ZonedDateTime toDateTime = LocalDateTime.parse(to, formatter).atZone(ZoneId.systemDefault());
+                        if(ApplicationProperties.dbTimeZone.equals("UTC")){
+                             fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
+                             toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
+                        }
                         predicate = cb.between(t, fromDateTime, toDateTime);
+
                     }else if("LocalDateTime".equals(ApplicationProperties.dateType)){
                         Path<LocalDateTime> t = searchPath;
                         from += " 00:00:00";
@@ -180,7 +185,6 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                         ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         ZonedDateTime fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
-
                         ZonedDateTime toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
                         predicate = cb.between(t, fromDateTime.toLocalDateTime(), toDateTime.toLocalDateTime());
                     }
