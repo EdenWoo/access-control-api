@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/branch")
+@RequestMapping(value = "/v1/branch")
 @Slf4j
 public class BranchController extends BaseController {
 
