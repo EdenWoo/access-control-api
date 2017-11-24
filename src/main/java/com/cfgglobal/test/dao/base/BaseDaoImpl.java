@@ -166,8 +166,12 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                 } else {
                     if("ZonedDateTime".equals(ApplicationProperties.dateType)) {
                         Path<ZonedDateTime> t = searchPath;
-                        from += " 00:00:00";
-                        to += " 23:59:59";
+                        if(from.length()=="1970-01-01".length()) {
+                            from += " 00:00:00";
+                        }
+                        if(to.length()=="1970-01-01".length()) {
+                            to   += " 23:59:59";
+                        }
                         ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         ZonedDateTime fromDateTime = LocalDateTime.parse(from, formatter).atZone(ZoneId.systemDefault());
