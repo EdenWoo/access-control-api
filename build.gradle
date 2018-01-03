@@ -1,3 +1,4 @@
+
 buildscript {
 	ext {
 		springBootVersion = '1.5.8.RELEASE'
@@ -13,6 +14,10 @@ buildscript {
 	}
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
@@ -20,8 +25,8 @@ apply plugin: 'idea'
 
 
 
-group = 'com.cfgglobal'
-version = '2.0.0'
+group = 'io.github.b1412'
+version = '1.0.0'
 sourceCompatibility = 1.8
 
 bootRepackage.enabled = false
@@ -109,5 +114,18 @@ dependencies {
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
+    }
+}
+
+bintray {
+    user = 'b1412'
+    key = 'f054b12be36a831dda6fe61cf52bf34d4da641a6'
+    configurations = ['archives']
+    pkg {
+        repo = 'access-control-api'
+        name = 'access-control-api'
+        userOrg = 'b1412'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://dl.bintray.com/b1412/access-control-api'
     }
 }

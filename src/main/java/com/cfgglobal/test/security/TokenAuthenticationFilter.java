@@ -95,6 +95,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 chain.doFilter(request, response);
             }
         } else {
+            System.out.println("URI" + request.getRequestURI());
             loginExpired(request, response);
         }
 
