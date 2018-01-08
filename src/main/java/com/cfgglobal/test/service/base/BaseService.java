@@ -59,7 +59,7 @@ public abstract class BaseService<T, ID extends Serializable> {
 
     @Transactional
     public Page<T> findBySecurity(String method, String requestURI, Map<String, String[]> params, Pageable pageable) {
-        //   ConfigAttribute configAttribute = MyInvocationSecurityMetadataSourceService.getConfigAttributeDefinition();
+        //  ConfigAttribute configAttribute = MyInvocationSecurityMetadataSourceService.getConfigAttributeDefinition();
         //  System.out.println(configAttribute);
         List<Filter> queryFilters = Filter.createFilters(params);
         List<Filter> securityFilters = securityFilter.query(method, requestURI);

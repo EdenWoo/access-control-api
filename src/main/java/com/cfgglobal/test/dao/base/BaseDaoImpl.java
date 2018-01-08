@@ -139,10 +139,13 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
         Predicate predicate = null;
         Object value = condition.getValue();
         String s = value.toString();
-        if (isEnum(s)) {
+        if (isEnum(s) && !condition.getOperator().toUpperCase().equals("NULL") && !condition.getOperator().toUpperCase().equals("NOTNULL")) {
             condition.setOperator(Filter.OPERATOR_EQ);
         }
         switch (condition.getOperator().toUpperCase()) {
+            case Filter.OPERATOR_NULL:
+                predicate = cb.isNull(searchPath);
+                break;
             case Filter.OPERATOR_LIKE:
                 predicate = cb.like(searchPath, "%" + s + "%");
                 break;
@@ -156,33 +159,33 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
                 String from = o1.toString();
                 String to = o2.toString();
 
-                if(condition.getFieldName().equals("verificationDate")||condition.getFieldName().equals("incorporatedDate")){ //
+                if (condition.getFieldName().equals("verificationDate") || condition.getFieldName().equals("incorporatedDate")) { //
                     Path<String> t = searchPath;
                     predicate = cb.between(t, from, to);
 
-                }else if (NumberUtils.isCreatable(from)) {
+                } else if (NumberUtils.isCreatable(from)) {
                     Path<Integer> t = searchPath;
                     predicate = cb.between(t, NumberUtils.toInt(from), NumberUtils.toInt(to));
                 } else {
-                    if("ZonedDateTime".equals(ApplicationProperties.dateType)) {
+                    if ("ZonedDateTime".equals(ApplicationProperties.dateType)) {
                         Path<ZonedDateTime> t = searchPath;
-                        if(from.length()=="1970-01-01".length()) {
+                        if (from.length() == "1970-01-01".length()) {
                             from += " 00:00:00";
                         }
-                        if(to.length()=="1970-01-01".length()) {
-                            to   += " 23:59:59";
+                        if (to.length() == "1970-01-01".length()) {
+                            to += " 23:59:59";
                         }
                         ZoneId displayTimeZone = ZoneId.of(ApplicationProperties.displayTimeZone);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         ZonedDateTime fromDateTime = LocalDateTime.parse(from, formatter).atZone(ZoneId.systemDefault());
                         ZonedDateTime toDateTime = LocalDateTime.parse(to, formatter).atZone(ZoneId.systemDefault());
-                        if(ApplicationProperties.dbTimeZone.equals("UTC")){
-                             fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
-                             toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
+                        if (ApplicationProperties.dbTimeZone.equals("UTC")) {
+                            fromDateTime = ZonedDateTime.of(LocalDateTime.parse(from, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
+                            toDateTime = ZonedDateTime.of(LocalDateTime.parse(to, formatter), displayTimeZone).withZoneSameInstant(ZoneOffset.UTC);
                         }
                         predicate = cb.between(t, fromDateTime, toDateTime);
 
-                    }else if("LocalDateTime".equals(ApplicationProperties.dateType)){
+                    } else if ("LocalDateTime".equals(ApplicationProperties.dateType)) {
                         Path<LocalDateTime> t = searchPath;
                         from += " 00:00:00";
                         to += " 23:59:59";

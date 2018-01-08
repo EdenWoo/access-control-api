@@ -124,4 +124,29 @@ class FilterTest extends Specification {
         filters.head().conditions[2].value == "login_information"
 
     }
+
+    def "CreateFilters  Multiple Operators"() {
+        //f_status=SETTLE&f_status_op==&f_status=NULL&f_status_op=NULL&f_status_rl=OR
+        given :
+        Map<String, String[]> map = API.Map(
+                "f_status", ["SETTLE", "NULL"].toArray(new String[0]),
+                "f_status_op", ["=", "NULL"].toArray(new String[0]),
+                "f_status_rl", ["OR"].toArray(new String[0]))
+
+        when:
+        List<Filter> filters = Filter.createFilters(map)
+
+        then:
+        filters.size() == 1
+        filters.head().conditions.size() == 2
+
+        filters.head().conditions[0].fieldName == "status"
+        filters.head().conditions[0].value == "SETTLE"
+
+        filters.head().conditions[1].fieldName == "status"
+        filters.head().conditions[1].operator == Filter.OPERATOR_NULL
+        filters.head().relation("OR")
+
+
+    }
 }
