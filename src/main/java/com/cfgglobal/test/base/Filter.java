@@ -92,7 +92,11 @@ public class Filter {
                         filter = filter.relation(RELATION_OR);
                         filter = List.of(tempValue)
                                 .zip(List.of(tempOperator))
-                                .map(e -> new Condition().setFieldName(field).setValue(e._1).setOperator(e._2))
+                                .map(e -> new Condition()
+                                        .setFieldName(field)
+                                        .setValue(e._1)
+                                        .setOperator(e._2)
+                                        .setRelation(RELATION_AND))
                                 .foldLeft(filter, Filter::addCondition);
 
                     } else {
