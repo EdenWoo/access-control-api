@@ -89,14 +89,13 @@ public class Filter {
                     }
                     Filter filter = new Filter();
                     if (operatorSize >= 2) {
-                        filter = filter.relation(RELATION_OR);
                         filter = List.of(tempValue)
                                 .zip(List.of(tempOperator))
                                 .map(e -> new Condition()
                                         .setFieldName(field)
                                         .setValue(e._1)
                                         .setOperator(e._2)
-                                        .setRelation(RELATION_AND))
+                                        .setRelation(RELATION_OR))
                                 .foldLeft(filter, Filter::addCondition);
 
                     } else {
@@ -124,11 +123,9 @@ public class Filter {
                         } else {
                             filter.addCondition(field, value, operator);
                         }
-
-                        filter = filter.relation(RELATION_AND);
                     }
 
-                    return filter;
+                    return filter.relation(RELATION_AND);
                 }).toList();
     }
 
