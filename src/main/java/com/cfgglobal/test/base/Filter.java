@@ -95,7 +95,7 @@ public class Filter {
                                         .setFieldName(field)
                                         .setValue(e._1)
                                         .setOperator(e._2)
-                                        .setRelation(RELATION_OR))
+                                        .setRelation(tempRelation[0]))
                                 .foldLeft(filter, Filter::addCondition);
 
                     } else {
