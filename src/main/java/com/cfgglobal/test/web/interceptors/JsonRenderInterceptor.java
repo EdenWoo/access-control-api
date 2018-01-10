@@ -23,6 +23,7 @@ public class JsonRenderInterceptor implements HandlerInterceptor {
         String fields = request.getParameter("fields");
         Option<JsonConfig> jsonConfig = JsonConfig.create(uri, fields, embedded);
         if (jsonConfig.isDefined()) {
+            log.debug("Json Config " + jsonConfig.get().getList());
             jsonConfig.get().end();
         }
         return true;

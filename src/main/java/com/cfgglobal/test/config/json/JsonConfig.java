@@ -23,6 +23,7 @@ import org.joor.Reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.CaseFormat.*;
@@ -134,7 +135,14 @@ public class JsonConfig {
                         embeddedEntityPath = Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
                     }
                 }
-
+                if (embeddedEntityPath == null) {
+                    List<String> embeddedFields = List.of(rootEntity.getClass().getFields())
+                            .filter(re -> ListPath.class.isAssignableFrom(re.getType()) || EntityPath.class.isAssignableFrom(re.getType()))
+                            .map(Field::getName);
+                    throw new IllegalArgumentException(MessageFormat.format("embedded [{0}] does not exist on entity [{1}],avaliable embedded [{2}]." +
+                            "Metadata is based on QueryDSL's Q object, not javabean. " +
+                            "Run `gradle clean build` to generate QueryDSL Q Object.", pop._1, rootEntity.toString(), embeddedFields.mkString(",")));
+                }
                 jsonConfig.include(rootElement.get()._1, embeddedEntityPath);
                 String next = embeddedEntityPath.getType().getSimpleName();
                 if (embeddedEntityPath instanceof ListPath) {
@@ -200,9 +208,9 @@ public class JsonConfig {
                         throw new IllegalArgumentException();
                     }
                 });
-        if(map.isEmpty()){
+        if (map.isEmpty()) {
             return Map();
-        }else {
+        } else {
             return map.reduce((m1, m2) -> m1.merge(m2, List::appendAll));
         }
 
