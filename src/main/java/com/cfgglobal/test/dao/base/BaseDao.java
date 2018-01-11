@@ -5,6 +5,7 @@ import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -27,6 +28,8 @@ public interface BaseDao<T, ID extends Serializable> extends JpaRepository<T, ID
     List<T> findByFilter(List<Filter> filters);
 
     List<T> findByFilter(Filter filter);
+
+    Page<T> findAll(Specification<T> spec, Pageable pageable, String entityGraphName);
 
     boolean support(String modelType);
 

@@ -1,9 +1,15 @@
 package com.cfgglobal.test.exception;
 
 import com.cfgglobal.test.base.ApiResp;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import io.vavr.collection.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +22,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
+    private static final ExecutorService service = Executors.newCachedThreadPool();
+
+    @Value("${spring.application.name}")
+    private String project;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity constraintViolationExceptionHandler(HttpServletRequest req, Exception e) throws Exception {
@@ -92,13 +110,47 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
         mav.addObject("url", req.getRequestURL());
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
         mav.setViewName("error");
-
         if ("XMLHttpRequest".equals(req.getHeader("X-Requested-With"))) {
             mav.addObject("msg", e.getMessage());
             mav.setViewName("ajaxError");
         }
+        reportError(req, e);
         return mav;
     }
+
+    private void reportError(HttpServletRequest req, Exception e) {
+        String ip = req.getRemoteAddr();
+        String stackTrace = ExceptionUtils.getStackTrace(e);
+        service.submit(() -> {
+            Map<String, String> param = Maps.newHashMap();
+            param.put("ip", ip);
+            param.put("url", req.getRequestURI());
+            param.put("project", project);
+            param.put("query_string", req.getQueryString());
+            param.put("stackTrace", stackTrace);
+            String data = "";
+            try {
+                data = objectMapper.writeValueAsString(param);
+            } catch (JsonProcessingException e1) {
+                e1.printStackTrace();
+            } finally {
+                log.error("System error", e);
+
+                HttpURLConnection urlConn;
+                try {
+                    URL mUrl = new URL("http://discover.cfg-global.com/exception");
+                    urlConn = (HttpURLConnection) mUrl.openConnection();
+                    urlConn.addRequestProperty("Content-Type", "application/" + "POST");
+                    urlConn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+                    urlConn.getOutputStream().write(data.getBytes("UTF8"));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+
 }

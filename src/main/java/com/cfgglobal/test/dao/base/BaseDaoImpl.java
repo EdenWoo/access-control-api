@@ -16,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -31,9 +33,12 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 
     private final Class<T> domainClass;
 
+    private EntityManager entityManager;
+
     public BaseDaoImpl(Class<T> domainClass, EntityManager em) {
         super(domainClass, em);
         this.domainClass = domainClass;
+        this.entityManager = em;
 
     }
 
@@ -72,6 +77,15 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
     @Override
     public List<T> findByFilter(Filter filter) {
         return findByFilter(List.of(filter));
+    }
+
+
+    @Override
+    public Page<T> findAll(Specification<T> spec, Pageable pageable, String entityGraphName) {
+        TypedQuery<T> query = getQuery(spec, pageable.getSort());
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph(entityGraphName);
+        query.setHint(entityGraph.getName(), entityGraph);
+        return readPage(query, domainClass, pageable, spec);
     }
 
     @Override
