@@ -3,6 +3,7 @@ package com.cfgglobal.test.config;
 import com.cfgglobal.test.config.json.JsonReturnHandler;
 import com.cfgglobal.test.domain.convoerters.CustomerConverter;
 import com.cfgglobal.test.domain.convoerters.ZonedDateTimeConverter;
+import com.cfgglobal.test.web.interceptors.ActionReportInterceptor;
 import com.cfgglobal.test.web.interceptors.JsonRenderInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +44,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     JsonRenderInterceptor jsonRenderInterceptor;
 
+    @Autowired
+    ActionReportInterceptor actionReportInterceptor;
+
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -65,7 +69,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jsonRenderInterceptor);
         //   registry.addInterceptor(globalParameterInterceptor);
-        //  registry.addInterceptor(actionReportInterceptor);
+        registry.addInterceptor(actionReportInterceptor);
     }
 
     @Override

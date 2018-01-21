@@ -92,7 +92,6 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
         if (message.contains("Duplicate entry")) {
-            //Duplicate entry 'zhouleib1412@gmail.com' for key
             message = StringUtils.substringBetween(message, "Duplicate entry", " for key");
             message = "Duplicate data: " + message;
         } else {

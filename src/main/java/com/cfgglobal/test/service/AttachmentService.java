@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 @Service
 @EnableConfigurationProperties(value = {ApplicationProperties.class})
 
@@ -38,6 +40,18 @@ public class AttachmentService extends BaseService<Attachment, Long> {
         save(attachment);
         return Either.right(attachment);
     }
+
+    public Either<String, Attachment> createExportFile(File file) {
+        String name = uploadUtil.write(file, "");
+        Attachment attachment = new Attachment()
+                .setOriginalFilename(file.getName())
+                .setName(name)
+                .setSize(file.length())
+                .setType(AttachmentType.EXPORT)
+                .setFullPath("/v1/attachment/download?filename=" + name);
+        return Either.right(attachment);
+    }
+
 
 
 }
