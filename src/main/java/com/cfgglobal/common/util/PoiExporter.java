@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Instant;
@@ -204,6 +205,9 @@ public class PoiExporter {
         return wb;
     }
 
+    public void export(File file){
+
+    }
     public PoiExporter version(String version) {
         this.version = version;
         return this;
