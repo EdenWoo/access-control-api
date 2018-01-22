@@ -1,7 +1,5 @@
 package com.cfgglobal.test.util.querydsl;
 
-import com.cfgglobal.test.domain.*;
-
 public class Q {
     public static final QBaseEntity baseEntity = QBaseEntity.baseEntity;
     public static final QRolePermission rolePermission = QRolePermission.rolePermission;

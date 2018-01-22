@@ -1,12 +1,8 @@
 package com.cfgglobal.test.web.api;
 
-import com.cfgglobal.test.base.ClassSearcher;
 import com.cfgglobal.test.base.FreemarkerBuilderUtil;
 import com.cfgglobal.test.config.app.ApplicationProperties;
-import com.cfgglobal.test.domain.BaseEntity;
-import com.cfgglobal.test.domain.Permission;
 import com.cfgglobal.test.service.PermissionService;
-import com.google.common.collect.Lists;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
@@ -21,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.function.Consumer;
 
 @Controller
 @RequestMapping("/v1/code")

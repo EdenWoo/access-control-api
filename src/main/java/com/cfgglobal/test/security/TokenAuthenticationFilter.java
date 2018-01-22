@@ -2,6 +2,8 @@ package com.cfgglobal.test.security;
 
 import com.cfgglobal.test.base.ApiResp;
 import com.cfgglobal.test.config.app.ApplicationProperties;
+import com.cfgglobal.test.domain.VisitRecord;
+import com.cfgglobal.test.service.VisitRecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
@@ -21,12 +23,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @Slf4j
 @EnableConfigurationProperties(value = ApplicationProperties.class)
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final ExecutorService service = Executors.newCachedThreadPool();
     private static final String ROOT_MATCHER = "/";
     private static final String FAVICON_MATCHER = "/favicon.ico";
     private static final String HTML_MATCHER = "/**/*.html";
@@ -37,19 +43,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private static final String LOGOUT_MATCHER = "/logout";
     @Autowired
     TokenHelper tokenHelper;
-
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     ApplicationProperties applicationProperties;
     @Autowired
     UserDetailsService userDetailsService;
-
+    @Autowired
+    private VisitRecordService visitRecordService;
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-
+        long start = Instant.now().getEpochSecond();
 
         List<String> pathsToSkip = Option.of(applicationProperties.getJwt().getAnonymousUrls())
                 .map(url -> url.split(","))
@@ -98,6 +103,25 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("URI" + request.getRequestURI());
             loginExpired(request, response);
         }
+
+        // visitRecord.setRequestBody(request.get)
+
+        long end = Instant.now().getEpochSecond();
+
+        VisitRecord visitRecord = new VisitRecord()
+                .setIp(request.getRemoteAddr())
+                .setUri(request.getRequestURI())
+                .setQueryString(request.getQueryString())
+                .setExecutionTime(end - start);
+
+        visitRecordService.save(visitRecord);
+        /*
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        service.submit(() -> {
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            visitRecordService.save(visitRecord);
+        });
+*/
 
 
     }

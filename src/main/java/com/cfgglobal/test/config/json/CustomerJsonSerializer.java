@@ -13,9 +13,6 @@ import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import org.joor.Reflect;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 public class CustomerJsonSerializer {
 

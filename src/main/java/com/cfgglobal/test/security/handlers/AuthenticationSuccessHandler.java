@@ -51,7 +51,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         clearAuthenticationAttributes(request);
         User user = (User) authentication.getPrincipal();
 
-        if(!"local".equals(profile)) {
+        if (!"local".equals(profile)) {
             cacheClient.set(applicationProperties.getUserClass() + "-" + user.getUsername(), userService.getUserWithPermissions(user.getUsername()));
         }
 

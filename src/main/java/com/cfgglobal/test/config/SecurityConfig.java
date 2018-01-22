@@ -34,15 +34,11 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    @Autowired
-    private ApplicationProperties applicationProperties;
     @Autowired
     private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
     @Autowired
     private MyAccessDeniedHandler myAccessDeniedHandler;
-
 
     @Autowired
     private LogoutSuccess logoutSuccess;
