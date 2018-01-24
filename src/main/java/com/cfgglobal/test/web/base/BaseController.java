@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 
 public class BaseController {
 
-
     @Autowired
     private EntityManager entityManager;
     @Autowired

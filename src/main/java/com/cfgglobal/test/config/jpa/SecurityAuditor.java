@@ -12,7 +12,7 @@ public class SecurityAuditor implements AuditorAware<User> {
 
     @Override
     public User getCurrentAuditor() {
-        return Optional.of(SecurityContextHolder.getContext().getAuthentication())
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(e -> (User) e.getPrincipal()).orElse(null);
 
     }

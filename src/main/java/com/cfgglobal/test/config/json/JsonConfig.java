@@ -18,6 +18,7 @@ import io.vavr.collection.Traversable;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.joor.Reflect;
 
@@ -32,6 +33,7 @@ import static io.vavr.Predicates.isIn;
 
 
 @Data
+@Slf4j
 public class JsonConfig {
 
 
@@ -95,69 +97,102 @@ public class JsonConfig {
                 .map(e -> e.split("\\."))
                 .map(List::of)
                 .removeAll(List::isEmpty);
-        // System.out.println("embedded" + embeddedEntity);
         String endpoint = JsonConfig.getRootEndpoint(uri);
-        // System.out.println("endpoint " + endpoint);
-        if (embeddedEntity.isEmpty()) {
-            Option<Tuple2<Class, EntityPathBase>> tuple2 = endpoints(endpoint);
-            if (tuple2.isEmpty()) {
-                return Option.none();
+
+        Option<Tuple2<Class, EntityPathBase>> rootElement = endpoints(endpoint);
+        if (rootElement.isEmpty()) {
+            return Option.none();
+        }
+        JsonConfig jsonConfig = JsonConfig.start();
+        Map<Class, List<Path>> fieldsInRequest = getFields(rootElement.get()._1, fields);
+        jsonConfig.include(rootElement.get()._1, fieldsInRequest.getOrElse(rootElement.get()._1, JsonConfig.firstLevel(rootElement.get()._2, "AUDITING".equals(fields))));
+
+
+        if (!embeddedEntity.isEmpty()) {
+            checkEmbedded(embeddedEntity);
+            embeddedEntity.sortBy(Traversable::size)
+                    .forEach(e -> {
+                        System.out.println("embedded " + e);
+                        if (e.size() < 2) {
+                            // rootEntity embeddedNode:String
+                            String embeddedNode = e.head();
+                            addEmbedded(jsonConfig, fieldsInRequest, rootElement, embeddedNode);
+                        } else {
+                            System.out.println("nested nodes");
+                            //去除最后2级，倒数第二级已经在之前的循环中加入了第一层，只需要把嵌套节点追加进去，最后一层add first level
+                            String lastNode = e.last();
+                            System.out.printf(lastNode);
+                            String lastParentNode = e.dropRight(1).last();
+                            System.out.println(lastParentNode);
+
+                            Option<Tuple2<Class, EntityPathBase>> parentElement = endpoints(lastParentNode);
+                            if (parentElement.isEmpty() && lastParentNode.endsWith("s")) {
+                                parentElement = endpoints(lastParentNode.substring(0, lastParentNode.length() - 1));
+                            }
+                            addEmbedded(jsonConfig, fieldsInRequest, parentElement, lastNode);
+                        }
+
+
+                    });
+        }
+        return Option.of(jsonConfig);
+    }
+
+    private static void addEmbedded(JsonConfig jsonConfig, Map<Class, List<Path>> fieldsInRequest, Option<Tuple2<Class, EntityPathBase>> rootElement, String embeddedNode) {
+        EntityPath rootEntity = rootElement.get()._2;
+        Path embeddedEntityPath = Try.of(() -> (Path) Reflect.on(rootEntity).get(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode))).getOrElse(() -> {
+            if (rootEntity.getType() == User.class) {//Special process for User class
+                Class userClazz = Reflect.on(ApplicationProperties.myUserClass).get();
+                return Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode));
+            } else {
+                return null;
             }
-            JsonConfig jsonConfig = JsonConfig.start();
-            Tuple2<Class, EntityPathBase> tuple = tuple2.get();
+        });
 
-            Map<Class, List<Path>> fieldsInRequest = getFields(tuple._1, fields);
-            jsonConfig.include(tuple._1, JsonConfig.firstLevel(tuple._2, "AUDITING".equals(fields)));
+        if (embeddedEntityPath == null) {
+            throw new IllegalArgumentException(MessageFormat.format("Invalid embedded [{0}],does not exist on entity [{1}],avaliable embedded [{2}]." +
+                    "Metadata is based on QueryDSL's Q object, not javabean. " +
+                    "Run `gradle clean build` to generate QueryDSL Q Object.", embeddedNode, rootEntity.toString(), getAvailableEmbeddedPaths(rootEntity)
+                    .map(e->LOWER_CAMEL.converterTo(LOWER_HYPHEN).convert(e)).mkString(",")));
+        }
+        jsonConfig.include(rootElement.get()._1, embeddedEntityPath); //追加？
 
-            return Option.of(jsonConfig);
+        Option<Tuple2<Class, EntityPathBase>> nextEntity = endpoints(getNext(embeddedEntityPath));
+        jsonConfig.include(nextEntity.get()._1, fieldsInRequest.getOrElse(nextEntity.get()._1, JsonConfig.firstLevel(nextEntity.get()._2, false)));
+    }
+
+    private static List<String> getAvailableEmbeddedPaths(EntityPath rootEntity) {
+        return List.of(rootEntity.getClass().getFields())
+                .filter(re -> ListPath.class.isAssignableFrom(re.getType()) || EntityPath.class.isAssignableFrom(re.getType()))
+                .map(Field::getName);
+    }
+
+
+    private static String getNext(Path embeddedEntityPath) {
+        String next;
+        if (embeddedEntityPath instanceof ListPath) {
+            next = ((Class) Reflect.on(embeddedEntityPath).get("elementType")).getSimpleName();
         } else {
-            // System.out.println(embeddedEntity);
-            Option<Tuple2<Class, EntityPathBase>> rootElement = endpoints(endpoint);
-            if (rootElement.isEmpty()) {
-                return Option.none();
-            }
-            EntityPath rootEntity = rootElement.get()._2;
-            JsonConfig jsonConfig = JsonConfig.start();
+            next = embeddedEntityPath.getType().getSimpleName();
+        }
 
-            Map<Class, List<Path>> fieldsInRequest = getFields(rootElement.get()._1, fields);
+        next = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, next);
+        return next;
+    }
 
-            jsonConfig.include(rootElement.get()._1, fieldsInRequest.getOrElse(rootElement.get()._1, JsonConfig.firstLevel(rootElement.get()._2, true)));
-
-            embeddedEntity.forEach(e -> {
-                Tuple2<String, List<String>> pop = e.pop2();
-
-                Path embeddedEntityPath = null;
-                try {
-                    embeddedEntityPath = Reflect.on(rootEntity).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
-                } catch (Exception e2) {
-                    if (rootEntity.getType() == User.class) {
-                        Class userClazz = Reflect.on(ApplicationProperties.myUserClass).get();
-                        embeddedEntityPath = Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, pop._1));
+    private static void checkEmbedded(List<List<String>> embeddedEntity) {
+        //payees,payees.bankaccounts, payees.attachments 父亲节点必须手动加入
+        embeddedEntity.forEach(e -> {
+            if (e.size() >= 2) {
+                for (int i = 1; i < e.size(); i++) {
+                    List<String> parentNode = e.subSequence(0, i);
+                    if (!embeddedEntity.contains(parentNode)) {
+                        throw new IllegalArgumentException(MessageFormat.
+                                format("Invalid embedded [{1}].[{0}] should be added for embedded [{1}] ", parentNode.mkString("."), e.mkString(".")));
                     }
                 }
-                if (embeddedEntityPath == null) {
-                    List<String> embeddedFields = List.of(rootEntity.getClass().getFields())
-                            .filter(re -> ListPath.class.isAssignableFrom(re.getType()) || EntityPath.class.isAssignableFrom(re.getType()))
-                            .map(Field::getName);
-                    throw new IllegalArgumentException(MessageFormat.format("embedded [{0}] does not exist on entity [{1}],avaliable embedded [{2}]." +
-                            "Metadata is based on QueryDSL's Q object, not javabean. " +
-                            "Run `gradle clean build` to generate QueryDSL Q Object.", pop._1, rootEntity.toString(), embeddedFields.mkString(",")));
-                }
-                jsonConfig.include(rootElement.get()._1, embeddedEntityPath);
-                String next = embeddedEntityPath.getType().getSimpleName();
-                if (embeddedEntityPath instanceof ListPath) {
-                    next = ((Class) Reflect.on(embeddedEntityPath).get("elementType")).getSimpleName();
-                    //next = next.substring(0, next.length() - 1);
-                }
-
-                next = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, next);
-                Option<Tuple2<Class, EntityPathBase>> nextEntity = endpoints(next);
-                jsonConfig.include(nextEntity.get()._1, fieldsInRequest.getOrElse(nextEntity.get()._1, JsonConfig.firstLevel(nextEntity.get()._2, true)));
-
-
-            });
-            return Option.of(jsonConfig);
-        }
+            }
+        });
     }
 
     public static Path toQ(Class clazz) {
@@ -190,6 +225,9 @@ public class JsonConfig {
 
     public static Map<Class, List<Path>> getFields(Class clazz, String fields) {
 
+        if ("AUDITING".equals(fields)) {
+            return Map();
+        }
         List<HashMap<Class, List<Path>>> map = Option.of(fields)
                 .map(e -> e.split(","))
                 .map(List::of).getOrElse(List.empty())
@@ -214,7 +252,6 @@ public class JsonConfig {
             return map.reduce((m1, m2) -> m1.merge(m2, List::appendAll));
         }
 
-        //name,article.title,article.id,comment.id,comment.user,user.id,user.name
     }
 
 
@@ -273,4 +310,6 @@ public class JsonConfig {
     public void end() {
         config.set(this);
     }
+
+
 }

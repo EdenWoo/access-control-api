@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -20,6 +21,7 @@ public class VisitRecord extends BaseEntity {
 
     String ip;
     String uri;
+    @Column(length = 1024)
     String queryString;
     String requestBody;
     Long executionTime;

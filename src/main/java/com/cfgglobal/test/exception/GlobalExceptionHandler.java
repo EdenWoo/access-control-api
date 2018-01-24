@@ -53,7 +53,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiResp);
     }
 
-    //
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<ApiResp> noPermission(HttpServletRequest req, Exception e) throws Exception {
         ApiResp apiResp = new ApiResp();
@@ -115,7 +114,7 @@ public class GlobalExceptionHandler {
             mav.addObject("msg", e.getMessage());
             mav.setViewName("ajaxError");
         }
-        reportError(req, e);
+     //   reportError(req, e);
         return mav;
     }
 
