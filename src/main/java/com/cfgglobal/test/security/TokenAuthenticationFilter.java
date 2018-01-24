@@ -114,7 +114,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 .setQueryString(request.getQueryString())
                 .setExecutionTime(end - start);
 
-        visitRecordService.save(visitRecord);
+       // visitRecordService.save(visitRecord);
         /*
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         service.submit(() -> {
