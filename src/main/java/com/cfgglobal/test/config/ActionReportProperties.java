@@ -9,4 +9,5 @@ public class ActionReportProperties {
     private boolean isMaven = true;
     private String module;
     private boolean switcher = false;
+    private boolean visitRecord = false;
 }

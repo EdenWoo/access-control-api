@@ -1,6 +1,7 @@
 package com.cfgglobal.test.security;
 
 import com.cfgglobal.test.base.ApiResp;
+import com.cfgglobal.test.config.ActionReportProperties;
 import com.cfgglobal.test.config.app.ApplicationProperties;
 import com.cfgglobal.test.domain.VisitRecord;
 import com.cfgglobal.test.service.VisitRecordService;
@@ -29,8 +30,11 @@ import java.util.concurrent.Executors;
 
 
 @Slf4j
-@EnableConfigurationProperties(value = ApplicationProperties.class)
+@EnableConfigurationProperties(value = {ApplicationProperties.class, ActionReportProperties.class})
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private ActionReportProperties actionReportProperties;
 
     private static final ExecutorService service = Executors.newCachedThreadPool();
     private static final String ROOT_MATCHER = "/";
@@ -106,15 +110,17 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // visitRecord.setRequestBody(request.get)
 
-        long end = Instant.now().getEpochSecond();
 
-        VisitRecord visitRecord = new VisitRecord()
-                .setIp(request.getRemoteAddr())
-                .setUri(request.getRequestURI())
-                .setQueryString(request.getQueryString())
-                .setExecutionTime(end - start);
+        if(actionReportProperties.isVisitRecord()) {
+            long end = Instant.now().getEpochSecond();
+            VisitRecord visitRecord = new VisitRecord()
+                    .setIp(request.getRemoteAddr())
+                    .setUri(request.getRequestURI())
+                    .setQueryString(request.getQueryString())
+                    .setExecutionTime(end - start);
 
-       // visitRecordService.save(visitRecord);
+            visitRecordService.save(visitRecord);
+        }
         /*
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         service.submit(() -> {
@@ -137,8 +143,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean skipPathRequest(HttpServletRequest request, List<String> pathsToSkip) {
         List<RequestMatcher> m = pathsToSkip.map(AntPathRequestMatcher::new);
-        OrRequestMatcher matchers = new OrRequestMatcher(m.toJavaList());
-        return matchers.matches(request);
+        return new OrRequestMatcher(m.toJavaList()).matches(request);
     }
 
 }
