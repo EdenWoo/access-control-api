@@ -3,13 +3,13 @@ package com.cfgglobal.test.security;
 import com.cfgglobal.test.base.ApiResp;
 import com.cfgglobal.test.config.ActionReportProperties;
 import com.cfgglobal.test.config.app.ApplicationProperties;
+import com.cfgglobal.test.config.jpa.SecurityAuditor;
 import com.cfgglobal.test.domain.VisitRecord;
 import com.cfgglobal.test.service.VisitRecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +46,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private static final String IMG_MATCHER = "/images/*";
     private static final String LOGIN_MATCHER = "/login";
     private static final String LOGOUT_MATCHER = "/logout";
+    @Autowired
+    SecurityAuditor securityAuditor;
     @Autowired
     TokenHelper tokenHelper;
     @Autowired
@@ -156,8 +158,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // visitRecord.setRequestBody(request.get)
 
-        if(actionReportProperties.isFirewall()){
-            visitRecordService.needBlock();
+        if (actionReportProperties.isFirewall()) {
+            visitRecordService.needBlock(securityAuditor.getCurrentAuditor(), getClientIp(request));
         }
 
         if (actionReportProperties.isVisitRecord()) {

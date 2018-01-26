@@ -18,8 +18,12 @@ public class VisitRecordService extends BaseService<VisitRecord, Long> {
     private VisitRecordDao visitRecordDao;
 
     public void needBlock(User user, String ip) {
-        List<VisitRecord> userVisitRecords = visitRecordDao.findAllInLastMinute(user.getId());
+        if (user != null) {
+            List<VisitRecord> userVisitRecords = visitRecordDao.findAllInLastMinute(user.getId());
+            log.debug("user visit records size {}", userVisitRecords.length());
+        }
         List<VisitRecord> ipVisitRecords = visitRecordDao.findAllInLastMinute(ip);
+        log.debug("ip visit records size {}", ipVisitRecords.length());
 
     }
 }
