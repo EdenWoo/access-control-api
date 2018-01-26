@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitRecordDao extends BaseDao<VisitRecord, Long> {
 
-    @Query("SELECT * FROM VISIT_RECORD WHERE CREATED_AT BETWEEN DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND NOW() AND CREATOR_ID=?1")
+    @Query(nativeQuery = true, value = "SELECT * FROM VISIT_RECORD WHERE CREATED_AT BETWEEN DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND NOW() AND CREATOR_ID=?1")
     List<VisitRecord> findAllInLastMinute(long creatorId);
 
-    @Query("SELECT * FROM VISIT_RECORD WHERE CREATED_AT BETWEEN DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND NOW() AND IP=?1")
+    @Query(nativeQuery = true, value = "SELECT * FROM VISIT_RECORD WHERE CREATED_AT BETWEEN DATE_SUB(NOW(), INTERVAL 1 MINUTE) AND NOW() AND IP=?1")
     List<VisitRecord> findAllInLastMinute(String ip);
 }
