@@ -66,7 +66,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String remoteAddr = "";
 
         if (request != null) {
-            remoteAddr = request.getHeader("X-FORWARDED-FOR");
+            remoteAddr = request.getHeader("X-Forwarded-For");
             if (remoteAddr == null || "".equals(remoteAddr)) {
                 remoteAddr = request.getRemoteAddr();
             }
