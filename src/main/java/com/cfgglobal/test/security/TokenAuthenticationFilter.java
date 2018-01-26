@@ -24,10 +24,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,7 +34,6 @@ import java.util.concurrent.Executors;
 @EnableConfigurationProperties(value = {ApplicationProperties.class, ActionReportProperties.class})
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final ExecutorService service = Executors.newCachedThreadPool();
     private static final String ROOT_MATCHER = "/";
     private static final String FAVICON_MATCHER = "/favicon.ico";
     private static final String HTML_MATCHER = "/**/*.html";
@@ -65,40 +61,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         return Option.of(request.getHeader("X-Forwarded-For")).getOrElse(request.getRemoteAddr());
     }
 
-    private static String getBody(HttpServletRequest request) throws IOException {
-
-
-        String body;
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = null;
-
-        try {
-            InputStream inputStream = request.getInputStream();
-            if (inputStream != null) {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                char[] charBuffer = new char[128];
-                int bytesRead;
-                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                    stringBuilder.append(charBuffer, 0, bytesRead);
-                }
-            } else {
-                stringBuilder.append("");
-            }
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-        }
-
-        body = stringBuilder.toString();
-        return body;
-    }
-
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         long start = Instant.now().getEpochSecond();
         AuthenticationRequestWrapper wrapRequest = new AuthenticationRequestWrapper(request);
-        String body = wrapRequest.getPayload();
         List<String> pathsToSkip = Option.of(applicationProperties.getJwt().getAnonymousUrls())
                 .map(url -> url.split(","))
                 .map(List::of)
@@ -147,8 +113,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             loginExpired(request, response);
         }
 
-        // visitRecord.setRequestBody(request.get)
-
         if (actionReportProperties.isFirewall()) {
             visitRecordService.needBlock(securityAuditor.getCurrentAuditor(), getClientIp(request));
         }
@@ -159,19 +123,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     .setIp(getClientIp(request))
                     .setMethod(request.getMethod())
                     .setUri(request.getRequestURI())
-                    .setRequestBody(body)
+                    .setRequestBody(wrapRequest.getPayload())
                     .setQueryString(request.getQueryString())
                     .setExecutionTime(end - start);
             visitRecordService.save(visitRecord);
         }
-        /*
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        service.submit(() -> {
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            visitRecordService.save(visitRecord);
-        });
-*/
-
 
     }
 
