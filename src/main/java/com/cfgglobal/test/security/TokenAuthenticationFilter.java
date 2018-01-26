@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import static com.cfgglobal.test.service.VisitRecordService.THRESHOLD;
 
 
 @Slf4j
@@ -114,7 +114,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (actionReportProperties.isFirewall()) {
-            visitRecordService.needBlock(securityAuditor.getCurrentAuditor(), getClientIp(request));
+            if(visitRecordService.hasTooManyRequest(securityAuditor.getCurrentAuditor(), getClientIp(request))){
+                ApiResp apiResp = new ApiResp();
+                apiResp.setError(THRESHOLD + " requests allowed per min, if you need more, please contact us.");
+                String msg = objectMapper.writeValueAsString(apiResp);
+                response.setStatus(429);
+                response.getWriter().write(msg);
+            }
         }
 
         if (actionReportProperties.isVisitRecord()) {
