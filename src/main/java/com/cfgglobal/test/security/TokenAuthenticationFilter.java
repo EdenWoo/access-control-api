@@ -62,17 +62,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private VisitRecordService visitRecordService;
 
     private static String getClientIp(HttpServletRequest request) {
-
-        String remoteAddr = "";
-
-        if (request != null) {
-            remoteAddr = request.getHeader("X-Forwarded-For");
-            if (remoteAddr == null || "".equals(remoteAddr)) {
-                remoteAddr = request.getRemoteAddr();
-            }
-        }
-
-        return remoteAddr;
+        return Option.of(request.getHeader("X-Forwarded-For")).getOrElse(request.getRemoteAddr());
     }
 
     private static String getBody(HttpServletRequest request) throws IOException {
@@ -107,7 +97,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         long start = Instant.now().getEpochSecond();
-
+        String body = getBody(request);
         List<String> pathsToSkip = Option.of(applicationProperties.getJwt().getAnonymousUrls())
                 .map(url -> url.split(","))
                 .map(List::of)
@@ -168,7 +158,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     .setIp(getClientIp(request))
                     .setMethod(request.getMethod())
                     .setUri(request.getRequestURI())
-                    .setRequestBody(getBody(request))
+                    .setRequestBody(body)
                     .setQueryString(request.getQueryString())
                     .setExecutionTime(end - start);
             visitRecordService.save(visitRecord);
