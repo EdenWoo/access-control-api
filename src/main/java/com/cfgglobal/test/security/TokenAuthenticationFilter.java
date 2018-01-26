@@ -97,7 +97,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         long start = Instant.now().getEpochSecond();
-        String body = getBody(request);
+        AuthenticationRequestWrapper wrapRequest = new AuthenticationRequestWrapper(request);
+        String body = wrapRequest.getPayload();
         List<String> pathsToSkip = Option.of(applicationProperties.getJwt().getAnonymousUrls())
                 .map(url -> url.split(","))
                 .map(List::of)
@@ -128,7 +129,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String authToken = tokenHelper.getToken(request);
         if (skipPathRequest(request, pathsToSkip)) {
             SecurityContextHolder.getContext().setAuthentication(new AnonAuthentication());
-            chain.doFilter(request, response);
+            chain.doFilter(wrapRequest, response);
         } else if (authToken != null && !authToken.equals("null") && !authToken.equals("undefined")) {
             String username = tokenHelper.getUsernameFromToken(authToken);
             if (username == null) {
@@ -139,7 +140,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                 authentication.setToken(authToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                chain.doFilter(request, response);
+                chain.doFilter(wrapRequest, response);
             }
         } else {
             System.out.println("URI" + request.getRequestURI());

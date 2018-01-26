@@ -24,6 +24,7 @@ public class VisitRecord extends BaseEntity {
     String method;
     @Column(length = 1024)
     String queryString;
+    @Column(length = 2048)
     String requestBody;
     Long executionTime;
 

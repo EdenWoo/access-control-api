@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity<ApiResp> illegalArgumentException(Exception e) throws Exception {
-        log.error(e.getMessage(), e);
+       // log.error(e.getMessage(), e);
         ApiResp apiResp = new ApiResp();
         apiResp.setError(e.getMessage());
         return ResponseEntity.badRequest().body(apiResp);
