@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,9 +73,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         return remoteAddr;
     }
 
-    public static String getBody(HttpServletRequest request) throws IOException {
+    private static String getBody(HttpServletRequest request) throws IOException {
 
-        String body = null;
+
+        String body;
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = null;
 
@@ -83,22 +85,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (inputStream != null) {
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 char[] charBuffer = new char[128];
-                int bytesRead = -1;
+                int bytesRead;
                 while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
             } else {
                 stringBuilder.append("");
             }
-        } catch (IOException ex) {
-            throw ex;
         } finally {
             if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ex) {
-                    throw ex;
-                }
+                bufferedReader.close();
             }
         }
 
@@ -160,11 +156,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // visitRecord.setRequestBody(request.get)
 
+        if(actionReportProperties.isFirewall()){
+            visitRecordService.needBlock();
+        }
 
         if (actionReportProperties.isVisitRecord()) {
             long end = Instant.now().getEpochSecond();
             VisitRecord visitRecord = new VisitRecord()
                     .setIp(getClientIp(request))
+                    .setMethod(request.getMethod())
                     .setUri(request.getRequestURI())
                     .setRequestBody(getBody(request))
                     .setQueryString(request.getQueryString())

@@ -10,4 +10,5 @@ public class ActionReportProperties {
     private String module;
     private boolean switcher = false;
     private boolean visitRecord = false;
+    private boolean firewall = false;
 }
