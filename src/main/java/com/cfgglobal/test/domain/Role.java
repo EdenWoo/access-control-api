@@ -1,6 +1,5 @@
 package com.cfgglobal.test.domain;
 
-
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
-
 
 @Accessors(chain = true)
 @Entity

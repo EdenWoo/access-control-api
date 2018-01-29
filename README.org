@@ -1,6 +1,6 @@
 #+SETUPFILE: ~/github/org-html-themes/setup/theme-readtheorg.setup
 
-* Add to your project
+* Add to your codeProject
 
 ** Git
 
@@ -14,11 +14,11 @@
 
 #+BEGIN_SRC gradle
 
-   compile project(':access-control-api') 
+   compile codeProject(':access-control-api')
 
    include "access-control-api"
 
-   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+   codeProject(':access-control-api').projectDir = "$rootDir/access-control-api" as File
 
 #+END_SRC    
   
@@ -28,11 +28,11 @@
 
    include "access-control-api"
 
-   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+   codeProject(':access-control-api').projectDir = "$rootDir/access-control-api" as File
 
 #+END_SRC
 
-* Remove from your project
+* Remove from your codeProject
 
 ** Git
 #+BEGIN_SRC git
@@ -62,7 +62,7 @@
 
 *** URL query
 
-All the fields are able to be searched with different operators.
+All the codeFields are able to be searched with different operators.
 
 Supported operators:
 
@@ -75,7 +75,7 @@ Format
 
 | f_[field name]=[value]             | f_name=xx            | search name               |
 | f_[field name]_op=[your operators] | f_name_op==          |                           |
-| f_[entity].[field name]_op=[value] | f_nestedEntity.id_op | search id of nestedentity |
+| f_[codeEntity].[field name]_op=[value] | f_nestedEntity.id_op | search id of nestedentity |
 
 
   
