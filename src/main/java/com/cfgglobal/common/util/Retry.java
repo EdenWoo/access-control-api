@@ -10,7 +10,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @UtilityClass
 @Slf4j
-public class Utils {
+public class Retry {
     private static final int RETRY_TIMES = 3;
 
 
