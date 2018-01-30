@@ -83,7 +83,7 @@ public class CodeOnline {
                                 });
                         return codeField;
                     }).toJavaList();
-            codeEntity.setCodeFields(fields);
+            codeEntity.setFields(fields);
             return codeEntity;
         }).asJavaMutable();
 
@@ -114,6 +114,16 @@ public class CodeOnline {
         testTask.setTemplatePath("\"angular/test.ftl\"");
         tasks.add(testTask);
 
+        // entity-form.component.ts
+        Task entityFormComponentTs = new Task();
+        entityFormComponentTs.setName("entity-form.component.ts");
+        entityFormComponentTs.setFolder("\"angular/\" + entity.name ");
+        entityFormComponentTs.setTaskType("multiple");
+        entityFormComponentTs.setFilename("entity.name+ \" -form.component.ts \" ");
+        entityFormComponentTs.setTemplatePath("\"angular/entity-form/entity-form_component_ts.ftl\"");
+        tasks.add(entityFormComponentTs);
+        
+        
         for (Task t : tasks) {
             TaskService.processTask(codeProject, t);
         }
