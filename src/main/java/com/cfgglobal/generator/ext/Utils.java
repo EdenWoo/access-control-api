@@ -6,7 +6,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Utils {
 
-    public String uppperCamel2LowerHyphen(String source){
+    public String hyphen(String source){
         return  CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(source);
     }
 

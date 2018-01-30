@@ -107,11 +107,11 @@ public class CodeOnline {
         tasks.add(serviceTask);
 
         Task testTask = new Task();
-        serviceTask.setName("TEST");
-        serviceTask.setFolder("\"angular\"");
-        serviceTask.setTaskType("multiple");
-        serviceTask.setFilename("entity.name+\"Test.ts\"");
-        serviceTask.setTemplatePath("\"angular/test.ftl\"");
+        testTask.setName("TEST");
+        testTask.setFolder("\"angular\"");
+        testTask.setTaskType("multiple");
+        testTask.setFilename("entity.name+\"Test.ts\"");
+        testTask.setTemplatePath("\"angular/test.ftl\"");
         tasks.add(testTask);
 
         for (Task t : tasks) {
