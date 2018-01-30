@@ -1,9 +1,12 @@
-package com.cfgglobal.generator.ext;
+package com.cfgglobal.generator.task.service;
 
 import com.cfgglobal.generator.entity.CodeEntity;
 import com.cfgglobal.generator.entity.CodeProject;
 import com.cfgglobal.generator.entity.Task;
 import com.google.common.collect.Maps;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModelException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class TaskKit {
+public class TaskService {
 
     public static List<String> processTask(CodeProject codeProject, Task task) {
         List<String> paths;
@@ -19,7 +22,21 @@ public class TaskKit {
         Map<String, Object> scope = Maps.newHashMap();
         scope.put("project", codeProject);
         scope.put("entities", entities);
-        scope.put("TaskKit", TaskKit.class);
+        codeProject.getUtilClasses().forEach(util->{
+
+
+            BeansWrapper wrapper = BeansWrapper.getDefaultInstance();
+            TemplateHashModel staticModels = wrapper.getStaticModels();
+            try {
+                TemplateHashModel fileStatics =
+                        (TemplateHashModel) staticModels.get(util.getName());
+                scope.put(util.getSimpleName(), fileStatics);
+            } catch (TemplateModelException e) {
+                e.printStackTrace();
+            }
+
+        });
+
         codeProject.getTemplateEngine().putAll(scope);
         paths = task.run(codeProject, scope);
         return paths;

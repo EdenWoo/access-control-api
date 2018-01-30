@@ -3,7 +3,7 @@ package com.cfgglobal.generator.task.processor;
 import com.cfgglobal.generator.entity.CodeEntity;
 import com.cfgglobal.generator.entity.CodeProject;
 import com.cfgglobal.generator.entity.Task;
-import com.cfgglobal.generator.ext.TaskKit;
+import com.cfgglobal.generator.task.service.TaskService;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class MultipleTaskProcessor implements ITaskProcessor {
         for (CodeEntity codeEntity : codeProject.getEntities()) {
             context.put("entity", codeEntity);
             codeProject.getTemplateEngine().put("entity", codeEntity);
-            paths.add(TaskKit.processTemplate(codeProject, task, context));
+            paths.add(TaskService.processTemplate(codeProject, task, context));
         }
         return paths;
 

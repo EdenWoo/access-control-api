@@ -23,5 +23,7 @@ public class CodeProject {
 
     List<CodeEntity> entities;
 
+    List<Class> utilClasses;
+
 
 }

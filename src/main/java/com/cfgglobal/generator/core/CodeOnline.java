@@ -5,9 +5,10 @@ import com.cfgglobal.generator.entity.CodeEntity;
 import com.cfgglobal.generator.entity.CodeField;
 import com.cfgglobal.generator.entity.CodeProject;
 import com.cfgglobal.generator.entity.Task;
-import com.cfgglobal.generator.ext.TaskKit;
+import com.cfgglobal.generator.ext.Utils;
 import com.cfgglobal.generator.metadata.FieldFeature;
 import com.cfgglobal.generator.script.DefaultScriptHelper;
+import com.cfgglobal.generator.task.service.TaskService;
 import com.cfgglobal.generator.template.FreeMarkerHelper;
 import com.cfgglobal.test.base.ClassSearcher;
 import com.cfgglobal.test.base.PathKit;
@@ -25,7 +26,13 @@ import java.util.List;
 public class CodeOnline {
 
     public static void main(String[] args) {
+        //CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert()
         CodeProject codeProject = new CodeProject();
+        List<Class> classes = Lists.newArrayList();
+        //classes.add(TaskService)
+        classes.add(Utils.class);
+        codeProject.setUtilClasses(classes);
+
         codeProject.setPackageName("com.cfgglobal.test");
 
         codeProject.setTemplatePath(new File(PathKit.getRootClassPath()).getParent() + "/resources/templates");
@@ -36,7 +43,10 @@ public class CodeOnline {
 
         codeProject.setTemplateEngine(new FreeMarkerHelper(codeProject.getTemplatePath()));
 
-        List<Class<?>> entities = ClassSearcher.of(BaseEntity.class).search();
+        List<Class<?>> entities = ClassSearcher.of(BaseEntity.class)
+                //.libDir("/Users/leon/IdeaProjects/collinson-backend/collinson-base/build/libs")
+                //.includeAllJarsInLib(true)
+                .search();
         List<CodeEntity> codeEntities = io.vavr.collection.List.ofAll(entities).map(e -> {
             CodeEntity codeEntity = new CodeEntity();
             codeEntity.setName(e.getSimpleName());
@@ -94,13 +104,18 @@ public class CodeOnline {
         serviceTask.setTaskType("multiple");
         serviceTask.setFilename("entity.name+\"Service.java\"");
         serviceTask.setTemplatePath("\"java/service.ftl\"");
-
-
         tasks.add(serviceTask);
-        // codeProject.setEntities(entities);
+
+        Task testTask = new Task();
+        serviceTask.setName("TEST");
+        serviceTask.setFolder("\"angular\"");
+        serviceTask.setTaskType("multiple");
+        serviceTask.setFilename("entity.name+\"Test.ts\"");
+        serviceTask.setTemplatePath("\"angular/test.ftl\"");
+        tasks.add(testTask);
 
         for (Task t : tasks) {
-            TaskKit.processTask(codeProject, t);
+            TaskService.processTask(codeProject, t);
         }
     }
 

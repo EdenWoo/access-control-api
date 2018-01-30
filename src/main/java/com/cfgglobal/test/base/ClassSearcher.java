@@ -176,10 +176,12 @@ public class ClassSearcher {
                             while (entries.hasMoreElements()) {
                                 JarEntry jarEntry = entries.nextElement();
                                 String entryName = jarEntry.getName();
+                                System.out.println(jarEntry);
                                 if (scanPackages.isEmpty()) {
                                     if (!jarEntry.isDirectory() && entryName.endsWith(".class")) {
                                         String className = entryName.replaceAll(File.separator, ".").substring(0, entryName.length() - 6);
                                         classFiles.add(className);
+                                    }else {
                                     }
                                 } else {
                                     for (String scanPackage : scanPackages) {
