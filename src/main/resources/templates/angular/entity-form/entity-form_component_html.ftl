@@ -33,7 +33,7 @@
                     <header>
                         <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
 
-                        <h2>${entity.name} Form</h2>
+                        <h2>${Utils.upperCamel(entity.name)} Form</h2>
 
                     </header>
                     <div>
@@ -50,12 +50,12 @@
                                             <label class="input">
                                                 ${f.name}<span style="color: red">*</span>
                                                 <input type="text"
-                                                       formControlName="${f.name}"
-                                                       [(ngModel)]="${entity.name}.${f.name}"
-                                                       name="${f.name}"
+                                                       formControlName="${Utils.lowerCamel(f.name)}"
+                                                       [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                                       name="${Utils.lowerCamel(f.name)}"
                                                        placeholder="">
                                                 <validation-error
-                                                        [control]="myForm.get('${f.name}')"></validation-error>
+                                                        [control]="myForm.get('${Utils.lowerCamel(f.name)}'")></validation-error>
                                             </label>
                                         </section>
                                     </#list>

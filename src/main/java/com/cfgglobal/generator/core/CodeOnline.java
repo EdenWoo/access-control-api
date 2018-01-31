@@ -117,9 +117,9 @@ public class CodeOnline {
         // entity-form.component.ts
         Task entityFormComponentTs = new Task();
         entityFormComponentTs.setName("entity-form.component.ts");
-        entityFormComponentTs.setFolder("\"angular/\" + entity.name ");
+        entityFormComponentTs.setFolder("\"angular/\"+ Utils.lowerHyphen(entity.name) + \"/\" + Utils.lowerHyphen(entity.name) + \"-form\" ");
         entityFormComponentTs.setTaskType("multiple");
-        entityFormComponentTs.setFilename("entity.name+ \" -form.component.ts \" ");
+        entityFormComponentTs.setFilename("Utils.lowerHyphen(entity.name) + \"-form.component.ts \" ");
         entityFormComponentTs.setTemplatePath("\"angular/entity-form/entity-form_component_ts.ftl\"");
         tasks.add(entityFormComponentTs);
         
