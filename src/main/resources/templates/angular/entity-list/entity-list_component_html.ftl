@@ -34,8 +34,8 @@
                                         <th></th>
                                         <#list entity.fields as f>
                                         <th class="hasinput" [ngStyle]="{width:'8%'}">
-                                            <input formControlName="${Utils.lowerCamel(f.entity.name)}" type="text" class="form-control"
-                                                   placeholder="${Utils.lowerCamel(f.entity.name)}"/>
+                                            <input formControlName="${Utils.lowerCamel(f.name)}" type="text" class="form-control"
+                                                   placeholder="${Utils.lowerCamel(f.name)}"/>
                                         </th>
                                         </#list>
                                         <th></th>
@@ -62,7 +62,7 @@
                                             </label>
                                         </th>
                                         <#list entity.fields as f>
-                                        <th>${Utils.lowerCamel(f.entity.name)}</th>
+                                        <th>${Utils.lowerCamel(f.name)}</th>
                                         </#list>
                                         <th>Action</th>
                                     </tr>
@@ -84,9 +84,9 @@
                                             </label>
                                         </td>
                                         <#list entity.fields as f>
-                                        <td>{{ '{{' }}item.${Utils.lowerCamel(f.entity.name)} {{ '}}' }}</td>
+                                        <td>{{item.${Utils.lowerCamel(f.name)} }}</td>
                                         </#list>
-                                        <td> <a routerLink="/pages/{{class_model.name.get_camel()}}s/edit/{{ '{{' }}item.id{{ '}}' }}"><i
+                                        <td> <a routerLink="/pages/{{class_model.name.get_camel()}}s/edit/{{item.id}}"><i
                                                 class="fa fa-edit"></i></a></td>
                                     </tr>
                                     </tbody>
@@ -101,10 +101,10 @@
                                                             (ngModelChange)="onPageSizeChange($event)"
                                                             [(ngModel)]="paging.pageSize">
                                                         <option [ngValue]="i"
-                                                                *ngFor="let i of [12,24,36,100]">{{'{{'}}i{{'}}'}}</option>
+                                                                *ngFor="let i of [12,24,36,100]">{{i}}</option>
                                                     </select>
                                                   </span> records/page, <span
-                                                    class="theme-color">{{'{{'}}paging.totalSize{{ '}}' }}</span> records in total
+                                                    class="theme-color">{{paging.totalSize}}</span> records in total
                                               </span>
                                         </div>
                                     </div>
