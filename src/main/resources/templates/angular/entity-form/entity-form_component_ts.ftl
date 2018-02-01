@@ -1,9 +1,14 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs/Subscription';
-import {Router} from '@angular/router';
-import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
+import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
+import {MyNotifyService} from '../../../services/my-notify.service';
+
+import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model.ts ';
+import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service.ts ';
 
 @Component({
 selector: 'sa-${Utils.lowerHyphen(entity.name)}-form',

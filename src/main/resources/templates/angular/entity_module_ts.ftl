@@ -9,7 +9,8 @@ import {SharedModule} from '../../theme/shared/shared.module';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {LoadingModule} from 'ngx-loading';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
-
+import { ${Utils.upperCamel(entity.name)}ListComponent} from './${Utils.lowerHyphen(entity.name)}-list/${Utils.lowerHyphen(entity.name)}-list.component.ts ';
+import { ${Utils.upperCamel(entity.name)}FormComponent} from './${Utils.lowerHyphen(entity.name)}-form/${Utils.lowerHyphen(entity.name)}-form.component.ts ';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'list', pathMatch: 'full'},

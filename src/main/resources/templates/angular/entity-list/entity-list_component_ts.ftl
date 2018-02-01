@@ -1,5 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
+import {HelperService} from '../../../services/helper.service';
+
 @Component({
     selector: 'sa-${Utils.lowerHyphen(entity.name)}-list',
     templateUrl: './${Utils.lowerHyphen(entity.name)}-list.component.html',
