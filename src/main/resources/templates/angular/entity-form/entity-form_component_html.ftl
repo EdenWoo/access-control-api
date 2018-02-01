@@ -45,7 +45,7 @@
 
                                 <fieldset>
                                     <div class="row">
-                                    <#list fields as f>
+                                    <#list entity.fields as f>
                                         <section class="col col-6">
                                             <label class="input">
                                                 ${f.name}<span style="color: red">*</span>
