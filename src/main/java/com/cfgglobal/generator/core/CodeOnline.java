@@ -178,6 +178,17 @@ public class CodeOnline {
         entityModel.setTemplatePath("\"angular/entity_model_ts.ftl\"");
         tasks.add(entityModel);
 
+
+        //pages_routing.ts
+        Task pageRouting = new Task();
+        pageRouting.setName("pages.routing.ts");
+        pageRouting.setFolder("\"angular\"");
+        pageRouting.setTaskType("multiple");
+        pageRouting.setFilename("pages.routing.ts");
+        pageRouting.setTemplatePath("\"angular/pages_routing_ts.ftl\"");
+        tasks.add(pageRouting);
+
+
         for (Task t : tasks) {
             TaskService.processTask(codeProject, t);
         }
