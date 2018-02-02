@@ -117,18 +117,18 @@ public class CodeOnline {
         // entity-form.component.ts
         Task entityFormComponentTs = new Task();
         entityFormComponentTs.setName("entity-form.component.ts");
-        entityFormComponentTs.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"/\" +  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-form\" ");
+        entityFormComponentTs.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
         entityFormComponentTs.setTaskType("multiple");
-        entityFormComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-form.component.ts \" ");
+        entityFormComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.ts\"");
         entityFormComponentTs.setTemplatePath("\"angular/entity-form/entity-form_component_ts.ftl\"");
         tasks.add(entityFormComponentTs);
 
         // entity-form.component.html
         Task entityFormComponentHtml = new Task();
         entityFormComponentHtml.setName("entity-form.component.html");
-        entityFormComponentHtml.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"/\" +  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-form\" ");
+        entityFormComponentHtml.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
         entityFormComponentHtml.setTaskType("multiple");
-        entityFormComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-form.component.html \" ");
+        entityFormComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.html\"");
         entityFormComponentHtml.setTemplatePath("\"angular/entity-form/entity-form_component_html.ftl\"");
         tasks.add(entityFormComponentHtml);
 
@@ -136,45 +136,45 @@ public class CodeOnline {
         // entity-list.component.ts
         Task entityListComponentTs = new Task();
         entityListComponentTs.setName("entity-list.component.ts");
-        entityListComponentTs.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"/\" +  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-list\" ");
+        entityListComponentTs.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
         entityListComponentTs.setTaskType("multiple");
-        entityListComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-list.component.ts \" ");
+        entityListComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.ts\"");
         entityListComponentTs.setTemplatePath("\"angular/entity-list/entity-list_component_ts.ftl\"");
         tasks.add(entityListComponentTs);
 
         // entity-list.component.html
         Task entityListComponentHtml = new Task();
         entityListComponentHtml.setName("entity-list.component.html");
-        entityListComponentHtml.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"/\" +  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-list\" ");
+        entityListComponentHtml.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
         entityListComponentHtml.setTaskType("multiple");
-        entityListComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \"-list.component.html \" ");
+        entityListComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.html\"");
         entityListComponentHtml.setTemplatePath("\"angular/entity-list/entity-list_component_html.ftl\"");
         tasks.add(entityListComponentHtml);
 
         //service.html
         Task entityService = new Task();
         entityService.setName("entity-service.component.html");
-        entityService.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) ");
+        entityService.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityService.setTaskType("multiple");
-        entityService.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \".service.ts \" ");
+        entityService.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".service.ts\" ");
         entityService.setTemplatePath("\"angular/entity_service_ts.ftl\"");
         tasks.add(entityService);
 
         //module.html
         Task entityModule = new Task();
         entityModule.setName("entity-module.component.html");
-        entityModule.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) ");
+        entityModule.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityModule.setTaskType("multiple");
-        entityModule.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \".module.ts \" ");
+        entityModule.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".module.ts\" ");
         entityModule.setTemplatePath("\"angular/entity_module_ts.ftl\"");
         tasks.add(entityModule);
 
         //model.html
         Task entityModel = new Task();
         entityModel.setName("entity-model.component.html");
-        entityModel.setFolder("\"angular/\"+  com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) ");
+        entityModel.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityModel.setTaskType("multiple");
-        entityModel.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + \".model.ts \" ");
+        entityModel.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".model.ts\"");
         entityModel.setTemplatePath("\"angular/entity_model_ts.ftl\"");
         tasks.add(entityModel);
 

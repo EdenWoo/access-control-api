@@ -15,7 +15,7 @@ public searchCondition: string;
 public loading: boolean;
 
 constructor(private formBuilder: FormBuilder,
-private {{class_model.name.get_camel()}}Service: ${Utils.upperCamel(entity.name)}Service,
+private ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
 private helperService: HelperService) {
 super();
 }
@@ -28,7 +28,7 @@ this.debounceSearchForm();
 
 refresh() {
 this.loading = true;
-this.{{class_model.name.get_camel()}}Service.getAllByPaging(this.searchCondition, this.paging).subscribe((resp: any) => {
+this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(this.searchCondition, this.paging).subscribe((resp: any) => {
 console.log(resp);
 this.listElements = resp.content;
 this.paging.totalSize = resp.totalElements;
