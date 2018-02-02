@@ -41,14 +41,14 @@
                                         <th></th>
                                     </tr>
 
-                                    {#
+                                    
                                     <!--<tr>-->
                                     <!--<th *ngFor="let c of sortOprions.sortColumns" [ngClass]="getSortClass(c)"-->
                                     <!--(click)="changeSort(c)">{{c.columnDisplay}}-->
                                     <!--</th>-->
                                     <!--<th>Action</th>-->
                                     <!--</tr>-->
-                                    #}
+                                    
 
                                     <tr>
                                         <th>
