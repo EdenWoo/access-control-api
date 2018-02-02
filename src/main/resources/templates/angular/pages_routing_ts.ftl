@@ -8,7 +8,7 @@ export const routes: Routes = [
         component: PagesComponent,
         children: [
             // {path: '', redirectTo: '', pathMatch: 'full'},
-            <#list entities as e>
+            <#list project.entities as e>
             {path: '${Utils.lowerCamel(e.name)}', loadChildren: 'app/pages/${Utils.lowerCamel(e.name)}/${Utils.lowerCamel(e.name)}.module#${Utils.upperCamel(entity.name)}Module'},
             </#list>
         ]
