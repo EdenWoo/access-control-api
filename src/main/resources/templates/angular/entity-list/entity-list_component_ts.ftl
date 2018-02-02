@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
 import {HelperService} from '../../../services/helper.service';
+
+import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
+import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
 
 @Component({
     selector: 'sa-${Utils.lowerHyphen(entity.name)}-list',
@@ -15,7 +16,7 @@ public searchCondition: string;
 public loading: boolean;
 
 constructor(private formBuilder: FormBuilder,
-private {{class_model.name.get_camel()}}Service: ${Utils.upperCamel(entity.name)}Service,
+private ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
 private helperService: HelperService) {
 super();
 }
@@ -28,7 +29,7 @@ this.debounceSearchForm();
 
 refresh() {
 this.loading = true;
-this.{{class_model.name.get_camel()}}Service.getAllByPaging(this.searchCondition, this.paging).subscribe((resp: any) => {
+this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(this.searchCondition, this.paging).subscribe((resp: any) => {
 console.log(resp);
 this.listElements = resp.content;
 this.paging.totalSize = resp.totalElements;

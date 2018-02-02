@@ -20,7 +20,7 @@
                             <div class=""
                                  style="padding: 6px 7px 6px !important; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 0px;">
                                 <a class="btn btn-default" (click)="reset()"><i class="fa fa-filter"></i>Reset Filter</a>
-                                <a class="btn btn-default" routerLink="/dbc-pages/{{class_model.name.get_camel()}}/add">
+                                <a class="btn btn-default" routerLink="/dbc-pages/${Utils.lowerCamel(entity.name)}/add">
                                     <i class="fa fa-plus"></i>Add
                                 </a>
                             </div>
@@ -41,14 +41,14 @@
                                         <th></th>
                                     </tr>
 
-                                    {#
+                                    
                                     <!--<tr>-->
                                     <!--<th *ngFor="let c of sortOprions.sortColumns" [ngClass]="getSortClass(c)"-->
                                     <!--(click)="changeSort(c)">{{c.columnDisplay}}-->
                                     <!--</th>-->
                                     <!--<th>Action</th>-->
                                     <!--</tr>-->
-                                    #}
+                                    
 
                                     <tr>
                                         <th>
@@ -86,7 +86,7 @@
                                         <#list entity.fields as f>
                                         <td>{{item.${Utils.lowerCamel(f.name)} }}</td>
                                         </#list>
-                                        <td> <a routerLink="/pages/{{class_model.name.get_camel()}}s/edit/{{item.id}}"><i
+                                        <td> <a routerLink="/pages/${Utils.lowerCamel(entity.name)}s/edit/{{item.id}}"><i
                                                 class="fa fa-edit"></i></a></td>
                                     </tr>
                                     </tbody>

@@ -7,8 +7,8 @@ import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
 import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
 import {MyNotifyService} from '../../../services/my-notify.service';
 
-import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model.ts ';
-import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service.ts ';
+import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
+import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
 
 @Component({
 selector: 'sa-${Utils.lowerHyphen(entity.name)}-form',
@@ -101,7 +101,7 @@ console.log(err);
 this.myNotifyService.notifyFail(err.error.error);
 })
 } else {
-this.${Utils.lowerCamel(entity.name)}Service.update(this. ${Utils.lowerCamel(entity.name)}.id, value).subscribe((resp: any) => {
+this.${Utils.lowerCamel(entity.name)}Service.update(this.${Utils.lowerCamel(entity.name)}.id, value).subscribe((resp: any) => {
 console.log(resp);
 this.myNotifyService.notifySuccess('The ${Utils.lowerCamel(entity.name)} is successfully updated.');
 this.goBack();

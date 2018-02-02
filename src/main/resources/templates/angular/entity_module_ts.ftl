@@ -5,12 +5,12 @@ import {CommonModule} from '@angular/common';
 import {SmartadminInputModule} from '../../shared/forms/input/smartadmin-input.module';
 import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SharedModule} from '../../theme/shared/shared.module';
+import {SharedModule} from '../../shared-module/shared.module';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {LoadingModule} from 'ngx-loading';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
-import { ${Utils.upperCamel(entity.name)}ListComponent} from './${Utils.lowerHyphen(entity.name)}-list/${Utils.lowerHyphen(entity.name)}-list.component.ts ';
-import { ${Utils.upperCamel(entity.name)}FormComponent} from './${Utils.lowerHyphen(entity.name)}-form/${Utils.lowerHyphen(entity.name)}-form.component.ts ';
+import {${Utils.upperCamel(entity.name)}ListComponent} from './${Utils.lowerHyphen(entity.name)}-list/${Utils.lowerHyphen(entity.name)}-list.component';
+import {${Utils.upperCamel(entity.name)}FormComponent} from './${Utils.lowerHyphen(entity.name)}-form/${Utils.lowerHyphen(entity.name)}-form.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'list', pathMatch: 'full'},
