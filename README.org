@@ -62,7 +62,7 @@
 
 *** URL query
 
-All the codeFields are able to be searched with different operators.
+All the fields are able to be searched with different operators.
 
 Supported operators:
 
