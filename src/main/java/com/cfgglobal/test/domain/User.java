@@ -43,7 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     Role role;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @JoinColumn(name = "branch_id")COd
     // @NotNull
             Branch branch;
 
