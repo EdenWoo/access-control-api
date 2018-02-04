@@ -83,7 +83,7 @@ public class CodeOnline {
                                 });
                         return codeField;
                     }).toJavaList();
-            codeEntity.setCodeFields(fields);
+            codeEntity.setFields(fields);
             return codeEntity;
         }).asJavaMutable();
 

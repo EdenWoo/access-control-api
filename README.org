@@ -1,6 +1,6 @@
 #+SETUPFILE: ~/github/org-html-themes/setup/theme-readtheorg.setup
 
-* Add to your codeProject
+* Add to your project
 
 ** Git
 
@@ -14,11 +14,11 @@
 
 #+BEGIN_SRC gradle
 
-   compile codeProject(':access-control-api')
+   compile project(':access-control-api')
 
    include "access-control-api"
 
-   codeProject(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
 
 #+END_SRC    
   
@@ -28,11 +28,11 @@
 
    include "access-control-api"
 
-   codeProject(':access-control-api').projectDir = "$rootDir/access-control-api" as File
+   project(':access-control-api').projectDir = "$rootDir/access-control-api" as File
 
 #+END_SRC
 
-* Remove from your codeProject
+* Remove from your project
 
 ** Git
 #+BEGIN_SRC git
@@ -75,7 +75,7 @@ Format
 
 | f_[field name]=[value]             | f_name=xx            | search name               |
 | f_[field name]_op=[your operators] | f_name_op==          |                           |
-| f_[codeEntity].[field name]_op=[value] | f_nestedEntity.id_op | search id of nestedentity |
+| f_[entity].[field name]_op=[value] | f_nestedEntity.id_op | search id of nestedentity |
 
 
   
@@ -93,11 +93,7 @@ Example
 | /order?embedded=creator,wallet                  |                                                              | 查询嵌套实体，默认情况只会返回第一层字段    |
 
 
-* Permission Model
 
-
-
-* 
     
     
 
