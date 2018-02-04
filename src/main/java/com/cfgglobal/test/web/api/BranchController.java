@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class BranchController extends BaseController {
 
-
     @Autowired
     private BranchService branchService;
 
@@ -27,8 +26,6 @@ public class BranchController extends BaseController {
     public ResponseEntity page(Pageable pageable, HttpServletRequest request) {
         Page<Branch> page = branchService.findBySecurity(request.getMethod(), request.getRequestURI(), HashMap.ofAll(request.getParameterMap()), pageable);
         return ResponseEntity.ok(page);
-
-
     }
 
     @GetMapping("{id}")
@@ -39,7 +36,6 @@ public class BranchController extends BaseController {
     @PostMapping
     public ResponseEntity<Branch> save(@RequestBody Branch branch) {
         return ResponseEntity.ok(branchService.save(branch));
-
     }
 
 
@@ -50,12 +46,10 @@ public class BranchController extends BaseController {
         return ResponseEntity.ok(branchService.save(oldBranch));
     }
 
-
     @DeleteMapping("delete")
     public ResponseEntity delete(@PathVariable Long id, HttpServletRequest request) {
         branchService.deleteBySecurity(id, request.getMethod(), request.getRequestURI());
         return ResponseEntity.noContent().build();
     }
-
 
 }

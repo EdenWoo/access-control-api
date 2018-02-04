@@ -53,7 +53,7 @@ public class User extends BaseEntity implements UserDetails {
     User introducedBy;
 
     @Type(type = "yes_no")
-    Boolean verify = false;
+    Boolean verify;
 
     @Transient
     List<GrantedAuthority> grantedAuthorities;

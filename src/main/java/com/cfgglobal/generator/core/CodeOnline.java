@@ -106,6 +106,16 @@ public class CodeOnline {
         serviceTask.setTemplatePath("\"java/service.ftl\"");
         tasks.add(serviceTask);
 
+        Task controllerTask = new Task();
+        controllerTask.setName("CONTROLLER");
+        controllerTask.setFolder("\"src/main/java/\"+project.packageName.replaceAll(\"\\\\.\",\"/\")+\"/\"+\"controller\"");
+        controllerTask.setTaskType("multiple");
+        controllerTask.setFilename("entity.name+\"Controller.java\"");
+        controllerTask.setTemplatePath("\"java/controller.ftl\"");
+        tasks.add(controllerTask);
+
+
+
         Task testTask = new Task();
         testTask.setName("TEST");
         testTask.setFolder("\"angular\"");
