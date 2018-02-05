@@ -112,19 +112,14 @@ public class JsonConfig {
             checkEmbedded(embeddedEntity);
             embeddedEntity.sortBy(Traversable::size)
                     .forEach(e -> {
-                        System.out.println("embedded " + e);
                         if (e.size() < 2) {
                             // rootEntity embeddedNode:String
                             String embeddedNode = e.head();
                             addEmbedded(jsonConfig, fieldsInRequest, rootElement, embeddedNode);
                         } else {
-                            System.out.println("nested nodes");
                             //去除最后2级，倒数第二级已经在之前的循环中加入了第一层，只需要把嵌套节点追加进去，最后一层add first level
                             String lastNode = e.last();
-                            System.out.printf(lastNode);
                             String lastParentNode = e.dropRight(1).last();
-                            System.out.println(lastParentNode);
-
                             Option<Tuple2<Class, EntityPathBase>> parentElement = endpoints(lastParentNode);
                             if (parentElement.isEmpty() && lastParentNode.endsWith("s")) {
                                 parentElement = endpoints(lastParentNode.substring(0, lastParentNode.length() - 1));
