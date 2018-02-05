@@ -11,9 +11,6 @@
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>${Utils.upperCamel(entity.name)} Table</h2>
-                        {#
-                        <!--<h2>{{selectedRole !== undefined ? selectedRole.name.get_camel(): ''}}</h2>-->
-                        #}
                     </header>
                     <div>
                         <div class="widget-body no-padding">

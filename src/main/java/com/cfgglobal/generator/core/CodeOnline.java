@@ -187,6 +187,14 @@ public class CodeOnline {
         pageRouting.setTemplatePath("\"angular/pages_routing_ts.ftl\"");
         tasks.add(pageRouting);
 
+        //app.module.ts
+        Task appModule = new Task();
+        appModule.setName("appModule");
+        appModule.setFolder("\"angular\"");
+        appModule.setTaskType("multiple");
+        appModule.setFilename("\"app.module.ts\"");
+        appModule.setTemplatePath("\"angular/app_module_ts.ftl\"");
+        tasks.add(appModule);
 
         for (Task t : tasks) {
             TaskService.processTask(codeProject, t);

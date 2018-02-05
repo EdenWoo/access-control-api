@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HelperService} from '../../../services/helper.service';
 import {ListBaseComponent} from '../../../shared-module/bases/list-base-component/list-base.component';
-import {Router} from '@angular/router/router';
+import {Router} from '@angular/router';
 
 import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
 import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
