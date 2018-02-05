@@ -37,7 +37,8 @@ public class CodeOnline {
 
         codeProject.setTemplatePath(new File(PathKit.getRootClassPath()).getParent() + "/resources/templates");
 
-        codeProject.setTargetPath(PathKit.getRootClassPath() + "/target");
+        codeProject.setTargetPath("/Users/knight/CFG/smart-admin/src/app/pages");
+//        codeProject.setTargetPath(PathKit.getRootClassPath() + "/target");
 
         codeProject.setScriptHelper(new DefaultScriptHelper("groovy"));
 
@@ -117,7 +118,7 @@ public class CodeOnline {
         // entity-form.component.ts
         Task entityFormComponentTs = new Task();
         entityFormComponentTs.setName("entity-form.component.ts");
-        entityFormComponentTs.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
+        entityFormComponentTs.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
         entityFormComponentTs.setTaskType("multiple");
         entityFormComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.ts\"");
         entityFormComponentTs.setTemplatePath("\"angular/entity-form/entity-form_component_ts.ftl\"");
@@ -126,7 +127,7 @@ public class CodeOnline {
         // entity-form.component.html
         Task entityFormComponentHtml = new Task();
         entityFormComponentHtml.setName("entity-form.component.html");
-        entityFormComponentHtml.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
+        entityFormComponentHtml.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"");
         entityFormComponentHtml.setTaskType("multiple");
         entityFormComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.html\"");
         entityFormComponentHtml.setTemplatePath("\"angular/entity-form/entity-form_component_html.ftl\"");
@@ -136,7 +137,7 @@ public class CodeOnline {
         // entity-list.component.ts
         Task entityListComponentTs = new Task();
         entityListComponentTs.setName("entity-list.component.ts");
-        entityListComponentTs.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
+        entityListComponentTs.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
         entityListComponentTs.setTaskType("multiple");
         entityListComponentTs.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.ts\"");
         entityListComponentTs.setTemplatePath("\"angular/entity-list/entity-list_component_ts.ftl\"");
@@ -145,7 +146,7 @@ public class CodeOnline {
         // entity-list.component.html
         Task entityListComponentHtml = new Task();
         entityListComponentHtml.setName("entity-list.component.html");
-        entityListComponentHtml.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
+        entityListComponentHtml.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"");
         entityListComponentHtml.setTaskType("multiple");
         entityListComponentHtml.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.html\"");
         entityListComponentHtml.setTemplatePath("\"angular/entity-list/entity-list_component_html.ftl\"");
@@ -154,7 +155,7 @@ public class CodeOnline {
         //service.html
         Task entityService = new Task();
         entityService.setName("entity-service.component.html");
-        entityService.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
+        entityService.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityService.setTaskType("multiple");
         entityService.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".service.ts\" ");
         entityService.setTemplatePath("\"angular/entity_service_ts.ftl\"");
@@ -163,7 +164,7 @@ public class CodeOnline {
         //module.html
         Task entityModule = new Task();
         entityModule.setName("entity-module.component.html");
-        entityModule.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
+        entityModule.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityModule.setTaskType("multiple");
         entityModule.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".module.ts\" ");
         entityModule.setTemplatePath("\"angular/entity_module_ts.ftl\"");
@@ -172,7 +173,7 @@ public class CodeOnline {
         //model.html
         Task entityModel = new Task();
         entityModel.setName("entity-model.component.html");
-        entityModel.setFolder("\"angular/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
+        entityModel.setFolder("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)");
         entityModel.setTaskType("multiple");
         entityModel.setFilename("com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".model.ts\"");
         entityModel.setTemplatePath("\"angular/entity_model_ts.ftl\"");
@@ -181,7 +182,7 @@ public class CodeOnline {
         //pages_routing.ts
         Task pageRouting = new Task();
         pageRouting.setName("pagesoutings");
-        pageRouting.setFolder("\"angular\"");
+        pageRouting.setFolder("\"/\"");
         pageRouting.setTaskType("multiple");
         pageRouting.setFilename("\"pages.routing.ts\"");
         pageRouting.setTemplatePath("\"angular/pages_routing_ts.ftl\"");
@@ -190,8 +191,8 @@ public class CodeOnline {
         //app.module.ts
         Task appModule = new Task();
         appModule.setName("appModule");
-        appModule.setFolder("\"angular\"");
-        appModule.setTaskType("multiple");
+        appModule.setFolder("\"/\"");
+        appModule.setTaskType("single");
         appModule.setFilename("\"app.module.ts\"");
         appModule.setTemplatePath("\"angular/app_module_ts.ftl\"");
         tasks.add(appModule);
