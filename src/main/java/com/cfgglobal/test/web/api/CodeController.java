@@ -129,7 +129,7 @@ public class CodeController {
             try {
                 reflect = Reflect.on(name);
             } catch (Exception e) {
-                reflect = Reflect.on("com.cfgglobal.test.domain." + entityName);
+                reflect = Reflect.on("com.cfgglobal.ccfx.domain." + entityName);
             }
             Class entityClass = reflect.get();
             List fields = List.of(entityClass.getDeclaredFields())
@@ -146,7 +146,7 @@ public class CodeController {
 
     private String getReplace(String e) {
         Class clazz = Reflect.on(applicationProperties.getUserClass()).get();
-        return e.replace(clazz.getPackage().getName() + ".", "").replace("com.cfgglobal.test.domain.", "");
+        return e.replace(clazz.getPackage().getName() + ".", "").replace("com.cfgglobal.ccfx.domain.", "");
     }
 
     private String getTypeReplace(String e) {

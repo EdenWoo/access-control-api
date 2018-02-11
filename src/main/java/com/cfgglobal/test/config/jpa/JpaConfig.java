@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManager;
 
 @Configuration
-@EnableJpaRepositories(repositoryFactoryBeanClass = BaseDaoFactoryBean.class, basePackages = "com.cfgglobal.test.dao")
-@EntityScan(basePackages = "com.cfgglobal.test.domain")
+@EnableJpaRepositories(repositoryFactoryBeanClass = BaseDaoFactoryBean.class, basePackages = "com.cfgglobal.ccfx.dao")
+@EntityScan(basePackages = "com.cfgglobal.ccfx.domain")
 @EnableJpaAuditing
 @EnableTransactionManagement
 public class JpaConfig {

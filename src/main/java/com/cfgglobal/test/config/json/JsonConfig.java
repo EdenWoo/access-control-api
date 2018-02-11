@@ -202,7 +202,7 @@ public class JsonConfig {
     }
 
     public static Option<Class> getDto(Class aClass) {
-        String name = "com.cfgglobal.test.web.api.vo." + aClass.getSimpleName() + "Dto";
+        String name = "com.cfgglobal.ccfx.web.api.vo." + aClass.getSimpleName() + "Dto";
         return Try.of(() -> (Class) Reflect.on(name).get()).toOption();
     }
 

@@ -33,7 +33,7 @@ public class CodeOnline {
         classes.add(Utils.class);
         codeProject.setUtilClasses(classes);
 
-        codeProject.setPackageName("com.cfgglobal.test");
+        codeProject.setPackageName("com.cfgglobal.ccfx");
 
         codeProject.setTemplatePath(new File(PathKit.getRootClassPath()).getParent() + "/resources/templates");
 
@@ -121,7 +121,7 @@ public class CodeOnline {
         testTask.setFolder("\"angular\"");
         testTask.setTaskType("multiple");
         testTask.setFilename("entity.name+\"Test.ts\"");
-        testTask.setTemplatePath("\"angular/test.ftl\"");
+        testTask.setTemplatePath("\"angular/ccfx.ftl\"");
         tasks.add(testTask);
 
         for (Task t : tasks) {

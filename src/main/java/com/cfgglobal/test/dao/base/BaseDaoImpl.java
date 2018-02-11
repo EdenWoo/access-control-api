@@ -45,10 +45,17 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 
     private Option<Enum> str2Enum(String str) {
         return List.ofAll(ApplicationProperties.enums)
-                .map(e -> (Class<? extends Enum>) (Reflect.on(ApplicationProperties.enumPackage + "." + e).get()))
+                .map(e -> getaClass(e))
                 .map(e -> Try.of(() -> Reflect.on(e).call("valueOf", str).get()))
                 .filter(Try::isSuccess)
                 .map(t -> (Enum) t.get()).toOption();
+    }
+
+    private Class<? extends Enum> getaClass(String str) {
+        return List.of(ApplicationProperties.enumPackages)
+                .map(p -> Try.of(() -> (Class<? extends Enum>)Reflect.on(p + "." + str).get()))
+                        .filter(Try::isSuccess).head().get();
+
     }
 
 

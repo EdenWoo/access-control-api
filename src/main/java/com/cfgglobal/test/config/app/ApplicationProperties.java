@@ -11,7 +11,7 @@ public class ApplicationProperties {
 
     public static String myUserClass;
 
-    public static String enumPackage;
+    public static String[] enumPackages;
 
     public static List<String> enums;
 

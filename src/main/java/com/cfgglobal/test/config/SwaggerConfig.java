@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.cfgglobal.test.web.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.cfgglobal.ccfx.web.api"))
                 .paths(PathSelectors.any())
                 .build();
     }

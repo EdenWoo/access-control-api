@@ -29,13 +29,13 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class RoleController extends BaseController {
 
-    public static final List<Path> IGNORE_AUDITOR = List.of(Q.baseEntity.creator,
+    private static  List<Path> IGNORE_AUDITOR = List.of(Q.baseEntity.creator,
             Q.baseEntity.createdAt,
             Q.baseEntity.updatedAt,
             Q.baseEntity.modifier
     );
 
-    public static final JsonConfig CLEAN_ROLE = JsonConfig.start().
+    private static  JsonConfig CLEAN_ROLE = JsonConfig.start().
             exclude(Role.class, IGNORE_AUDITOR, Q.role.users)
             .exclude(RolePermission.class, IGNORE_AUDITOR)
             .exclude(Permission.class, IGNORE_AUDITOR)

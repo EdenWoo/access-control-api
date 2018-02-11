@@ -1,5 +1,6 @@
 package com.cfgglobal.test.config.json;
 
+import com.cfgglobal.test.config.app.ApplicationProperties;
 import com.cfgglobal.test.domain.BaseEntity;
 import com.cfgglobal.test.domain.User;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.collection.spi.PersistentCollection;
@@ -74,7 +76,10 @@ public class JacksonJsonFilter extends FilterProvider {
     public boolean apply(Class<?> type, String name) {
         String simpleName = type.getSimpleName();
         if (simpleName.endsWith("Dto")) {
-            type = Reflect.on(BaseEntity.class.getPackage().getName() + "." + StringUtils.substringBefore(simpleName, "Dto")).get();
+            type = io.vavr.collection.List.of(ApplicationProperties.entityScanPackage)
+                    .map(p-> Try.of(()->(Class)Reflect.on(p + "." + StringUtils.substringBefore(simpleName, "Dto")).get()))
+                    .filter(Try::isSuccess)
+                    .head().get();
         }
         if (type.getSuperclass() == User.class && includeMap.get(type.getSuperclass()) != null) {
             type = User.class;

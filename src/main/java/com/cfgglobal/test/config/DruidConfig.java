@@ -78,7 +78,7 @@ public class DruidConfig {
     @Bean
     public JdkRegexpMethodPointcut druidStatPointcut() {
         JdkRegexpMethodPointcut druidStatPointcut = new JdkRegexpMethodPointcut();
-        String patterns = " com.cfgglobal.test.web.* ";
+        String patterns = " com.cfgglobal.ccfx.web.* ";
         druidStatPointcut.setPatterns(patterns);
         return druidStatPointcut;
     }*/
