@@ -26,7 +26,7 @@
 
                             <div class="table-responsive">
 
-                                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox dataTable no-footer">
 
                                     <thead>
                                     <tr [formGroup]="searchForm" class="searchForm">
@@ -49,8 +49,8 @@
                                     <!--<th>Action</th>-->
                                     <!--</tr>-->
 
-
-                                    <tr>
+                                    <!--Without Sorting-->
+                                    <tr *ngIf="false">
                                         <th>
                                             <label class="checkbox" style="margin-bottom: 20px;">
                                                 <input type="checkbox"
@@ -66,6 +66,26 @@
                                         </#list>
                                         <th>Action</th>
                                     </tr>
+
+                                    <!--With Sorting-->
+                                    <tr>
+                                        <th>
+                                            <label class="checkbox" style="margin-bottom: 20px;">
+                                                <input type="checkbox"
+                                                       [(ngModel)]="isSelectAll"
+                                                       [checked]="isSelectAll === true"
+                                                       (ngModelChange)="selectAll()"
+                                                       name="checkbox-inline">
+                                                <i></i>
+                                            </label>
+                                        </th>
+                                        <th *ngFor="let c of sortOprions.sortColumns"
+                                            [ngClass]="getSortClass(c)"
+                                            (click)="changeSort(c)">{{c.columnDisplay}}
+                                        </th>
+                                        <th>Action</th>
+                                    </tr>
+
                                     </thead>
                                     <tbody>
 

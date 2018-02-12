@@ -7,6 +7,9 @@ import {Router} from '@angular/router';
 import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
 import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
 
+import {SortColumns} from './sort.columns';
+import {Sorts} from '../../../models/bases/sorts.model';
+
 @Component({
     selector: 'sa-${Utils.lowerHyphen(entity.name)}-list',
     templateUrl: './${Utils.lowerHyphen(entity.name)}-list.component.html',
@@ -21,6 +24,7 @@ public ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}
 public router: Router,
 public helperService: HelperService) {
 super(router, helperService);
+this.sortOprions.sortColumns = SortColumns.Columns;
 }
 
 ngOnInit() {
@@ -32,7 +36,7 @@ this.debounceSearchForm();
 refresh() {
 this.loading = true;
 const searchStr = this.helperService.getSearchConditionByRouter(this.router);
-this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(searchStr, this.paging).subscribe((resp: any) => {
+this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(searchStr, this.paging, this.sortOprions).subscribe((resp: any) => {
 console.log(resp);
 this.listElements = resp.content;
 this.paging.totalSize = resp.totalElements;
