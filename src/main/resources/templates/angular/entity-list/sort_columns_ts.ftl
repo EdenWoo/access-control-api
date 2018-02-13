@@ -6,7 +6,7 @@ export class SortColumns {
 <#list entity.fields as f>
         new Sort({
             isAsc: false,
-            columnDisplay: '${Utils.upperCamel(f.name)}',
+            columnDisplay: '${Utils.spacedCapital(f.name)}',
             columnModel: '${Utils.lowerCamel(f.name)}',
             isSortable: true,
             isActive: true
