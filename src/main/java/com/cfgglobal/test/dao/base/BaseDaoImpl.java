@@ -259,9 +259,6 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
         return domainClass.getName().equals(modelType);
     }
 
-    @Override
-    public Optional<T> findById(ID id) {
-        return findById(id);
-    }
+
 
 }
