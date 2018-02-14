@@ -11,9 +11,9 @@ import java.util.Optional;
 public class SecurityAuditor implements AuditorAware<User> {
 
     @Override
-    public User getCurrentAuditor() {
+    public Optional<User> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(e -> (User) e.getPrincipal()).orElse(null);
+                .map(e -> (User) e.getPrincipal());
 
     }
 }

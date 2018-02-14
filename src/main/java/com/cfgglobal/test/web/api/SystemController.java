@@ -60,7 +60,7 @@ public class SystemController {
         Consumer<Object> entityToPermission = e -> {
             BaseEntity entity = (BaseEntity) e;
             String name = e.getClass().getSimpleName();
-            permissionDao.delete(permissionDao.findByEntity(name));
+            permissionDao.deleteAll(permissionDao.findByEntity(name));
             permissions.addAll(userService.genPermission(entity).asJava());
             permissionService.save(permissions);
         };

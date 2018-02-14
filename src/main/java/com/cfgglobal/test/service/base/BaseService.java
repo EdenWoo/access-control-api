@@ -119,7 +119,7 @@ public abstract class BaseService<T, ID extends Serializable> {
     }
 
     public List<T> findAll(Iterable<ID> ids) {
-        return List.ofAll(baseDao.findAll(ids));
+        return List.ofAll(baseDao.findAllById(ids));
     }
 
     public long count() {
@@ -127,7 +127,7 @@ public abstract class BaseService<T, ID extends Serializable> {
     }
 
     public void delete(ID id) {
-        baseDao.delete(id);
+        baseDao.deleteById(id);
     }
 
     public void delete(T entity) {
@@ -140,7 +140,7 @@ public abstract class BaseService<T, ID extends Serializable> {
     }
 
     public <S extends T> List<S> save(Iterable<S> entities) {
-        return List.ofAll(baseDao.save(entities));
+        return List.ofAll(baseDao.saveAll(entities));
     }
 
     public void flush() {

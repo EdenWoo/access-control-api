@@ -114,7 +114,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (actionReportProperties.isFirewall()) {
-            if(visitRecordService.hasTooManyRequest(securityAuditor.getCurrentAuditor(), getClientIp(request))){
+            if(visitRecordService.hasTooManyRequest(securityAuditor.getCurrentAuditor().get(), getClientIp(request))){
                 ApiResp apiResp = new ApiResp();
                 apiResp.setError(THRESHOLD + " requests allowed per min, if you need more, please contact us.");
                 String msg = objectMapper.writeValueAsString(apiResp);

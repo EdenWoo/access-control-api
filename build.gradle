@@ -1,7 +1,8 @@
 
 buildscript {
 	ext {
-		springBootVersion = '1.5.8.RELEASE'
+		//springBootVersion = '1.5.8.RELEASE'
+        springBootVersion = '2.0.0.RC1'
         mapstructVersion = "1.2.0.CR1"
 	}
 	repositories {
@@ -29,8 +30,8 @@ group = 'io.github.b1412'
 version = '1.0.0'
 sourceCompatibility = 1.8
 
-bootRepackage.enabled = false
-findMainClass.enabled = false
+//bootRepackage.enabled = false
+//findMainClass.enabled = false
 
 idea {
     module {

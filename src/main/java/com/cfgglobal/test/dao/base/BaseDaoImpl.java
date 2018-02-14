@@ -261,7 +261,7 @@ public class BaseDaoImpl<T, ID extends Serializable> extends SimpleJpaRepository
 
     @Override
     public Optional<T> findById(ID id) {
-        return Optional.of(findOne(id));
+        return findById(id);
     }
 
 }
