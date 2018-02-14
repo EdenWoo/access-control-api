@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -29,8 +30,11 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
 
 //@EnableWebMvc
 @Configuration
@@ -60,8 +64,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new ZonedDateTimeConverter(ZoneId.systemDefault()));
-        registry.addConverter(new CustomerConverter());
+       // super.addFormatters(registry);
+       // registry.addConverter(new ZonedDateTimeConverter(ZoneId.systemDefault()));
+      //  registry.addConverter(new CustomerConverter());
 
     }
 

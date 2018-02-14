@@ -1,5 +1,6 @@
 package com.cfgglobal.test.domain;
 
+import com.cfgglobal.test.config.jpa.JpaAuditingEntityListener;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -16,34 +17,34 @@ import java.time.ZonedDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(JpaAuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Version
     protected Long version;
 
-    @CreatedDate
+    //@CreatedDate
     @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)", insertable = false, updatable = false)
     protected ZonedDateTime createdAt;
 
-    @LastModifiedDate
+    //@LastModifiedDate
     @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)", insertable = false, updatable = false)
     protected ZonedDateTime updatedAt;
 
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    @CreatedBy
+   // @CreatedBy
     protected User creator;
 
     @ManyToOne
     @JoinColumn(name = "modifier_id")
-    @LastModifiedBy
+   // @LastModifiedBy
     protected User modifier;
 
 
