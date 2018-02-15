@@ -157,7 +157,5 @@ public class TokenHelper {
         return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(StringEscapeUtils.escapeHtml4("222&"));
-    }
+
 }

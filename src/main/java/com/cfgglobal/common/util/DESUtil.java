@@ -105,18 +105,4 @@ public class DESUtil {
         return decStr;
     }
 
-    /**
-     * 测试Main方法
-     *
-     * @param args
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception {
-        String key = "ASdf12!@"; //密码只能为8位
-        String message = "M00000894,donation";
-        String enStr = encrypt(message, key);
-        System.out.println("加密后:" + enStr);
-        String decStr = decrypt(enStr, key);
-        System.out.println("解密后:" + decStr);
-    }
 }

@@ -13,10 +13,5 @@ public class CodeEntity {
     private String name;
     private String display;
 
-    public static void main(String[] args) {
-        java.util.List<Class<?>> classes = ClassSearcher.of(BaseEntity.class).search();
-        System.out.println(classes);
-
-    }
 }
 
