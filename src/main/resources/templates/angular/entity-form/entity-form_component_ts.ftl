@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
-import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
+import {FormBaseComponent} from '../../../shared-module/bases/form-base-component/form-base.component';
 import {MyNotifyService} from '../../../services/my-notify.service';
 
 import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
@@ -15,7 +15,7 @@ selector: 'sa-${Utils.lowerHyphen(entity.name)}-form',
 templateUrl: './${Utils.lowerHyphen(entity.name)}-form.component.html',
 })
 @AutoUnsubscribe()
-export class ${Utils.upperCamel(entity.name)}FormComponent extends BaseComponent implements OnInit {
+export class ${Utils.upperCamel(entity.name)}FormComponent extends FormBaseComponent implements OnInit {
 public loading: boolean;
 public myForm: FormGroup;
 public id: number;
@@ -29,8 +29,8 @@ public router: Router,
 public location: Location,
 public myNotifyService: MyNotifyService,
 public ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
-public activedRoute: ActivatedRoute) {
-super();
+public activatedRoute: ActivatedRoute) {
+super(activatedRoute, location);
 }
 
 ngOnInit() {
@@ -47,28 +47,6 @@ this.myForm = this.formBuiler.group({
 });
 }
 
-getRouteParemeter() {
-this.subscription = this.activedRoute
-.params
-.subscribe(params => {
-console.log(params);
-this.id = params['id'];
-if (this.id && this.id > 0) {
-this.isEdit = true;
-this.getItem();
-} else {
-this.isEdit = false;
-}
-});
-}
-
-getQueryParams() {
-this.subscription = this.activedRoute
-.queryParams
-.subscribe(params => {
-});
-}
-
 getItem() {
 this.loading = true;
 this. ${Utils.lowerCamel(entity.name)}Service.get(this.id).subscribe((resp: any) => {
@@ -78,16 +56,6 @@ this. ${Utils.lowerCamel(entity.name)} = resp;
 }, err => {
 this.loading = false;
 });
-}
-
-equals(r1: any, r2: any) {
-if (r1 && r2) {
-return r1.id === r2.id;
-}
-}
-
-goBack() {
-this.location.back();
 }
 
 onSubmit({value, valid}: { value: ${Utils.upperCamel(entity.name)}Model, valid: boolean }) {

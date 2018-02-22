@@ -7,19 +7,18 @@
         <div class="row">
 
             <article class="col-sm-12 col-md-12 col-lg-12">
-                <sa-widget [editbutton]="false" color="greenLight">
+            <#--<sa-widget [editbutton]="false" color="greenLight">-->
+                <div sa-widget class="well">
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>${Utils.upperCamel(entity.name)} Table</h2>
-                        {#
-                        <!--<h2>{{selectedRole !== undefined ? selectedRole.name.get_camel(): ''}}</h2>-->
-                        #}
                     </header>
                     <div>
                         <div class="widget-body no-padding">
                             <div class=""
                                  style="padding: 6px 7px 6px !important; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 0px;">
-                                <a class="btn btn-default" (click)="reset()"><i class="fa fa-filter"></i>Reset Filter</a>
+                                <a class="btn btn-default" (click)="reset()"><i class="fa fa-filter"></i>Reset
+                                    Filter</a>
                                 <a class="btn btn-default" routerLink="/dbc-pages/${Utils.lowerCamel(entity.name)}/add">
                                     <i class="fa fa-plus"></i>Add
                                 </a>
@@ -27,30 +26,31 @@
 
                             <div class="table-responsive">
 
-                                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox">
+                                <table class="table table-bordered table-striped table-condensed table-hover smart-form has-tickbox dataTable no-footer">
 
                                     <thead>
                                     <tr [formGroup]="searchForm" class="searchForm">
                                         <th></th>
                                         <#list entity.fields as f>
                                         <th class="hasinput" [ngStyle]="{width:'8%'}">
-                                            <input formControlName="${Utils.lowerCamel(f.name)}" type="text" class="form-control"
+                                            <input formControlName="${Utils.lowerCamel(f.name)}" type="text"
+                                                   class="form-control"
                                                    placeholder="${Utils.lowerCamel(f.name)}"/>
                                         </th>
                                         </#list>
                                         <th></th>
                                     </tr>
 
-                                    
+
                                     <!--<tr>-->
                                     <!--<th *ngFor="let c of sortOprions.sortColumns" [ngClass]="getSortClass(c)"-->
                                     <!--(click)="changeSort(c)">{{c.columnDisplay}}-->
                                     <!--</th>-->
                                     <!--<th>Action</th>-->
                                     <!--</tr>-->
-                                    
 
-                                    <tr>
+                                    <!--Without Sorting-->
+                                    <tr *ngIf="false">
                                         <th>
                                             <label class="checkbox" style="margin-bottom: 20px;">
                                                 <input type="checkbox"
@@ -66,6 +66,26 @@
                                         </#list>
                                         <th>Action</th>
                                     </tr>
+
+                                    <!--With Sorting-->
+                                    <tr>
+                                        <th>
+                                            <label class="checkbox" style="margin-bottom: 20px;">
+                                                <input type="checkbox"
+                                                       [(ngModel)]="isSelectAll"
+                                                       [checked]="isSelectAll === true"
+                                                       (ngModelChange)="selectAll()"
+                                                       name="checkbox-inline">
+                                                <i></i>
+                                            </label>
+                                        </th>
+                                        <th *ngFor="let c of sortOprions.sortColumns"
+                                            [ngClass]="getSortClass(c)"
+                                            (click)="changeSort(c)">{{c.columnDisplay}}
+                                        </th>
+                                        <th>Action</th>
+                                    </tr>
+
                                     </thead>
                                     <tbody>
 
@@ -86,7 +106,7 @@
                                         <#list entity.fields as f>
                                         <td>{{item.${Utils.lowerCamel(f.name)} }}</td>
                                         </#list>
-                                        <td> <a routerLink="/pages/${Utils.lowerCamel(entity.name)}s/edit/{{item.id}}"><i
+                                        <td><a routerLink="/pages/${Utils.lowerCamel(entity.name)}s/edit/{{item.id}}"><i
                                                 class="fa fa-edit"></i></a></td>
                                     </tr>
                                     </tbody>
@@ -129,8 +149,8 @@
 
                         </div>
                     </div>
-                </sa-widget>
-
+                <#--</sa-widget>-->
+                </div>
             </article>
         </div>
     </sa-widgets-grid>

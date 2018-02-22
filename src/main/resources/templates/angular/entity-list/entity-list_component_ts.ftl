@@ -1,24 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BaseComponent} from '../../../shared-module/bases/base-component/base.component';
 import {HelperService} from '../../../services/helper.service';
+import {ListBaseComponent} from '../../../shared-module/bases/list-base-component/list-base.component';
+import {Router} from '@angular/router';
 
 import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
 import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
+
+import {SortColumns} from './sort.columns';
+import {Sorts} from '../../../models/bases/sorts.model';
 
 @Component({
     selector: 'sa-${Utils.lowerHyphen(entity.name)}-list',
     templateUrl: './${Utils.lowerHyphen(entity.name)}-list.component.html',
 })
-export class ${Utils.upperCamel(entity.name)}ListComponent extends BaseComponent implements OnInit {
+export class ${Utils.upperCamel(entity.name)}ListComponent extends ListBaseComponent implements OnInit {
 public searchForm: FormGroup;
 public searchCondition: string;
 public loading: boolean;
 
 constructor(private formBuilder: FormBuilder,
-private ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
-private helperService: HelperService) {
-super();
+public ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
+public router: Router,
+public helperService: HelperService) {
+super(router, helperService);
+this.sortOprions.sortColumns = SortColumns.Columns;
 }
 
 ngOnInit() {
@@ -29,7 +35,8 @@ this.debounceSearchForm();
 
 refresh() {
 this.loading = true;
-this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(this.searchCondition, this.paging).subscribe((resp: any) => {
+const searchStr = this.helperService.getSearchConditionByRouter(this.router);
+this.${Utils.lowerCamel(entity.name)}Service.getAllByPaging(searchStr, this.paging, this.sortOprions).subscribe((resp: any) => {
 console.log(resp);
 this.listElements = resp.content;
 this.paging.totalSize = resp.totalElements;
@@ -48,19 +55,5 @@ this.searchForm = this.formBuilder.group({
         ${Utils.lowerCamel(f.name)}: ['', [Validators.required]],
         </#list>
 });
-}
-
-debounceSearchForm() {
-this.searchCondition = '';
-this.searchForm.valueChanges.debounceTime(500).subscribe((form: any) => {
-if (form) {
-this.searchCondition = this.helperService.generateQueryString(form);
-}
-this.refresh();
-});
-}
-
-reset() {
-this.searchForm.reset();
 }
 }

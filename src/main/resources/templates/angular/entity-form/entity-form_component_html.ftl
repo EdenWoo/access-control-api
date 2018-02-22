@@ -55,7 +55,7 @@
                                                        name="${Utils.lowerCamel(f.name)}"
                                                        placeholder="">
                                                 <validation-error
-                                                        [control]="myForm.get('${Utils.lowerCamel(f.name)}')></validation-error>
+                                                        [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
                                             </label>
                                         </section>
                                     </#list>
