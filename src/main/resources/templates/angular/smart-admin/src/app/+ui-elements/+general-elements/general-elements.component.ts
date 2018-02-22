@@ -110,7 +110,7 @@ export class GeneralElementsComponent implements OnInit {
 
     this.notificationService.bigBox({
       title: "Big Information box",
-      content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+      content: "Lorem ipsum dolor sit amet, ccfx consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
       color: "#3276B1",
       //timeout: 8000,
       icon: "fa fa-bell swing animated",
@@ -123,7 +123,7 @@ export class GeneralElementsComponent implements OnInit {
 
     this.notificationService.bigBox({
       title: "Shield is up and running!",
-      content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+      content: "Lorem ipsum dolor sit amet, ccfx consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
       color: "#C79121",
       //timeout: 8000,
       icon: "fa fa-shield fadeInLeft animated",
@@ -136,7 +136,7 @@ export class GeneralElementsComponent implements OnInit {
 
     this.notificationService.bigBox({
       title: "Success Message Example",
-      content: "Lorem ipsum dolor sit amet, test consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+      content: "Lorem ipsum dolor sit amet, ccfx consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
       color: "#739E73",
       //timeout: 8000,
       icon: "fa fa-check",

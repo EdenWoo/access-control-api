@@ -1,6 +1,6 @@
 package com.cfgglobal
 
-import com.cfgglobal.test.base.Filter
+import com.cfgglobal.test.vo.Filter
 import io.vavr.API
 import io.vavr.collection.List
 import io.vavr.collection.Map
@@ -127,7 +127,7 @@ class FilterTest extends Specification {
 
     def "CreateFilters  Multiple Operators"() {
         //f_status=SETTLE&f_status_op==&f_status=NULL&f_status_op=NULL&f_status_rl=OR
-        given :
+        given:
         Map<String, String[]> map = API.Map(
                 "f_status", ["SETTLE", "NULL"].toArray(new String[0]),
                 "f_status_op", ["=", "NULL"].toArray(new String[0]),
