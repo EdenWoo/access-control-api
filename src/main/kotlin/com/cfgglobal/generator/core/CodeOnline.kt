@@ -48,14 +48,14 @@ object CodeOnline {
             val fields = e.getDeclaredFields()
                     .map { f ->
                         val codeField = CodeField()
-                        codeField.name = f.getName()
-                        val type = f.getType()
+                        codeField.name = f.name
+                        val type = f.type
                         when {
                             List::class.java.isAssignableFrom(type) -> codeField.type = "List"
                             BaseEntity::class.java.isAssignableFrom(type) -> codeField.type = "Entity"
-                            else -> codeField.type = type.getSimpleName()
+                            else -> codeField.type = type.simpleName
                         }
-                        val annotations = f.getDeclaredAnnotations()
+                        val annotations = f.declaredAnnotations
                         io.vavr.collection.List.of<Annotation>(*annotations)
                                 .forEach { annotation ->
                                     if (annotation is Column) {
@@ -83,30 +83,21 @@ object CodeOnline {
 
         val daoTask = Task(
                 name = "DAO",
-                folder = "\"src/main/java/\"+project.packageName.replaceAll(\"\\\\.\",\"/\")+\"/\"+\"dao\"",
+                folder = """"src/main/java/"+project.packageName.replaceAll("\\.","/")+"/"+"dao"""",
                 taskType = "multiple",
-                filename = "entity.name+\"Dao.java\"",
-                templatePath = "\"java/dao.ftl\""
+                filename = """entity.name+"Dao.java"""",
+                templatePath = """"java/dao.ftl""""
         )
         tasks.add(daoTask)
 
         val serviceTask = Task(
                 name = "SERVICE",
-                folder = "\"src/main/java/\"+project.packageName.replaceAll(\"\\\\.\",\"/\")+\"/\"+\"service\"",
+                folder = """"src/main/java/"+project.packageName.replaceAll("\\.","/")+"/"+"service"""",
                 taskType = "multiple",
-                filename = "entity.name+\"Service.java\"",
-                templatePath = "\"java/service.ftl\""
+                filename = """entity.name+"Service.java"""",
+                templatePath = """"java/service.ftl""""
         )
         tasks.add(serviceTask)
-
-        //        Task testTask = new Task();
-        //        testTask.setName("TEST");
-        //        testTask.setFolder("\"angular\"");
-        //        testTask.setTaskType("multiple");
-        //        testTask.setFilename("entity.name+\"Test.ts\"");
-        //        testTask.setTemplatePath("\"angular/test.ftl\"");
-        //        tasks.add(testTask);
-
 
         //=======================================
         //==============Angular==================
@@ -114,20 +105,20 @@ object CodeOnline {
         // entity-form.component.ts
         val entityFormComponentTs = Task(
                 name = "entity-form.component.ts",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-form"""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.ts\"",
-                templatePath = "\"angular/entity-form/entity-form_component_ts.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-form.component.ts"""",
+                templatePath = """"angular/entity-form/entity-form_component_ts.ftl""""
         )
         tasks.add(entityFormComponentTs)
 
         // entity-form.component.html
         val entityFormComponentHtml = Task(
                 name = "entity-form.component.html",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form\"",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-form"""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-form.component.html\"",
-                templatePath = "\"angular/entity-form/entity-form_component_html.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-form.component.html"""",
+                templatePath = """"angular/entity-form/entity-form_component_html.ftl""""
         )
         tasks.add(entityFormComponentHtml)
 
@@ -135,80 +126,80 @@ object CodeOnline {
         // entity-list.component.ts
         val entityListComponentTs = Task(
                 name = "entity-list.component.ts",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-list"""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.ts\"",
-                templatePath = "\"angular/entity-list/entity-list_component_ts.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-list.component.ts"""",
+                templatePath = """"angular/entity-list/entity-list_component_ts.ftl""""
         )
         tasks.add(entityListComponentTs)
 
         // entity-list.component.html
         val entityListComponentHtml = Task(
                 name = "entity-list.component.html",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-list"""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list.component.html\"",
-                templatePath = "\"angular/entity-list/entity-list_component_html.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-list.component.html"""",
+                templatePath = """"angular/entity-list/entity-list_component_html.ftl""""
         )
         tasks.add(entityListComponentHtml)
 
         // sort.columns.ts
         val SortColums = Task(
                 name = "sort.columns.ts",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\"-list\"",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-list"""",
                 taskType = "multiple",
-                filename = "\"sort.columns.ts\"",
-                templatePath = "\"angular/entity-list/sort_columns_ts.ftl\""
+                filename = """"sort.columns.ts"""",
+                templatePath = """"angular/entity-list/sort_columns_ts.ftl""""
         )
         tasks.add(SortColums)
 
         //service.html
         val entityService = Task(
                 name = "entity-service.component.html",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".service.ts\" ",
-                templatePath = "\"angular/entity_service_ts.ftl\""
+                filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
+                templatePath = """"angular/entity_service_ts.ftl""""
         )
         tasks.add(entityService)
 
         //module.html
         val entityModule = Task(
                 name = "entity-module.component.html",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".module.ts\" ",
-                templatePath = "\"angular/entity_module_ts.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".module.ts" """,
+                templatePath = """"angular/entity_module_ts.ftl""""
         )
         tasks.add(entityModule)
 
         //model.html
         val entityModel = Task(
                 name = "entity-model.component.html",
-                folder = "\"pages/\"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)",
+                folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
                 taskType = "multiple",
-                filename = "com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+\".model.ts\"",
-                templatePath = "\"angular/entity_model_ts.ftl\""
+                filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".model.ts"""",
+                templatePath = """"angular/entity_model_ts.ftl""""
         )
         tasks.add(entityModel)
 
         //pages_routing.ts
         val pageRouting = Task(
                 name = "pagesoutings",
-                folder = "\"pages/\"",
+                folder = """"pages/"""",
                 taskType = "multiple",
-                filename = "\"pages.routing.ts\"",
-                templatePath = "\"angular/pages_routing_ts.ftl\""
+                filename = """"pages.routing.ts"""",
+                templatePath = """"angular/pages_routing_ts.ftl""""
         )
         tasks.add(pageRouting)
 
         //app.module.ts
         val appModule = Task(
                 name = "appModule",
-                folder = "\"/\"",
+                folder = """"/"""",
                 taskType = "single",
-                filename = "\"app.module.ts\"",
-                templatePath = "\"angular/app_module_ts.ftl\""
+                filename = """"app.module.ts"""",
+                templatePath = """"angular/app_module_ts.ftl""""
         )
         tasks.add(appModule)
 
