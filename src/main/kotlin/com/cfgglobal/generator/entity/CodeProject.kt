@@ -15,9 +15,9 @@ data class CodeProject(
 
         var templateEngine: TemplateHelper,
 
-        var entities: MutableList<CodeEntity> = mutableListOf(),
+        var entities: List<CodeEntity> = listOf(),
 
-        var utilClasses: MutableList<Class<*>>? = mutableListOf()
+        var utilClasses: List<Class<*>>? = listOf()
 
 
 ) {

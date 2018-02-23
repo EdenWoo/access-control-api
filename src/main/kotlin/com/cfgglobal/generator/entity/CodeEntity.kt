@@ -2,10 +2,10 @@ package com.cfgglobal.generator.entity
 
 
 data class CodeEntity(
-        var fields: MutableList<CodeField> = mutableListOf(),
+        var fields: List<CodeField> = listOf(),
         var id: Int? = null,
 
-        var name: String? = null,
+        var name: String,
 
         var display: String? = null
 
