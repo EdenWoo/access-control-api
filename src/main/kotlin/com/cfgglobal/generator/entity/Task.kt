@@ -6,8 +6,8 @@ import lombok.Data
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 
-@Data
-class Task(
+
+data  class Task(
         var id: Int? = null,
 
         var name: String,
