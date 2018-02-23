@@ -121,10 +121,6 @@ dependencies {
     compile 'net.sf.supercsv:super-csv:2.4.0'
     compile 'com.querydsl:querydsl-jpa:4.1.4'
     compile 'com.querydsl:querydsl-apt:4.1.4:jpa'
-
-    compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
-    compile "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
     compile('org.jxls:jxls:2.4.0')
     compile('org.jxls:jxls-poi:1.0.12')
     compile('org.jxls:jxls-jexcel:1.0.6')

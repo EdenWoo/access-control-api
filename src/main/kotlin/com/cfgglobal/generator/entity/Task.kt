@@ -2,7 +2,6 @@ package com.cfgglobal.generator.entity
 
 
 import com.cfgglobal.generator.task.processor.ITaskProcessor
-import lombok.Data
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 

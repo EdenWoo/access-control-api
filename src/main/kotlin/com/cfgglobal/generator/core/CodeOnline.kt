@@ -19,7 +19,6 @@ import java.io.File
 import javax.persistence.Column
 import javax.persistence.Id
 
-@Slf4j
 object CodeOnline {
 
     @JvmStatic
