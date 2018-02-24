@@ -1,5 +1,6 @@
 package com.cfgglobal.test.config.json
 
+import arrow.core.getOrElse
 import io.vavr.collection.List
 import org.joor.Reflect
 import org.springframework.beans.factory.config.BeanPostProcessor
@@ -25,15 +26,15 @@ class JsonReturnHandler : HandlerMethodReturnValueHandler, BeanPostProcessor {
 
     override fun supportsReturnType(returnType: MethodParameter): Boolean {
 
-        val obj = Reflect.on(returnType).get<Any>("returnValue")
-        if (obj is ResponseEntity<*>) {
-            return JsonConfig.get().isDefined
-        } else {
-            if (JsonConfig.get().isDefined) {
-                //     Object view = Reflect.on(obj).get("view");
-                System.err.println("json render exception: " + returnType + ", " + JsonConfig.get().get().items)
+        return when (Reflect.on(returnType).get<Any>("returnValue")) {
+            is ResponseEntity<*> -> JsonConfig.get().isDefined()
+            else -> {
+                if (JsonConfig.get().isDefined()) {
+                    //     Object view = Reflect.on(obj).get("view");
+                    System.err.println("json render exception: " + returnType + ", " + JsonConfig.get().get().items)
+                }
+                false
             }
-            return false
         }
 
     }
@@ -58,7 +59,7 @@ class JsonReturnHandler : HandlerMethodReturnValueHandler, BeanPostProcessor {
         JsonConfig
                 .get()
                 .map({ it.items })
-                .getOrElse(mutableListOf())
+                .getOrElse{mutableListOf()}
                 .forEach { jsonSerializer.filter(it) }
 
         response!!.contentType = MediaType.APPLICATION_JSON_UTF8_VALUE

@@ -1,5 +1,7 @@
 package com.cfgglobal.test.config.json
 
+import arrow.core.None
+import arrow.core.Some
 import com.cfgglobal.test.domain.User
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -51,15 +53,15 @@ class CustomerJsonSerializer {
             val extendedUser = Reflect.on(ApplicationProperties.myUserClass).get<Class<*>>()
             include.addAll(JsonConfig.firstLevel(extendedUser).map({ MockPath.create(it) }))
         }
-        if (dto.isDefined) {
-            val dtoFields = JsonConfig.firstLevel(dto.get()).map { MockPath.create(it) }
-            include.addAll(dtoFields)
-            this.filter(dto.get(), include, json.exclude)
-            this.filter(json.type, include, json.exclude)
-        } else {
-            this.filter(json.type, include, json.exclude)
+        when (dto) {
+            is Some -> {
+                val dtoFields = JsonConfig.firstLevel(dto.get()).map { MockPath.create(it) }
+                include.addAll(dtoFields)
+                this.filter(dto.get(), include, json.exclude)
+                this.filter(json.type, include, json.exclude)
+            }
+            None -> this.filter(json.type, include, json.exclude)
         }
-
         if (type == User::class.java) {
             val extendedUser = Reflect.on(ApplicationProperties.myUserClass).get<Class<*>>()
             this.filter(extendedUser, include, json.exclude)

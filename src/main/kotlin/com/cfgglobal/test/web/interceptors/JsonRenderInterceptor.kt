@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JsonRenderInterceptor : HandlerInterceptor {
 
-    val log = LoggerFactory.getLogger(JsonRenderInterceptor::class.java)
+    val log = LoggerFactory.getLogger(JsonRenderInterceptor::class.java)!!
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val uri = request.requestURI
         val embedded = request.getParameter("embedded")
         val fields = request.getParameter("fields")
         val jsonConfig = JsonConfig.create(uri, fields, embedded)
-        if (jsonConfig.isDefined) {
+        if (jsonConfig.isDefined()) {
             log.debug("Json Config " + jsonConfig.get().items)
             jsonConfig.get().end()
         }

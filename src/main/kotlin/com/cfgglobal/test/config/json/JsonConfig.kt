@@ -1,6 +1,10 @@
 package com.cfgglobal.test.config.json
 
+import arrow.core.Option
+import arrow.core.Some
 import arrow.core.getOrElse
+import arrow.data.Try
+import arrow.data.getOrElse
 import arrow.syntax.collections.firstOption
 import arrow.syntax.option.toOption
 import com.cfgglobal.test.domain.BaseEntity
@@ -12,14 +16,8 @@ import com.querydsl.core.types.EntityPath
 import com.querydsl.core.types.Path
 import com.querydsl.core.types.dsl.EntityPathBase
 import com.querydsl.core.types.dsl.ListPath
-import io.vavr.API.*
-import io.vavr.Predicates.isIn
 import io.vavr.Tuple
 import io.vavr.Tuple2
-import io.vavr.collection.Map
-import io.vavr.control.Option
-import io.vavr.kotlin.Try
-import io.vavr.kotlin.toVavrMap
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 import java.lang.reflect.Modifier
@@ -32,7 +30,7 @@ class JsonConfig {
     fun include(type: Class<*>, vararg include: Path<*>): JsonConfig {
         val jsonConfigItems = items.firstOption { e -> e.type == type }
         when (jsonConfigItems) {
-            Some(JsonConfig) -> jsonConfigItems.get().include.addAll(include)
+            is Some -> jsonConfigItems.get().include.addAll(include)
             else -> items.add(JsonConfigItem(type = type, include = include.toMutableList()))
         }
         return this
@@ -41,7 +39,7 @@ class JsonConfig {
     fun exclude(type: Class<*>, vararg exclude: Path<*>): JsonConfig {
         val jsonConfigItems = items.firstOption { e -> e.type == type }
         when (jsonConfigItems) {
-            Some(JsonConfig) -> jsonConfigItems.get().exclude.addAll(exclude)
+            is Some -> jsonConfigItems.get().exclude.addAll(exclude)
             else -> items.add(JsonConfigItem(type = type, exclude = exclude.toMutableList()))
         }
         return this
@@ -62,13 +60,13 @@ class JsonConfig {
         }
 
         fun get(): Option<JsonConfig> {
-            return Option.of(config.get())
+            return Option.fromNullable(config.get())
         }
 
         fun endpoints(endpoint: String): Option<Tuple2<Class<*>, EntityPathBase<*>>> {
             return ApplicationProperties.entityScanPackage.toList()
                     .map { packageName ->
-                        Option.of(endpoint)
+                        Option.fromNullable(endpoint)
                                 .map { e ->
                                     val name = LOWER_HYPHEN.to(UPPER_CAMEL, e)
                                     Tuple.of(packageName + "." + name, packageName + ".Q" + name)
@@ -83,8 +81,8 @@ class JsonConfig {
                                         }
                                     }.toOption()
                                 }
-                    }.firstOption { it.isDefined }
-                    .getOrElse { Option.none() }
+                    }.firstOption { it.isDefined() }
+                    .getOrElse { Option.empty() }
 
 
         }
@@ -108,23 +106,22 @@ class JsonConfig {
         }
 
         fun create(uri: String, fields: String?, embedded: String?): Option<JsonConfig> {
-            val embeddedEntity = Option.of(embedded)
-                    .map { e -> e!!.split(",") }
-                    .map { it.toList() }
-                    .getOrElse(emptyList())
+            val embeddedEntity = Option.fromNullable(embedded)
+                    .map { it.split(",").toList() }
+                    .getOrElse { emptyList() }
                     .filter { StringUtils.isNotBlank(it) }
                     .map { e -> e.split("\\.").toList() }
                     .filter { it.isNotEmpty() }
             val endpoint = JsonConfig.getRootEndpoint(uri)
 
             val rootElement = endpoints(endpoint)
-            if (rootElement.isEmpty) {
-                return Option.none()
+            if (rootElement.isEmpty()) {
+                return Option.empty()
             }
             val jsonConfig = JsonConfig.start()
             val fieldsInRequest = getFields(rootElement.get()._1, fields)
-            jsonConfig.include(rootElement.get()._1, *fieldsInRequest.getOrElse(rootElement.get()._1, JsonConfig.firstLevelPath(rootElement.get()._2)).toTypedArray())
-
+            jsonConfig.include(rootElement.get()._1,
+                    *fieldsInRequest[rootElement.get()._1].toOption().getOrElse { JsonConfig.firstLevelPath(rootElement.get()._2) }.toTypedArray())
 
             if (!embeddedEntity.isEmpty()) {
                 checkEmbedded(embeddedEntity)
@@ -139,7 +136,7 @@ class JsonConfig {
                                 val lastNode = e.last()
                                 val lastParentNode = e.dropLast(1).last()
                                 var parentElement: Option<Tuple2<Class<*>, EntityPathBase<*>>> = endpoints(lastParentNode)
-                                if (parentElement.isEmpty && lastParentNode.endsWith("s")) {
+                                if (parentElement.isEmpty() && lastParentNode.endsWith("s")) {
                                     parentElement = endpoints(lastParentNode.substring(0, lastParentNode.length - 1))
                                 }
                                 addEmbedded(jsonConfig, fieldsInRequest, parentElement, lastNode)
@@ -148,7 +145,7 @@ class JsonConfig {
 
                         }
             }
-            return Option.of(jsonConfig)
+            return Option.fromNullable(jsonConfig)
         }
 
         private fun addEmbedded(jsonConfig: JsonConfig, fieldsInRequest: Map<Class<*>, List<Path<*>>>, rootElement: Option<Tuple2<Class<*>, EntityPathBase<*>>>, embeddedNode: String) {
@@ -157,12 +154,12 @@ class JsonConfig {
 
             val embeddedEntityPath = Try {
                 Reflect.on(rootEntity).get<Any>(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode)) as Path<*>
-            }.getOrElseGet {
+            }.getOrElse {
                 if (rootEntity.type === User::class.java) {//Special process for User class
                     val userClazz = Reflect.on(ApplicationProperties.myUserClass).get<Class<*>>()
                     Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode))
                 } else {
-                    null
+                    null!!
                 }
             }
                     ?: throw IllegalArgumentException(MessageFormat.format(("Invalid embedded [{0}],does not exist on entity [{1}],avaliable embedded [{2}]." +
@@ -173,7 +170,7 @@ class JsonConfig {
             jsonConfig.include(rootElement.get()._1, embeddedEntityPath) //追加？
 
             val nextEntity = endpoints(getNext(embeddedEntityPath))
-            val include = fieldsInRequest.getOrElse(nextEntity.get()._1, JsonConfig.firstLevelPath(nextEntity.get()._2))
+            val include = fieldsInRequest.get(nextEntity.get()._1).toOption().getOrElse { JsonConfig.firstLevelPath(nextEntity.get()._2) }
             jsonConfig.include(nextEntity.get()._1, *include.toTypedArray())
 
 
@@ -218,7 +215,7 @@ class JsonConfig {
                     .map { packageName ->
                         val name = packageName + ".Q" + clazz.simpleName
                         Try { Reflect.on(name.replace("////".toRegex(), ".")).create(StringUtils.substringAfterLast(name, ".Q")).get<Any>() as EntityPathBase<*> }
-                    }.first { it.isSuccess }.get()
+                    }.first { it.isSuccess() }.get()
 
 
         }
@@ -230,12 +227,13 @@ class JsonConfig {
 
         fun getRootEndpoint(u: String): String {
             val uri = u.replace("/v1/", "")
-            return Match(StringUtils.countMatches(uri, "/")).of(
-                    Case(`$`(isIn(0)), uri),
-                    Case(`$`(isIn(1)), StringUtils.substringBefore(uri, "/")),
-                    Case(`$`(isIn(2)), StringUtils.substringAfterLast(uri, "/")),
-                    Case(`$`(isIn(3)), StringUtils.substringAfterLast(uri, "/"))
-            )
+            return when (StringUtils.countMatches(uri, "/")) {
+                0 -> uri
+                1 -> StringUtils.substringBefore(uri, "/")
+                2 -> StringUtils.substringAfterLast(uri, "/")
+                3 -> StringUtils.substringAfterLast(uri, "/")
+                else -> throw IllegalArgumentException()
+            }
 
 
         }
@@ -267,7 +265,7 @@ class JsonConfig {
                         }
 
                     }
-            return map.toMap().toVavrMap()
+            return map.toMap()
 
         }
     }

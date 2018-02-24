@@ -40,13 +40,10 @@ open class BaseController {
                         .map({ List.ofAll(it) })
                         .getOrElse(List.empty())
                         .map { obj ->
-                            val entity: BaseEntity
-                            if (Reflect.on(obj).get<Any>("id") == null) {
-                                entity = obj
-                            } else {
-                                entity = entityManager!!.find(obj.javaClass, Option.of(obj).map { e -> Reflect.on(e).get<Any>("id") }.get())
+                            when {
+                                Reflect.on(obj).get<Any>("id") == null -> obj
+                                else -> entityManager!!.find(obj.javaClass, Option.of(obj).map { e -> Reflect.on(e).get<Any>("id") }.get())
                             }
-                            entity
                         })
                 if (!list.isEmpty) {
                     Reflect.on(baseEntity).set(field.name, list.asJava())

@@ -1,11 +1,9 @@
-
 buildscript {
-    ext.kotlin_version = '1.2.21'
     ext {
         kotlinVersion = '1.2.21'
         springBootVersion = '1.5.8.RELEASE'
+        arrowVersion = '0.6.1'
         //springBootVersion = '2.0.0.RC1'
-        mapstructVersion = "1.2.0.CR1"
 	}
 	repositories {
         mavenCentral()
@@ -46,7 +44,6 @@ idea {
     }
 }
 compileKotlin {
-  //  kotlinOptions.allWarningsAsErrors = true
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = ["-Xjsr305=strict"]
@@ -77,23 +74,14 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.session:spring-session-data-redis')
 	compile('org.springframework.boot:spring-boot-starter-web')
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
-    compile "org.projectlombok:lombok:1.16.14"
     testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
-
-
-    compile group: 'io.vavr', name: 'vavr', version: '0.9.1'
-    compile group: 'io.vavr', name: 'vavr-jackson', version: '0.9.1'
-    compile group: 'io.vavr', name: 'vavr-match', version: '0.9.1'
-    compile group: 'io.vavr', name: 'vavr-kotlin', version: '0.9.1'
 
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5', version: '2.9.1'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.1'
@@ -115,11 +103,8 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'org.jooq', name: 'joor', version: '0.9.6'
 
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
     compile group: 'commons-net', name: 'commons-net', version: '3.5'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
-    compile 'net.sf.supercsv:super-csv:2.4.0'
     compile 'com.querydsl:querydsl-jpa:4.1.4'
     compile 'com.querydsl:querydsl-apt:4.1.4:jpa'
     compile('org.jxls:jxls:2.4.0')
@@ -132,26 +117,27 @@ dependencies {
 
     compile 'org.codehaus.groovy:groovy-jsr223:2.4.3'
 
-    compile 'io.arrow-kt:arrow-core:0.6.1'
-    compile 'io.arrow-kt:arrow-typeclasses:0.6.1'
-    compile 'io.arrow-kt:arrow-data:0.6.1'
-    compile 'io.arrow-kt:arrow-instances:0.6.1'
-    compile 'io.arrow-kt:arrow-syntax:0.6.1'
-    kapt    'io.arrow-kt:arrow-annotations-processor:0.6.1'
+    compile "io.arrow-kt:arrow-core:$arrowVersion"
+    compile "io.arrow-kt:arrow-typeclasses:$arrowVersion"
+    compile "io.arrow-kt:arrow-data:$arrowVersion"
+    compile "io.arrow-kt:arrow-instances:$arrowVersion"
+    compile "io.arrow-kt:arrow-syntax:$arrowVersion"
+    kapt    "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
 
-    compile 'io.arrow-kt:arrow-free:0.6.1'
-    compile 'io.arrow-kt:arrow-mtl:0.6.1'
-    compile 'io.arrow-kt:arrow-effects:0.6.1'
-    compile 'io.arrow-kt:arrow-effects-rx2:0.6.1'
-    compile 'io.arrow-kt:arrow-effects-kotlinx-coroutines:0.6.1'
-    compile 'io.arrow-kt:arrow-optics:0.6.1'
+    compile "io.arrow-kt:arrow-free:$arrowVersion"
+    compile "io.arrow-kt:arrow-mtl:$arrowVersion"
+    compile "io.arrow-kt:arrow-effects:$arrowVersion"
+    compile "io.arrow-kt:arrow-effects-rx2:$arrowVersion"
+    compile "io.arrow-kt:arrow-effects-kotlinx-coroutines:$arrowVersion"
+    compile "io.arrow-kt:arrow-optics:$arrowVersion"
 
     compile 'com.github.b1412:java-toolbox:51f8ea8bcf'
+    compile 'com.github.b1412:kotlin-extensions:34a0953942'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
     }
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 }
 

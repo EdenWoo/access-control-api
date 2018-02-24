@@ -1,5 +1,6 @@
 package com.cfgglobal.test.config.json
 
+import arrow.data.Try
 import com.cfgglobal.test.domain.User
 import com.fasterxml.jackson.annotation.JsonFilter
 import com.fasterxml.jackson.core.JsonGenerator
@@ -11,8 +12,6 @@ import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter
 
 import com.github.leon.security.ApplicationProperties
-import io.vavr.control.Try
-import io.vavr.kotlin.Try
 import org.apache.commons.lang3.StringUtils
 import org.hibernate.collection.spi.PersistentCollection
 import org.hibernate.proxy.HibernateProxy
@@ -72,7 +71,7 @@ class JacksonJsonFilter : FilterProvider() {
         if (simpleName.endsWith("Dto")) {
             type = io.vavr.collection.List.of(*ApplicationProperties.entityScanPackage)
                     .map<Try<Class<*>>> { p -> Try { Reflect.on(p + "." + StringUtils.substringBefore(simpleName, "Dto")).get<Any>() as Class<*> } }
-                    .filter({ it.isSuccess })
+                    .filter{ it.isSuccess() }
                     .head().get()
         }
         if (type.superclass == User::class.java && includeMap[type.superclass] != null) {
