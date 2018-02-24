@@ -198,6 +198,69 @@ fun main(args: Array<String>) {
     )
     tasks.add(appModule)
 
+    //shared-module.ts
+    val sharedModuleTsService = Task(
+            name = "shared-module.component.ts",
+            folder = """ "shared-module"""",
+            taskType = "single",
+            filename = """"shared.module.ts"""",
+            templatePath = """"angular/shared-module/shared.module.ts""""
+    )
+    tasks.add(sharedModuleTsService)
+
+    //multi-select.html
+    val multiSelectHtmlService = Task(
+            name = "multi-select.component.html",
+            folder = """ "shared-module/multi-select/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+            taskType = "multiple",
+            filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-multi-select.component.html"""",
+            templatePath = """"angular/shared-module/multi-select/multi-select.component.html""""
+    )
+    tasks.add(multiSelectHtmlService)
+
+
+    //multi-select.html
+    val multiSelectTsService = Task(
+            name = "multi-select.component.ts",
+            folder = """ "shared-module/multi-select/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+            taskType = "multiple",
+            filename = """com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+"-multi-select.component.ts"""",
+            templatePath = """"angular/shared-module/multi-select/multi-select.component.ts""""
+    )
+    tasks.add(multiSelectTsService)
+
+//
+//    //multi-select.ts
+//    val entityService = Task(
+//            name = "entity-service.component.html",
+//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+//            taskType = "multiple",
+//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
+//            templatePath = """"angular/entity_service_ts.ftl""""
+//    )
+//    tasks.add(entityService)
+//
+//    //store.ts
+//    val entityService = Task(
+//            name = "entity-service.component.html",
+//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+//            taskType = "multiple",
+//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
+//            templatePath = """"angular/entity_service_ts.ftl""""
+//    )
+//    tasks.add(entityService)
+//
+//
+//    //multi-select.ts
+//    val entityService = Task(
+//            name = "entity-service.component.html",
+//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+//            taskType = "multiple",
+//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
+//            templatePath = """"angular/entity_service_ts.ftl""""
+//    )
+//    tasks.add(entityService)
+
     for (t in tasks) {
         TaskService.processTask(codeProject, t)
     }

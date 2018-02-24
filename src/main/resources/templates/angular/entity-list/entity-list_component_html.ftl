@@ -19,7 +19,7 @@
                                  style="padding: 6px 7px 6px !important; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 0px;">
                                 <a class="btn btn-default" (click)="reset()"><i class="fa fa-filter"></i>Reset
                                     Filter</a>
-                                <a class="btn btn-default" routerLink="/dbc-pages/${Utils.lowerCamel(entity.name)}/add">
+                                <a class="btn btn-default" routerLink="/pages/${Utils.lowerCamel(entity.name)}/add">
                                     <i class="fa fa-plus"></i>Add
                                 </a>
                             </div>

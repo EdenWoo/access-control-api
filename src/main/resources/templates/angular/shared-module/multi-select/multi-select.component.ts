@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
-import {${Utils.upperCamel(entity.name)}Service} from '../../../dbc-pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}.service';
+import {${Utils.upperCamel(entity.name)}Service} from '../../../pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}.service';
 
 @Component({
     selector: '${Utils.lowerHyphen(entity.name)}-multi-select',
@@ -36,7 +36,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
 
     public selectedDatas: any;
 
-    constructor(public {{class_model.name.get_camel()}}Service: ${Utils.upperCamel(entity.name)}Service) {
+    constructor(public  ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service) {
 
     }
 
@@ -52,9 +52,9 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
     }
 
     get${Utils.upperCamel(entity.name)}s() {
-        this.{{class_model.name.get_camel()}}Service.getAllFromStore().subscribe(resp => {
+        this. ${Utils.lowerCamel(entity.name)}Service.getAllFromStore().subscribe(resp => {
             console.log(resp);
-            this.datasForSelect = resp.{{class_model.name.get_camel()}}s;
+            this.datasForSelect = resp. ${Utils.lowerCamel(entity.name)}s;
             this.processDataForSelect();
         });
     }
