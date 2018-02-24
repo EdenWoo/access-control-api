@@ -25,7 +25,8 @@ fun main(args: Array<String>) {
             utilClasses = listOf(Utils::class.java),
             packageName = "com.cfgglobal.test",
             templatePath = templatePath,
-            targetPath = PathKit.getRootClassPath() + "/target",
+//            targetPath = PathKit.getRootClassPath() + "/target",
+            targetPath = "/Users/knight/CFG/smart-admin/src/app",
             scriptHelper = DefaultScriptHelper("groovy"),
             templateEngine = FreeMarkerHelper(templatePath)
     )
