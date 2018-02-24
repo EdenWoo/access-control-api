@@ -5,11 +5,11 @@ import com.cfgglobal.generator.entity.*
 import com.cfgglobal.generator.ext.Utils
 import com.cfgglobal.generator.metadata.FieldFeature
 import com.cfgglobal.generator.script.DefaultScriptHelper
+import com.cfgglobal.generator.task.service.TaskService
 import com.cfgglobal.generator.template.FreeMarkerHelper
 import com.cfgglobal.test.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.classpath.PathKit
-import com.google.common.collect.Lists
 import java.io.File
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
@@ -20,15 +20,12 @@ fun String.remainLastIndexOf(string: String): String {
 }
 
 fun main(args: Array<String>) {
-    val classes = Lists.newArrayList<Class<*>>()
-    classes.add(Utils::class.java)
     val templatePath = File(PathKit.getRootClassPath()).parent + "/resources/templates"
     val codeProject = CodeProject(
-            utilClasses = classes,
+            utilClasses = listOf(Utils::class.java),
             packageName = "com.cfgglobal.test",
             templatePath = templatePath,
-            targetPath = "/Users/knight/CFG/smart-admin/src/app",
-            //        codeProject.setTargetPath(PathKit.getRootClassPath() + "/target");
+            targetPath = PathKit.getRootClassPath() + "/target",
             scriptHelper = DefaultScriptHelper("groovy"),
             templateEngine = FreeMarkerHelper(templatePath)
     )
@@ -43,8 +40,8 @@ fun main(args: Array<String>) {
                     val codeField = CodeField(
                             name = it.name,
                             type = when {
-                                List::class.java.isAssignableFrom(it.type) -> FieldType(name = "List",element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
-                                BaseEntity::class.java.isAssignableFrom(it.type) -> FieldType(name = "Entity",element = it.type.simpleName)
+                                List::class.java.isAssignableFrom(it.type) -> FieldType(name = "List", element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
+                                BaseEntity::class.java.isAssignableFrom(it.type) -> FieldType(name = "Entity", element = it.type.simpleName)
                                 else -> FieldType(name = it.type.simpleName)
                             }
                     )
@@ -76,7 +73,7 @@ fun main(args: Array<String>) {
 
     codeProject.entities = codeEntities
 
-    val tasks = Lists.newArrayList<Task>()
+    val tasks  = mutableListOf<Task>()
 
     val daoTask = Task(
             name = "DAO",
@@ -201,7 +198,7 @@ fun main(args: Array<String>) {
     tasks.add(appModule)
 
     for (t in tasks) {
-        //      TaskService.processTask(codeProject, t)
+        TaskService.processTask(codeProject, t)
     }
 }
 

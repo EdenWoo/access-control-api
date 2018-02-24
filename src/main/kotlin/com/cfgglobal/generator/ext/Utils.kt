@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 
 
 object Utils {
-
+    @JvmStatic
     fun hyphen(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(source) as String
     }
@@ -13,6 +13,7 @@ object Utils {
     /**
      * e.g., "lower-hyphen".
      */
+    @JvmStatic
     fun lowerHyphen(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(source) as String
     }
@@ -21,6 +22,7 @@ object Utils {
     /**
      * e.g., "lower_underscore".
      */
+    @JvmStatic
     fun lowerUnderscore(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE).convert(source) as String
     }
@@ -28,6 +30,7 @@ object Utils {
     /**
      * e.g., "lowerCamel".
      */
+    @JvmStatic
     fun lowerCamel(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL).convert(source) as String
     }
@@ -35,6 +38,7 @@ object Utils {
     /**
      * e.g., "UpperCamel".
      */
+    @JvmStatic
     fun upperCamel(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL).convert(source) as String
     }
@@ -42,6 +46,7 @@ object Utils {
     /**
      * e.g., "Spaced Capital".
      */
+    @JvmStatic
     fun spacedCapital(source: String): String {
         val s = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL).convert(source)
         var out = StringBuilder(s)
@@ -61,6 +66,7 @@ object Utils {
     /**
      * e.g., "UPPER_UNDERSCORE".
      */
+    @JvmStatic
     fun upperUderscore(source: String): String {
         return CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE).convert(source) as String
     }
