@@ -198,6 +198,16 @@ fun main(args: Array<String>) {
     )
     tasks.add(appModule)
 
+    //app.component.ts
+    val appComponentTs = Task(
+            name = "app.component.ts",
+            folder = """"/"""",
+            taskType = "single",
+            filename = """"app.component.ts"""",
+            templatePath = """"angular/app.component.ts""""
+    )
+    tasks.add(appComponentTs)
+
     //shared-module.ts
     val sharedModuleTsService = Task(
             name = "shared-module.component.ts",
@@ -239,16 +249,16 @@ fun main(args: Array<String>) {
             templatePath = """"angular/store/actions/action.constant.ts""""
     )
     tasks.add(actionConstantTsService)
-//
-//    //actions
-//    val actionsTsService = Task(
-//            name = "actions.ts",
-//            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
-//            taskType = "multiple",
-//            filename = """"actions.ts"""",
-//            templatePath = """"angular/store/actions/actions.ts""""
-//    )
-//    tasks.add(actionsTsService)
+
+    //actions
+    val actionsTsService = Task(
+            name = "actions.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"actions.ts"""",
+            templatePath = """"angular/store/actions/actions.ts""""
+    )
+    tasks.add(actionsTsService)
 
     //add.action
     val addActionTsService = Task(
@@ -300,6 +310,15 @@ fun main(args: Array<String>) {
     )
     tasks.add(updateActionTsService)
 
+    //store.action
+    val storeActionTsService = Task(
+            name = "store.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"store.action.ts"""",
+            templatePath = """"angular/store/actions/store.action.ts""""
+    )
+    tasks.add(updateActionTsService)
 
     //interfaces
     //feature-state.interface.ts
