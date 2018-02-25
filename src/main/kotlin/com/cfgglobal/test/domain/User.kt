@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull
 @Inheritance(strategy = InheritanceType.JOINED)
 open class User(
 
-        protected var name: String? = null,
+        open var name: String? = null,
 
         private var username: String = "",
 
@@ -29,28 +29,28 @@ open class User(
         var email: String? = null,
         @ManyToOne
         @JoinColumn(name = "role_id")
-        protected var role: Role? = null,
+        open var role: Role? = null,
 
         @ManyToOne
         @JoinColumn(name = "branch_id")
-        protected var branch: Branch? = null,
+        open var branch: Branch? = null,
 
 
         @ManyToOne
         @JoinColumn(name = "introducer_id")
-        protected var introducedBy: User? = null,
+        open var introducedBy: User? = null,
 
         @Type(type = "yes_no")
-        protected var verify: Boolean? = null,
+        open var verify: Boolean? = null,
 
         @Transient
-        protected var grantedAuthorities: MutableList<GrantedAuthority> = mutableListOf(),
+        open var grantedAuthorities: MutableList<GrantedAuthority> = mutableListOf(),
 
         @OneToMany(cascade = [(CascadeType.PERSIST), (CascadeType.REFRESH), (CascadeType.MERGE)], orphanRemoval = true)
-        protected var attachments: MutableList<Attachment> = mutableListOf(),
+        open var attachments: MutableList<Attachment> = mutableListOf(),
 
         @Enumerated(value = EnumType.STRING)
-        protected var userType: UserType? = null
+        open var userType: UserType? = null
 
 ) : BaseEntity(), UserDetails {
 
