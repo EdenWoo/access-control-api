@@ -229,37 +229,129 @@ fun main(args: Array<String>) {
     )
     tasks.add(multiSelectTsService)
 
+    //-------Store-------
+    //action.constant
+    val actionConstantTsService = Task(
+            name = "action.constant.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"action.constant.ts"""",
+            templatePath = """"angular/store/actions/action.constant.ts""""
+    )
+    tasks.add(actionConstantTsService)
 //
-//    //multi-select.ts
-//    val entityService = Task(
-//            name = "entity-service.component.html",
-//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
+//    //actions
+//    val actionsTsService = Task(
+//            name = "actions.ts",
+//            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
 //            taskType = "multiple",
-//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
-//            templatePath = """"angular/entity_service_ts.ftl""""
+//            filename = """"actions.ts"""",
+//            templatePath = """"angular/store/actions/actions.ts""""
 //    )
-//    tasks.add(entityService)
-//
-//    //store.ts
-//    val entityService = Task(
-//            name = "entity-service.component.html",
-//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
-//            taskType = "multiple",
-//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
-//            templatePath = """"angular/entity_service_ts.ftl""""
-//    )
-//    tasks.add(entityService)
-//
-//
-//    //multi-select.ts
-//    val entityService = Task(
-//            name = "entity-service.component.html",
-//            folder = """"pages/"+com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)""",
-//            taskType = "multiple",
-//            filename = """ com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name)+".service.ts" """,
-//            templatePath = """"angular/entity_service_ts.ftl""""
-//    )
-//    tasks.add(entityService)
+//    tasks.add(actionsTsService)
+
+    //add.action
+    val addActionTsService = Task(
+            name = "add.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"add.action.ts"""",
+            templatePath = """"angular/store/actions/add.action.ts""""
+    )
+    tasks.add(addActionTsService)
+
+    //delete.action
+    val deleteActionTsService = Task(
+            name = "add.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"delete.action.ts"""",
+            templatePath = """"angular/store/actions/delete.action.ts""""
+    )
+    tasks.add(deleteActionTsService)
+
+    //fetch.action
+    val fetchActionTsService = Task(
+            name = "add.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"fetch.action.ts"""",
+            templatePath = """"angular/store/actions/fetch.action.ts""""
+    )
+    tasks.add(fetchActionTsService)
+
+    //set.action
+    val setActionTsService = Task(
+            name = "set.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"set.action.ts"""",
+            templatePath = """"angular/store/actions/set.action.ts""""
+    )
+    tasks.add(setActionTsService)
+
+    //update.action
+    val updateActionTsService = Task(
+            name = "update.action.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/actions" """,
+            taskType = "multiple",
+            filename = """"update.action.ts"""",
+            templatePath = """"angular/store/actions/update.action.ts""""
+    )
+    tasks.add(updateActionTsService)
+
+
+    //interfaces
+    //feature-state.interface.ts
+    val featureStateInterfaceTsService = Task(
+            name = "feature-state.interface.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/interfaces" """,
+            taskType = "multiple",
+            filename = """"feature-state.interface.ts"""",
+            templatePath = """"angular/store/interfaces/feature-state.interface.ts""""
+    )
+    tasks.add(featureStateInterfaceTsService)
+
+    //interfaces
+    //feature-state.interface.ts
+    val stateInterfaceTsService = Task(
+            name = "state.interface.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store/interfaces" """,
+            taskType = "multiple",
+            filename = """"state.interface.ts"""",
+            templatePath = """"angular/store/interfaces/state.interface.ts""""
+    )
+    tasks.add(stateInterfaceTsService)
+
+    //effects.ts
+    val effectsTsService = Task(
+            name = "effects.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store" """,
+            taskType = "multiple",
+            filename = """"effects.ts"""",
+            templatePath = """"angular/store/effects.ts""""
+    )
+    tasks.add(effectsTsService)
+
+    //initial-state.constant.ts
+    val initialStateConstantTsService = Task(
+            name = "initial-state.constant.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store" """,
+            taskType = "multiple",
+            filename = """"initial-state.constant.ts"""",
+            templatePath = """"angular/store/initial-state.constant.ts""""
+    )
+    tasks.add(initialStateConstantTsService)
+
+    //reducers.ts
+    val reducersTsService = Task(
+            name = "reducers.ts",
+            folder = """ "pages/" + com.cfgglobal.generator.ext.Utils.lowerHyphen(entity.name) + "/store" """,
+            taskType = "multiple",
+            filename = """"reducers.ts"""",
+            templatePath = """"angular/store/reducers.ts""""
+    )
+    tasks.add(reducersTsService)
 
     for (t in tasks) {
         TaskService.processTask(codeProject, t)
