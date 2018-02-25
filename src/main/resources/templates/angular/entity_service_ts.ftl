@@ -4,7 +4,7 @@ import {BaseService} from '../../shared-module/bases/base.service';
 
 import {Store} from '@ngrx/store';
 import {${Utils.upperCamel(entity.name)}FeatureStateInterface} from './store/interfaces/feature-state.interface';
-import {Fetch${Utils.upperCamel(entity.name)}Action} from './store/actions/fetch-${Utils.lowerHyphen(entity.name)} .action';
+import {Fetch${Utils.upperCamel(entity.name)}Action} from './store/actions/fetch.action';
 
 @Injectable()
 export class ${Utils.upperCamel(entity.name)}Service extends BaseService implements OnInit {

@@ -318,7 +318,7 @@ fun main(args: Array<String>) {
             filename = """"store.action.ts"""",
             templatePath = """"angular/store/actions/store.action.ts""""
     )
-    tasks.add(updateActionTsService)
+    tasks.add(storeActionTsService)
 
     //interfaces
     //feature-state.interface.ts
