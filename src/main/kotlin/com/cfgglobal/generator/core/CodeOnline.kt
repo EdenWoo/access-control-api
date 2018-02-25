@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
             utilClasses = listOf(Utils::class.java),
             packageName = "com.cfgglobal.test",
             templatePath = templatePath,
-//            targetPath = PathKit.getRootClassPath() + "/target",
+//          targetPath = PathKit.getRootClassPath() + "/target",
             targetPath = "/Users/knight/CFG/smart-admin/src/app",
             scriptHelper = DefaultScriptHelper("groovy"),
             templateEngine = FreeMarkerHelper(templatePath)
@@ -352,6 +352,27 @@ fun main(args: Array<String>) {
             templatePath = """"angular/store/reducers.ts""""
     )
     tasks.add(reducersTsService)
+
+    //app-store
+    //app-reducers.constant.ts
+    val appReducersConstantTsService = Task(
+            name = "app-reducers.constant.ts",
+            folder = """"app-store/"""",
+            taskType = "single",
+            filename = """"app-reducers.constant.ts"""",
+            templatePath = """"angular/store/app-store/app-reducers.constant.ts""""
+    )
+    tasks.add(appReducersConstantTsService)
+
+    //app-reducers.constant.ts
+    val appStateInterfaceTsService = Task(
+            name = "app-state.interface.ts",
+            folder = """"app-store/"""",
+            taskType = "single",
+            filename = """"app-state.interface.ts"""",
+            templatePath = """"angular/store/app-store/app-state.interface.ts""""
+    )
+    tasks.add(appStateInterfaceTsService)
 
     for (t in tasks) {
         TaskService.processTask(codeProject, t)
