@@ -4,8 +4,11 @@ import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
+import {Subject} from 'rxjs/Subject';
+
 import {FormBaseComponent} from '../../../shared-module/bases/form-base-component/form-base.component';
 import {MyNotifyService} from '../../../services/my-notify.service';
+import {ImageModel} from '../../../models/bases/image.model';
 
 import {${Utils.upperCamel(entity.name)}Model} from '../${Utils.lowerHyphen(entity.name)}.model';
 import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
@@ -22,7 +25,15 @@ public id: number;
 public isEdit = false;
 public subscription: Subscription;
 public ${Utils.lowerCamel(entity.name)}: ${Utils.upperCamel(entity.name)}Model = new ${Utils.upperCamel(entity.name)}Model();
-
+// =====================================================================
+// =============================Dropzone Variable=======================
+<#list entity.fields as f>
+    <#if !f.searchable>
+        public ${Utils.lowerCamel(f.name)}ImageSubject: Subject<ImageModel[] | any> = new Subject<ImageModel[] | any>();
+    </#if>
+</#list>
+// ============================Dropzone Variable========================
+// =====================================================================
 constructor(public formBuiler: FormBuilder,
 public ref: ChangeDetectorRef,
 public router: Router,
@@ -43,6 +54,15 @@ initFormControl() {
 this.myForm = this.formBuiler.group({
 <#list entity.fields as f>
     ${Utils.lowerCamel(f.name)}: ['', [Validators.required]],
+    <#if f.searchable>
+    isPrimaryKey
+    <#elseif f.sortable>
+    searchable
+    <#elseif f.required>
+    sortable
+    <#else>
+    </#if>
+
 </#list>
 });
 }
@@ -52,7 +72,8 @@ this.loading = true;
 this. ${Utils.lowerCamel(entity.name)}Service.get(this.id).subscribe((resp: any) => {
 this.loading = false;
 console.log(resp);
-this. ${Utils.lowerCamel(entity.name)} = resp;
+this.${Utils.lowerCamel(entity.name)} = resp;
+this.emitDropzoneFiles();
 }, err => {
 this.loading = false;
 });
@@ -79,4 +100,53 @@ this.myNotifyService.notifyFail(err.error.error);
 })
 }
 }
+
+// =====================================================================
+// =======================Multi Select Event============================
+<#list entity.fields as f>
+     <#if !f.searchable>
+         ${Utils.lowerCamel(f.name)}Selected($event) {
+        this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
+    }
+    <#elseif f.sortable>
+    searchable
+    <#elseif f.required>
+    sortable
+    <#else>
+    </#if>
+
+</#list>
+// =======================Multi Select Event============================
+// =====================================================================
+
+// =====================================================================
+// =============================Dropzone================================
+emitDropzoneFiles(){
+
+<#list entity.fields as f>
+    <#if !f.searchable>
+        this.${Utils.lowerCamel(f.name)}ImageSubject.next(this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)});
+    </#if>
+</#list>
+
+}
+
+
+<#list entity.fields as f>
+    <#if !f.searchable>
+        ${Utils.lowerCamel(entity.name)}FileObjectsChanged($event) {
+        this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
+    }
+    <#elseif f.sortable>
+    searchable
+    <#elseif f.required>
+    sortable
+    <#else>
+    </#if>
+
+</#list>
+// ============================Dropzone=================================
+// =====================================================================
+
+
 }

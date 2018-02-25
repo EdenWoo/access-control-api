@@ -58,6 +58,72 @@
                                                         [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
                                             </label>
                                         </section>
+
+                                        <#if !f.searchable>
+                                        <!---------------------------------------------------->
+                                        <!-----if is multi select and ouput single entity----->
+                                        <input type="text"
+                                               style="display: none;"
+                                               formControlName="${Utils.lowerCamel(f.name)}"
+                                               [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                               name="${Utils.lowerCamel(f.name)}"
+                                               placeholder="">
+
+                                        <section class="col col-6">
+                                            <label class="select">
+                                                ${f.name}<span style="color: red">*</span>
+                                                <${Utils.lowerHyphen(entity.name)}-multi-select
+                                                        (datasSelected)="${Utils.lowerCamel(entity.name)}Selected($event)"
+                                                        [multiple]="false"
+                                                        [outputArray]="false"
+                                                ></${Utils.lowerHyphen(entity.name)}-multi-select>
+                                                <validation-error
+                                                        [control]="myForm.get('${Utils.lowerCamel(entity.name)}')"></validation-error>
+                                            </label>
+                                        </section>
+                                        <!-----if is multi select and ouput single entity----->
+                                        <!---------------------------------------------------->
+
+                                        <!---------------------------------------------------->
+                                        <!-----if is dropzone----->
+
+                                        <input type="text"
+                                               style="display: none;"
+                                               formControlName="${Utils.lowerCamel(f.name)}"
+                                               [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                               name="${Utils.lowerCamel(f.name)}"
+                                               placeholder="">
+
+                                        <label>${f.name}</label>
+                                        <div class="row dropzone-area">
+                                            <div class="" role="content">
+                                                <!-- widget content -->
+                                                <div class="widget-body">
+
+                                                    <my-drop-zone-component [maxFiles]="10"
+                                                                            [subject]="${Utils.lowerCamel(f.name)}ImageSubject"
+                                                                            (fileObjectsChanged)="${Utils.lowerCamel(f.name)}FileObjectsChanged($event)">
+                                                    </my-drop-zone-component>
+                                                    <validation-error
+                                                            [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
+
+                                                </div>
+                                                <!-- end widget content -->
+
+                                            </div>
+                                        </div>
+                                        <!-----if is multi select and ouput single entity----->
+                                        <!---------------------------------------------------->
+
+                                         <!-- if is multi select and ouput array -->
+
+                                        <#elseif !f.sortable>
+                                            searchable
+                                        <#elseif !f.required>
+                                            sortable
+                                        <#else>
+                                        </#if>
+
                                     </#list>
                                     </div>
 
