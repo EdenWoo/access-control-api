@@ -108,7 +108,7 @@ class BaseDaoImpl<T, ID : Serializable>(
                             .map { condition ->
                                 val searchPath: Path<Any>
                                 val fieldName = condition.fieldName
-                                val fields = fieldName!!.split("\\.")
+                                val fields = fieldName!!.split(".")
                                 if (fields.size > 1) {
                                     var join: Join<Any, Any> = root.join<Any, Any>(fields.get(0))
                                     for (i in 1 until fields.size - 1) {
@@ -135,7 +135,7 @@ class BaseDaoImpl<T, ID : Serializable>(
                     else
                         predicates
                                 .reduce({ l, r ->
-                                    if (r.getOperator() == Predicate.BooleanOperator.AND) {
+                                    if (r.operator == Predicate.BooleanOperator.AND) {
                                         cb.and(l, r)
                                     } else {
                                         cb.or(l, r)
@@ -196,12 +196,12 @@ class BaseDaoImpl<T, ID : Serializable>(
                     predicate = searchPath.`in`(list)
                 }
             }
-            else -> when {
-                s == "true" || s == "false" -> predicate = cb.equal(searchPath, java.lang.Boolean.valueOf(s))
-                isEnum(s) -> predicate = cb.equal(searchPath, str2Enum(s).get())
-                NumberUtils.isCreatable(s) -> predicate = cb.equal(searchPath, NumberUtils.toLong(s))
-                s.contains("-") -> predicate = cb.equal(searchPath, LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                else -> predicate = cb.equal(searchPath, s)
+            else -> predicate = when {
+                s == "true" || s == "false" -> cb.equal(searchPath, java.lang.Boolean.valueOf(s))
+                isEnum(s) -> cb.equal(searchPath, str2Enum(s).get())
+                NumberUtils.isCreatable(s) -> cb.equal(searchPath, NumberUtils.toLong(s))
+                s.contains("-") -> cb.equal(searchPath, LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                else -> cb.equal(searchPath, s)
             }
         }
         return predicate
