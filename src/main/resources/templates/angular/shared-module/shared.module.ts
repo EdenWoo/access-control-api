@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {DropzoneModule} from 'ngx-dropzone-wrapper';
+import {SelectModule} from 'ng2-select';
 import {ValidationErrorComponent} from './bases/validation-error/validation-error.component';
 
 <#list project.entities as e>
@@ -16,7 +17,8 @@ import {${Utils.upperCamel(e.name)}MultiSelectComponent} from './multi-select/${
         FormsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
-        DropzoneModule
+        DropzoneModule,
+        SelectModule
     ],
     declarations: [
         // the pipe should declare once some where and only once.

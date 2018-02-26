@@ -1,6 +1,6 @@
 import {Ingredient} from '../../shared/ingredient.model';
 import {${Utils.upperCamel(entity.name)}Actions} from './actions/actions';
-import {${Utils.upperCamel(entity.name)}ActionConstants} from './actions/action.constants';
+import {${Utils.upperCamel(entity.name)}ActionConstants} from './actions/action.constant';
 import {${Utils.upperCamel(entity.name)}InitialStateConstant} from './initial-state.constant';
 
 export function ${Utils.lowerCamel(entity.name)}sReducer(state = ${Utils.upperCamel(entity.name)}InitialStateConstant, action: ${Utils.upperCamel(entity.name)}Actions) {

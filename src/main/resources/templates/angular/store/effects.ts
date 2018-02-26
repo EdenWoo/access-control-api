@@ -4,7 +4,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
-import {${Utils.upperCamel(entity.name)}ActionConstants} from './actions/action.constants';
+import {${Utils.upperCamel(entity.name)}ActionConstants} from './actions/action.constant';
 import {Fetch${Utils.upperCamel(entity.name)}Action} from './actions/fetch.action';
 import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(entity.name)}.service';
 import {${Utils.upperCamel(entity.name)}FeatureStateInterface} from './interfaces/feature-state.interface';

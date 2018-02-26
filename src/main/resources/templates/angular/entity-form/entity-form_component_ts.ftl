@@ -28,7 +28,7 @@ public ${Utils.lowerCamel(entity.name)}: ${Utils.upperCamel(entity.name)}Model =
 // =====================================================================
 // =============================Dropzone Variable=======================
 <#list entity.fields as f>
-    <#if !f.searchable>
+    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
         public ${Utils.lowerCamel(f.name)}ImageSubject: Subject<ImageModel[] | any> = new Subject<ImageModel[] | any>();
     </#if>
 </#list>
@@ -54,16 +54,8 @@ initFormControl() {
 this.myForm = this.formBuiler.group({
 <#list entity.fields as f>
     ${Utils.lowerCamel(f.name)}: ['', [Validators.required]],
-    <#if f.searchable>
-    isPrimaryKey
-    <#elseif f.sortable>
-    searchable
-    <#elseif f.required>
-    sortable
-    <#else>
-    </#if>
-
 </#list>
+
 });
 }
 
@@ -104,15 +96,10 @@ this.myNotifyService.notifyFail(err.error.error);
 // =====================================================================
 // =======================Multi Select Event============================
 <#list entity.fields as f>
-     <#if !f.searchable>
-         ${Utils.lowerCamel(f.name)}Selected($event) {
+    <#if f.type?? && f.type.name == 'List'>
+        ${Utils.lowerCamel(f.type.element)}Selected($event) {
         this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
     }
-    <#elseif f.sortable>
-    searchable
-    <#elseif f.required>
-    sortable
-    <#else>
     </#if>
 
 </#list>
@@ -124,7 +111,7 @@ this.myNotifyService.notifyFail(err.error.error);
 emitDropzoneFiles(){
 
 <#list entity.fields as f>
-    <#if !f.searchable>
+    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
         this.${Utils.lowerCamel(f.name)}ImageSubject.next(this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)});
     </#if>
 </#list>
@@ -133,20 +120,12 @@ emitDropzoneFiles(){
 
 
 <#list entity.fields as f>
-    <#if !f.searchable>
+    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
         ${Utils.lowerCamel(entity.name)}FileObjectsChanged($event) {
         this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
     }
-    <#elseif f.sortable>
-    searchable
-    <#elseif f.required>
-    sortable
-    <#else>
     </#if>
-
 </#list>
 // ============================Dropzone=================================
 // =====================================================================
-
-
 }

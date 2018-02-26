@@ -46,20 +46,8 @@
                                 <fieldset>
                                     <div class="row">
                                     <#list entity.fields as f>
-                                        <section class="col col-6">
-                                            <label class="input">
-                                                ${f.name}<span style="color: red">*</span>
-                                                <input type="text"
-                                                       formControlName="${Utils.lowerCamel(f.name)}"
-                                                       [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
-                                                       name="${Utils.lowerCamel(f.name)}"
-                                                       placeholder="">
-                                                <validation-error
-                                                        [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
-                                            </label>
-                                        </section>
 
-                                        <#if !f.searchable>
+                                        <#if f.type?? && f.type.name == 'List'>
                                         <!---------------------------------------------------->
                                         <!-----if is multi select and ouput single entity----->
                                         <input type="text"
@@ -71,22 +59,23 @@
 
                                         <section class="col col-6">
                                             <label class="select">
-                                                ${f.name}<span style="color: red">*</span>
-                                                <${Utils.lowerHyphen(entity.name)}-multi-select
-                                                        (datasSelected)="${Utils.lowerCamel(entity.name)}Selected($event)"
+                                                ${f.type.element}<span style="color: red">*</span>
+                                                <${Utils.lowerHyphen(f.type.element)}-multi-select
+                                                        (datasSelected)="${Utils.lowerCamel(f.type.element)}Selected($event)"
                                                         [multiple]="false"
                                                         [outputArray]="false"
-                                                ></${Utils.lowerHyphen(entity.name)}-multi-select>
+                                                ></${Utils.lowerHyphen(f.type.element)}-multi-select>
                                                 <validation-error
-                                                        [control]="myForm.get('${Utils.lowerCamel(entity.name)}')"></validation-error>
+                                                        [control]="myForm.get('${Utils.lowerCamel(f.type.element)}')"></validation-error>
                                             </label>
                                         </section>
                                         <!-----if is multi select and ouput single entity----->
                                         <!---------------------------------------------------->
 
-                                        <!---------------------------------------------------->
-                                        <!-----if is dropzone----->
 
+                                        <#elseif f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
+                                        <!---------------------------------------------------->
+                                        <!--------------------if is dropzone------------------>
                                         <input type="text"
                                                style="display: none;"
                                                formControlName="${Utils.lowerCamel(f.name)}"
@@ -115,15 +104,26 @@
                                         <!-----if is multi select and ouput single entity----->
                                         <!---------------------------------------------------->
 
-                                         <!-- if is multi select and ouput array -->
 
-                                        <#elseif !f.sortable>
-                                            searchable
-                                        <#elseif !f.required>
-                                            sortable
                                         <#else>
-                                        </#if>
+                                        <!--------------------------------------------------------->
+                                        <!--------------------else is normal field----------------->
+                                          <section class="col col-6">
+                                              <label class="input">
+                                                  ${f.name}<span style="color: red">*</span>
+                                                  <input type="text"
+                                                         formControlName="${Utils.lowerCamel(f.name)}"
+                                                         [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                                         name="${Utils.lowerCamel(f.name)}"
+                                                         placeholder="">
+                                                  <validation-error
+                                                          [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
+                                              </label>
+                                          </section>
+                                        <!--------------------else is normal field----------------->
+                                        <!--------------------------------------------------------->
 
+                                        </#if>
                                     </#list>
                                     </div>
 
