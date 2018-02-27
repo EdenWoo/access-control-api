@@ -10,7 +10,9 @@ import javax.persistence.*
 @DynamicInsert
 data class Branch(
 
-
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var pk: Long? = null,
         val name: String? = null,
 
         @ManyToOne(cascade = [(CascadeType.REFRESH), (CascadeType.REMOVE)], optional = true)

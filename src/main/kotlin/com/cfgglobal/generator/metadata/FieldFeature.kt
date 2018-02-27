@@ -14,4 +14,9 @@ import java.lang.annotation.RetentionPolicy.RUNTIME
 
 @Target(AnnotationTarget.FIELD)
 @Retention(RUNTIME)
-annotation class FieldFeature(val sortable: Boolean = false, val searchable: Boolean = false)
+annotation class FieldFeature(
+        val sortable: Boolean = false,
+        val searchable: Boolean = false,
+        val display: Boolean = true,
+        val boolean: Boolean = true
+)

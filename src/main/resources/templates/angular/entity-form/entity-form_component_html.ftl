@@ -28,7 +28,7 @@
             <article class="col-sm-12 col-md-12 col-lg-12">
 
                 <!-- Widget ID (each widget will need unique ID)-->
-                <sa-widget [editbutton]="false" [custombutton]="false">
+                <div sa-widget [editbutton]="false" [custombutton]="false">
 
                     <header>
                         <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
@@ -44,10 +44,22 @@
                                   class="smart-form">
 
                                 <fieldset>
-                                    <div class="row">
+
+                                    <#assign row=0>
                                     <#list entity.fields as f>
 
-                                        <#if f.type?? && f.type.name == 'List'>
+                                        <#if (row % 2) == 0 && !f.primaryKey>
+                                        <div class="row">
+                                        </#if>
+
+                                        <#if f.primaryKey>
+                                        <input type="text"
+                                               style="display: none;"
+                                               formControlName="${Utils.lowerCamel(f.name)}"
+                                               [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                               name="${Utils.lowerCamel(f.name)}"
+                                               placeholder="">
+                                        <#elseif f.type?? && f.type.name == 'List'>
                                         <!---------------------------------------------------->
                                         <!-----if is multi select and ouput single entity----->
                                         <input type="text"
@@ -124,8 +136,15 @@
                                         <!--------------------------------------------------------->
 
                                         </#if>
+
+                                        <#if ((row % 2) == 1 && !f.primaryKey) || (!f_has_next)>
+                                        </div>
+                                        </#if>
+
+                                        <#if !f.primaryKey>
+                                            <#assign row = row + 1>
+                                        </#if>
                                     </#list>
-                                    </div>
 
                                 </fieldset>
                                 <footer>
@@ -141,7 +160,7 @@
                     </div>
                     <!-- end widget div -->
 
-                </sa-widget>
+                </div>
                 <!-- end widget -->
 
                 <!-- Widget ID (each widget will need unique ID)-->

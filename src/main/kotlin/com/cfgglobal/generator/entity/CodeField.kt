@@ -6,15 +6,13 @@ data class CodeField(
 
         var name: String,
 
-        var display: String? = null,
-
         var length: Int? = null,
 
         var scale: Int? = null,
 
         var type: FieldType,
 
-        var isPrimaryKey: Boolean = false,
+        var primaryKey: Boolean = false,
 
         var searchable: Boolean = false,
 
@@ -22,6 +20,8 @@ data class CodeField(
 
         var required: Boolean = false,
 
-        var isUnique: Boolean = false
+        var unique: Boolean = false,
+
+        var display: Boolean? = true
 
 )

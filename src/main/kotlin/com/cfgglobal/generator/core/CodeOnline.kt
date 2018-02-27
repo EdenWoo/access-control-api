@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
     val templatePath = File(PathKit.getRootClassPath()).parent + "/resources/templates"
     val codeProject = CodeProject(
             utilClasses = listOf(Utils::class.java),
-            packageName = "com.cfgglobal.test",
+            packageName = "com.cfgglobal.Test",
             templatePath = templatePath,
 //          targetPath = PathKit.getRootClassPath() + "/target",
             targetPath = "/Users/knight/CFG/smart-admin/src/app",
@@ -50,7 +50,7 @@ fun main(args: Array<String>) {
                             .forEach {
                                 when (it) {
                                     is Column -> {
-                                        codeField.isUnique = it.unique
+                                        codeField.unique = it.unique
                                         codeField.length = it.length
                                         codeField.required = !it.nullable
                                         codeField.scale = it.scale
@@ -58,8 +58,9 @@ fun main(args: Array<String>) {
                                     is FieldFeature -> {
                                         codeField.searchable = it.searchable
                                         codeField.sortable = it.sortable
+                                        codeField.display = it.display
                                     }
-                                    is Id -> codeField.isPrimaryKey = true
+                                    is Id -> codeField.primaryKey = true
                                     else -> {
 
                                     }

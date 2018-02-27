@@ -80,8 +80,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
+    testCompile('org.springframework.boot:spring-boot-starter-Test')
+	testCompile('org.springframework.security:spring-security-Test')
 
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5', version: '2.9.1'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.1'
@@ -135,7 +135,7 @@ dependencies {
     compile 'com.github.b1412:kotlin-extensions:34a0953942'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-Test') {
         exclude(module: 'commons-logging')
     }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"

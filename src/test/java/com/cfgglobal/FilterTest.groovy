@@ -38,7 +38,7 @@ class FilterTest extends Specification {
 
     def "CreateFilters default op"() {
         given:
-        String[] e = List.of("test").toJavaArray()
+        String[] e = List.of("Test").toJavaArray()
         Map<String, String[]> map = API.Map("f_name", e)
 
         when:
