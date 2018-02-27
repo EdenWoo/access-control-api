@@ -53,7 +53,14 @@ this.initFormControl();
 initFormControl() {
 this.myForm = this.formBuiler.group({
 <#list entity.fields as f>
-    ${Utils.lowerCamel(f.name)}: ['', [Validators.required]],
+    <#if f.required>
+        ${Utils.lowerCamel(f.name)}: ['', [Validators.required],Validators.maxLength(${f.length})],
+    <#elseif f.required>
+
+    <#else>
+        ${Utils.lowerCamel(f.name)}: ['', []],
+    </#if>
+
 </#list>
 
 });

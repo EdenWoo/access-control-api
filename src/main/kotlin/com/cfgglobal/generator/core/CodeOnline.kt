@@ -75,7 +75,7 @@ fun main(args: Array<String>) {
 
     codeProject.entities = codeEntities
 
-    val tasks  = mutableListOf<Task>()
+    val tasks = mutableListOf<Task>()
 
     val daoTask = Task(
             name = "DAO",
@@ -393,6 +393,16 @@ fun main(args: Array<String>) {
             templatePath = """"angular/store/app-store/app-state.interface.ts""""
     )
     tasks.add(appStateInterfaceTsService)
+
+//navigation.component.html.ftl
+    val navigationHtml = Task(
+            name = "navigationHtml",
+            folder = """"shared/layout/navigation"""",
+            taskType = "single",
+            filename = """"navigation.component.html"""",
+            templatePath = """"angular/navigation.component.html.ftl""""
+    )
+    tasks.add(navigationHtml)
 
     for (t in tasks) {
         TaskService.processTask(codeProject, t)

@@ -1,6 +1,7 @@
 import {NgModule, ApplicationRef} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {Http} from '@angular/http';
 
 import {FormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -27,7 +28,10 @@ import {AppReadyEvent} from './app-ready.component';
 
 import {HelperService} from './services/helper.service';
 import {MyNotifyService} from './services/my-notify.service';
-
+import {AuthenticationService} from './services/authentication.service';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AuthInterceptor} from './services/auth.interceptor';
+import {RespInterceptor} from 'app/services/resp.interceptor';
 <#list project.entities as e>
 import {${Utils.upperCamel(e.name)}Service} from './pages/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}.service';
 </#list>
@@ -75,6 +79,9 @@ type StoreType = {
     providers: [ // expose our Services and Providers into Angular's dependency injection
         // ENV_PROVIDERS,
         APP_PROVIDERS,
+AuthenticationService,
+{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: RespInterceptor, multi: true},
         AppReadyEvent,
         HelperService,
 MyNotifyService,
