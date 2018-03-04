@@ -30,7 +30,7 @@ class RuleController : BaseController() {
 
     @GetMapping("{id}")
     operator fun get(@PathVariable id: Long): ResponseEntity<Rule> {
-        return ResponseEntity.ok(ruleService!!.findOne(id).get())
+        return ResponseEntity.ok(ruleService!!.findOne(id))
     }
 
     @PostMapping
@@ -41,7 +41,7 @@ class RuleController : BaseController() {
 
     @PutMapping("{id}")
     fun save(@PathVariable id: Long, @RequestBody rule: Rule): ResponseEntity<Rule> {
-        val oldRule = ruleService!!.findOne(id).get()
+        val oldRule = ruleService!!.findOne(id)
         JpaBeanUtil.copyNonNullProperties(rule, oldRule)
         ruleService.save(oldRule)
         return ResponseEntity.ok(oldRule)

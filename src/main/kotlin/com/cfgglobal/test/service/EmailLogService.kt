@@ -40,10 +40,10 @@ class EmailLogService : BaseService<EmailLog, Long>() {
 
 
     operator fun get(id: String): EmailLog {
-        return emailLogDao!!.findById(NumberUtils.createLong(id)!!).get()
+        return emailLogDao!!.findOne(NumberUtils.createLong(id)!!)
     }
 
     operator fun get(id: Long?): EmailLog {
-        return emailLogDao!!.findById(id!!).get()
+        return emailLogDao!!.findOne(id!!)
     }
 }

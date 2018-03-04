@@ -13,33 +13,31 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping(value = ["/v1/branch"])
 
-class BranchController(
-        @Autowired
-         val branchService: BranchService
+class BranchController : BaseController() {
 
-) : BaseController() {
+    @Autowired
+    private val branchService: BranchService? = null
 
-   
     @GetMapping
     fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<*> {
-        val page = branchService.findBySecurity(request.method, request.requestURI, request.parameterMap, pageable)
+        val page = branchService!!.findBySecurity(request.method, request.requestURI, request.parameterMap, pageable)
         return ResponseEntity.ok(page)
     }
 
     @GetMapping("{id}")
     operator fun get(@PathVariable id: Long): ResponseEntity<Branch> {
-        return ResponseEntity.ok(branchService.findOne(id).get())
+        return ResponseEntity.ok(branchService!!.findOne(id))
     }
 
     @PostMapping
     fun save(@RequestBody branch: Branch): ResponseEntity<Branch> {
-        return ResponseEntity.ok(branchService.save(branch))
+        return ResponseEntity.ok(branchService!!.save(branch))
     }
 
 
     @PutMapping("{id}")
     fun save(@PathVariable id: Long, @RequestBody branch: Branch): ResponseEntity<*> {
-        val oldBranch = branchService.findOne(id).get()
+        val oldBranch = branchService!!.findOne(id)
         JpaBeanUtil.copyNonNullProperties(branch, oldBranch)
         return ResponseEntity.ok(branchService.save(oldBranch))
     }

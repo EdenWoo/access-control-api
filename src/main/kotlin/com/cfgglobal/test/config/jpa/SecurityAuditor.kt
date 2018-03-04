@@ -9,9 +9,10 @@ import java.util.*
 @Component
 class SecurityAuditor : AuditorAware<User> {
 
-    override fun getCurrentAuditor(): Optional<User> {
+    override fun getCurrentAuditor(): User? {
         return Optional.ofNullable(SecurityContextHolder.getContext().authentication)
                 .map { it.principal }
-                .map { it as User }
+                .map { it as User }.orElse(null)
+
     }
 }

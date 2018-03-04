@@ -52,7 +52,7 @@ class RoleController : BaseController() {
 
     @GetMapping("{id}")
     fun get(@PathVariable id: Long): ResponseEntity<Role> {
-        val role = roleService!!.findOne(id).get()
+        val role = roleService!!.findOne(id)
         val selectedRolePermissions = List.ofAll(role.rolePermissions)
         val list = permissionService!!.findAll()
                 .map { permission ->
@@ -84,7 +84,7 @@ class RoleController : BaseController() {
     fun role(@PathVariable id: Long, @RequestBody role: Role, request: HttpServletRequest): ResponseEntity<Role> {
 
         val cleanedRole = roleService!!.removeEmptyRules(role)
-        val oldRole = roleService.findOne(id).get()
+        val oldRole = roleService.findOne(id)
         JpaBeanUtil.copyNonNullProperties(cleanedRole, oldRole)
         cleanedRole.rolePermissions.forEach({ this.syncFromDb(it) })
         oldRole.rolePermissions.clear()
