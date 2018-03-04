@@ -23,7 +23,7 @@ class MyUserDetailService(
 
     @Transactional
     override fun loadUserByUsername(username: String): User {
-        return cacheClient.get(application + "-" + username) { userService!!.getUserWithPermissions(username) }
+        return cacheClient.get(application + "-" + username) { userService.getUserWithPermissions(username) }
     }
 
 

@@ -1,6 +1,7 @@
 package com.cfgglobal.test.security
 
 import arrow.core.getOrElse
+import arrow.data.Try
 import arrow.syntax.option.toOption
 import com.cfgglobal.test.config.ActionReportProperties
 import com.cfgglobal.test.config.jpa.SecurityAuditor
@@ -91,7 +92,7 @@ class TokenAuthenticationFilter(
                 log.error("username is null , token {}", authToken)
                 loginExpired(request, response)
             } else {
-                val userDetails = userDetailsService!!.loadUserByUsername(username)
+                val userDetails = userDetailsService.loadUserByUsername(username)
                 val authentication = TokenBasedAuthentication(userDetails)
                 authentication.token = authToken
                 SecurityContextHolder.getContext().authentication = authentication
@@ -102,11 +103,11 @@ class TokenAuthenticationFilter(
             loginExpired(request, response)
         }
 
-        if (actionReportProperties!!.isFirewall) {
+        if (actionReportProperties.isFirewall) {
             if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor!!.currentAuditor), getClientIp(request))) {
                 val apiResp = ApiResp()
                 apiResp.error = THRESHOLD.toString() + " requests allowed per min, if you need more, please contact us."
-                val msg = objectMapper!!.writeValueAsString(apiResp)
+                val msg = objectMapper.writeValueAsString(apiResp)
                 response.status = 429
                 response.writer.write(msg)
             }
@@ -121,17 +122,18 @@ class TokenAuthenticationFilter(
                     requestBody = wrapRequest.payload,
                     queryString = request.queryString,
                     executionTime = (end - start))
-            visitRecordService!!.save(visitRecord)
+            Try { visitRecordService.save(visitRecord) }.onFailure {
+                log.error("Visit record saving fail!", it)
+            }
         }
 
     }
 
-    @Throws(IOException::class)
     private fun loginExpired(request: HttpServletRequest, response: HttpServletResponse) {
         logger.warn(request.method + request.requestURI)
         val apiResp = ApiResp()
         apiResp.error = "login expired"
-        val msg = objectMapper!!.writeValueAsString(apiResp)
+        val msg = objectMapper.writeValueAsString(apiResp)
         response.status = 403
         response.writer.write(msg)
     }
