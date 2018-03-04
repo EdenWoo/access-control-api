@@ -1,7 +1,5 @@
 .idea
 *.iml
-.gradle
-gradle
 build
 local
 out
@@ -15,7 +13,6 @@ application-local.properties
 generated/
 generated_tests/
 create.sql
-/generated-schema.sql
-
 
 /logs/
+/.gradle/
