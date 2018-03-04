@@ -1,6 +1,9 @@
 package com.cfgglobal.test.service.base
 
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
 import com.cfgglobal.test.dao.base.BaseDao
 import com.cfgglobal.test.service.rule.SecurityFilter
 import com.cfgglobal.test.vo.Filter
@@ -23,9 +26,6 @@ abstract class BaseService<T, ID : Serializable> {
     @Autowired
     lateinit var securityFilter: SecurityFilter
 
-    /* fun setBaseDao(baseDao: BaseDao<T, ID>) {
-         this.baseDao = baseDao
-     }*/
 
     fun findByRequestParameters(info: Map<String, Array<String>>, pageable: Pageable): Page<T> {
         return baseDao.findByRequestParameters(info, pageable)
@@ -70,23 +70,34 @@ abstract class BaseService<T, ID : Serializable> {
     fun findOneBySecurity(id: ID, method: String, requestURI: String): T {
         val securityFilters = securityFilter.query(method, requestURI)
         val list = baseDao.findByFilter(securityFilters)
-        val entity = baseDao.findOne(id)
-        return if (list.contains(entity)) {
-            entity
-        } else {
-            throw AccessDeniedException(requestURI)
+        val entity = findOne(id)
+        return when (entity) {
+            is Some -> {
+                if (list.contains(entity.t)) {
+                    entity.t
+                } else {
+                    throw AccessDeniedException(requestURI)
+                }
+            }
+            None -> throw AccessDeniedException(requestURI)
         }
     }
 
     fun deleteBySecurity(id: ID, method: String, requestURI: String) {
-        val securityFilters = securityFilter!!.query(method, requestURI)
+        val securityFilters = securityFilter.query(method, requestURI)
         val list = baseDao.findByFilter(securityFilters)
-        val entity = baseDao.findOne(id)
-        if (list.contains(entity)) {
-            baseDao.delete(entity)
-        } else {
-            throw AccessDeniedException(requestURI)
+        val entity = findOne(id)
+        when (entity) {
+            is Some -> {
+                if (list.contains(entity.t)) {
+                    baseDao.delete(entity.t)
+                } else {
+                    throw AccessDeniedException(requestURI)
+                }
+            }
+            None -> throw AccessDeniedException(requestURI)
         }
+
     }
 
     fun <S : T> saveBySecurity(entity: S, method: String, requestURI: String): S {
@@ -111,7 +122,7 @@ abstract class BaseService<T, ID : Serializable> {
     }
 
     fun findAll(ids: Iterable<ID>): List<T> {
-        return baseDao.findAll(ids)
+        return baseDao.findAllById(ids)
     }
 
     fun count(): Long {
@@ -119,7 +130,7 @@ abstract class BaseService<T, ID : Serializable> {
     }
 
     fun delete(id: ID) {
-        baseDao.delete(id)
+        baseDao.deleteById(id)
     }
 
     fun delete(entity: T) {
@@ -131,8 +142,8 @@ abstract class BaseService<T, ID : Serializable> {
         baseDao.deleteAll()
     }
 
-    fun <S : T> save(entities: Iterable<S>): List<S> {
-        return baseDao.save(entities)
+    fun <S : T> saveAll(entities: Iterable<S>): List<S> {
+        return baseDao.saveAll(entities)
     }
 
     fun flush() {
@@ -181,8 +192,11 @@ abstract class BaseService<T, ID : Serializable> {
         return baseDao.save(entity)
     }
 
-    fun findOne(id: ID): T {
-        return baseDao.findOne(id)
+    fun findOne(id: ID): Option<T> {
+        return baseDao.findById(id)
+                .map { Option.fromNullable(it) }
+                .orElse(Option.empty())
+
     }
 
 }

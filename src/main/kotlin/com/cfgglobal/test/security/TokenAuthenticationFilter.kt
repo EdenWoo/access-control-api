@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import java.time.Instant
-import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -81,17 +80,17 @@ class TokenAuthenticationFilter(
 
         )
 
-        val authToken = tokenHelper!!.getToken(request)
+        val authToken = tokenHelper.getToken(request)
         if (skipPathRequest(request, pathsToSkip)) {
             SecurityContextHolder.getContext().authentication = AnonAuthentication()
             chain.doFilter(wrapRequest, response)
         } else if (authToken != null && authToken != "null" && authToken != "undefined") {
-            val username = tokenHelper!!.getUsernameFromToken(authToken)
+            val username = tokenHelper.getUsernameFromToken(authToken)
             if (username == null) {
                 log.error("username is null , token {}", authToken)
                 loginExpired(request, response)
             } else {
-                val userDetails = userDetailsService!!.loadUserByUsername(username)
+                val userDetails = userDetailsService.loadUserByUsername(username)
                 val authentication = TokenBasedAuthentication(userDetails)
                 authentication.token = authToken
                 SecurityContextHolder.getContext().authentication = authentication
@@ -102,11 +101,11 @@ class TokenAuthenticationFilter(
             loginExpired(request, response)
         }
 
-        if (actionReportProperties!!.isFirewall) {
-            if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor!!.currentAuditor), getClientIp(request))) {
+        if (actionReportProperties.isFirewall) {
+            if (visitRecordService.hasTooManyRequest(securityAuditor.currentAuditor, getClientIp(request))) {
                 val apiResp = ApiResp()
                 apiResp.error = THRESHOLD.toString() + " requests allowed per min, if you need more, please contact us."
-                val msg = objectMapper!!.writeValueAsString(apiResp)
+                val msg = objectMapper.writeValueAsString(apiResp)
                 response.status = 429
                 response.writer.write(msg)
             }
@@ -121,7 +120,7 @@ class TokenAuthenticationFilter(
                     requestBody = wrapRequest.payload,
                     queryString = request.queryString,
                     executionTime = (end - start))
-            visitRecordService!!.save(visitRecord)
+            visitRecordService.save(visitRecord)
         }
 
     }
@@ -131,7 +130,7 @@ class TokenAuthenticationFilter(
         logger.warn(request.method + request.requestURI)
         val apiResp = ApiResp()
         apiResp.error = "login expired"
-        val msg = objectMapper!!.writeValueAsString(apiResp)
+        val msg = objectMapper.writeValueAsString(apiResp)
         response.status = 403
         response.writer.write(msg)
     }
@@ -143,14 +142,14 @@ class TokenAuthenticationFilter(
 
     companion object {
 
-        private val ROOT_MATCHER = "/"
-        private val FAVICON_MATCHER = "/favicon.ico"
-        private val HTML_MATCHER = "/**/*.html"
-        private val CSS_MATCHER = "/**/*.css"
-        private val JS_MATCHER = "/**/*.js"
-        private val IMG_MATCHER = "/images/*"
-        private val LOGIN_MATCHER = "/login"
-        private val LOGOUT_MATCHER = "/logout"
+        private const val ROOT_MATCHER = "/"
+        private const val FAVICON_MATCHER = "/favicon.ico"
+        private const val HTML_MATCHER = "/**/*.html"
+        private const val CSS_MATCHER = "/**/*.css"
+        private const val JS_MATCHER = "/**/*.js"
+        private const val IMG_MATCHER = "/images/*"
+        private const val LOGIN_MATCHER = "/login"
+        private const val LOGOUT_MATCHER = "/logout"
 
         private fun getClientIp(request: HttpServletRequest): String {
             return request.getHeader("X-Forwarded-For").toOption().getOrElse { request.remoteAddr }

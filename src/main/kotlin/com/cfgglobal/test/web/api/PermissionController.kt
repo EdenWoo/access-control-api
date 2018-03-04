@@ -39,7 +39,7 @@ class PermissionController(
 
     @PutMapping("{id}")
     fun save(@PathVariable id: Long, @RequestBody permission: Permission, request: HttpServletRequest): ResponseEntity<*> {
-        val oldPermission = permissionService.findOne(id)
+        val oldPermission = permissionService.findOne(id).get()
         JpaBeanUtil.copyNonNullProperties(permission, oldPermission)
         return ResponseEntity.ok(permissionService.saveBySecurity(oldPermission, request.method, request.requestURI))
     }

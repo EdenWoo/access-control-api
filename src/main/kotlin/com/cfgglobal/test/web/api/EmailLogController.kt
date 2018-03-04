@@ -39,7 +39,7 @@ class EmailLogController(
     @PutMapping("resend")
     fun resend(ids: String): ResponseEntity<*> {
         handleStatus(ids) { id: Long ->
-            val emailLog = emailLogService.findOne(id).copy(status = TaskStatus.TODO)
+            val emailLog = emailLogService.findOne(id).get().copy(status = TaskStatus.TODO)
             emailLogService.save(emailLog)
         }
         return ResponseEntity.ok(ids)

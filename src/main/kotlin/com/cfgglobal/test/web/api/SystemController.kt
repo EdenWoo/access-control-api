@@ -48,9 +48,9 @@ class SystemController(
         val entityToPermission = { entity: BaseEntity ->
             val name = entity.javaClass.simpleName
 
-            permissionDao.delete(permissionDao.findByEntity(name))
+            permissionDao.deleteAll(permissionDao.findByEntity(name))
             permissions.addAll(userService.genPermission(entity))
-            permissionService.save(permissions)
+            permissionService.saveAll(permissions)
 
         }
         if (entityName != null) {

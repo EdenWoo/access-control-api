@@ -1,5 +1,6 @@
 package com.cfgglobal.test.dao.base
 
+import arrow.core.Option
 import com.cfgglobal.test.vo.Filter
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -14,11 +15,9 @@ import java.util.*
 @NoRepositoryBean
 interface BaseDao<T, ID : Serializable> : JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
-
     fun findByRequestParameters(info: Map<String, Array<String>>, pageable: Pageable): Page<T>
 
     fun findByRequestParameters(info: Map<String, Array<String>>): List<T>
-
 
     fun findByFilter(filters: List<Filter>, pageable: Pageable): Page<T>
 
@@ -30,5 +29,5 @@ interface BaseDao<T, ID : Serializable> : JpaRepository<T, ID>, JpaSpecification
 
     fun support(modelType: String): Boolean
 
-    fun findById(id: ID): Optional<T>
+
 }

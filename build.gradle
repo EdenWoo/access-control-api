@@ -1,7 +1,7 @@
 buildscript {
     ext {
         kotlinVersion = '1.2.21'
-        springBootVersion = '1.5.8.RELEASE'
+        springBootVersion = '2.0.0.RELEASE'
         arrowVersion = '0.6.1'
         //springBootVersion = '2.0.0.RC1'
 	}
@@ -23,6 +23,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-spring'
 apply plugin: "kotlin-allopen"
 apply plugin: 'org.springframework.boot'
@@ -66,8 +67,8 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-bootRepackage.enabled = false
-findMainClass.enabled = false
+//bootRepackage.enabled = false
+//findMainClass.enabled = false
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
@@ -99,20 +100,25 @@ dependencies {
 
     compile 'org.hibernate:hibernate-core:5.2.6.Final'
     compile 'io.jsonwebtoken:jjwt:0.7.0'
+
     compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'org.jooq', name: 'joor', version: '0.9.6'
 
     compile group: 'commons-net', name: 'commons-net', version: '3.5'
     compile group: 'commons-io', name: 'commons-io', version: '2.5'
+
     compile 'com.querydsl:querydsl-jpa:4.1.4'
     compile 'com.querydsl:querydsl-apt:4.1.4:jpa'
+
     compile('org.jxls:jxls:2.4.0')
     compile('org.jxls:jxls-poi:1.0.12')
     compile('org.jxls:jxls-jexcel:1.0.6')
     compile('org.jxls:jxls-reader:2.0.2')
+
     compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.210'
     compile group: 'net.minidev', name: 'json-smart', version: '2.3'
+
     compile group: 'org.apache.commons', name: 'commons-csv', version: '1.4'
 
     compile 'org.codehaus.groovy:groovy-jsr223:2.4.3'
@@ -139,5 +145,10 @@ dependencies {
         exclude(module: 'commons-logging')
     }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    compile("org.jetbrains.kotlin:kotlin-script-util:${kotlinVersion}") {
+        exclude group: "com.jcabi", module: "jcabi-aether"
+        exclude group: "org.apache.maven", module: "maven-core"
+        exclude group: "org.sonatype.aether", module: "aether-api"
+    }
 }
 

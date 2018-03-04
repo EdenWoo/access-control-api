@@ -145,7 +145,7 @@ class BaseDaoImpl<T, ID : Serializable>(
     }
 
     private fun getPredicate(cb: CriteriaBuilder, condition: Condition, searchPath: Path<*>): Predicate? {
-        var predicate: Predicate? = null
+        var predicate: Predicate?
         val value = condition.value
         val s = value.toString()
         if (isEnum(s) && condition.operator.toUpperCase() != "NULL" && condition.operator.toUpperCase() != "NOTNULL") {
@@ -215,9 +215,6 @@ class BaseDaoImpl<T, ID : Serializable>(
         return myDomainClass.name == modelType
     }
 
-    override fun findById(id: ID): Optional<T> {
-        return Optional.ofNullable(findOne(id))
-    }
 
 
 }
