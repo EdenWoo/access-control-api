@@ -1,8 +1,5 @@
 .idea
 *.iml
-node_modules
-node
-etc
 .gradle
 gradle
 build
@@ -19,16 +16,6 @@ generated/
 generated_tests/
 create.sql
 /generated-schema.sql
-gradlew
-gradlew.bat
 
-/fee-api/gradle/
-/inf-api/gradle/
-/fee-api/.idea/
-/fee-api/.gradle/
-/inf-api/.idea/
-/inf-api/build/
-/inf-api/out/
-/inf-api/.gradle/
-/fee-api/out/
+
 /logs/
