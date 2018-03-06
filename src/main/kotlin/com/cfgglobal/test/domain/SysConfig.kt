@@ -8,6 +8,6 @@ import javax.persistence.Entity
 @DynamicUpdate
 @DynamicInsert
 data class SysConfig(
-        val confKey: String = "",
-        val confVal: String = ""
+        var confKey: String = "",
+        var confVal: String = ""
 ) : BaseEntity()

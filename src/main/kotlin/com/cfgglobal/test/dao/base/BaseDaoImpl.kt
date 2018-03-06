@@ -90,7 +90,7 @@ class BaseDaoImpl<T, ID : Serializable>(
 
     private fun getPredicates(filters: List<Filter>, root: Root<T>, cb: CriteriaBuilder): List<Predicate?> {
         return filters
-                .filter { it -> it !== Filter.EMPTY }
+                .filter { it -> it != Filter.EMPTY }
                 .map { filter ->
                     val predicates = filter.conditions
                             .filter { condition ->
