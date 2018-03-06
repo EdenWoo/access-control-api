@@ -193,7 +193,7 @@ class BaseDaoImpl<T, ID : Serializable>(
                 if (isEnum(list[0].toString())) {
                     predicate = searchPath.`in`(list.map { en -> str2Enum(en.toString()).get() })
                 } else {
-                    predicate = searchPath.`in`(list)
+                    predicate = searchPath.`in`(*list)
                 }
             }
             else -> predicate = when {
