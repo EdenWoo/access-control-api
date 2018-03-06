@@ -1,5 +1,6 @@
 package com.cfgglobal.test.security
 
+import org.springframework.beans.factory.annotation.Value
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.cache.CacheClient
 import com.github.leon.security.ApplicationProperties
@@ -17,9 +18,9 @@ import javax.servlet.http.HttpServletResponse
 @Component
 
 class LogoutSuccess(
-        @Autowired
-        val applicationProperties: ApplicationProperties,
 
+        @Value("\${spring.application.name}")
+        val application:String,
         @Autowired
         val objectMapper: ObjectMapper,
 
@@ -29,11 +30,11 @@ class LogoutSuccess(
 
     @Throws(IOException::class, ServletException::class)
     override fun onLogoutSuccess(httpServletRequest: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
-        cacheClient.deleteByKey(applicationProperties.userClass + "-" + authentication.name)
+        cacheClient.deleteByKey("$application-${authentication.name}")
         val result = HashMap<String, String>()
         result["result"] = "success"
         response.contentType = "application/json"
-        response.writer.write(objectMapper!!.writeValueAsString(result))
+        response.writer.write(objectMapper.writeValueAsString(result))
         response.status = HttpServletResponse.SC_OK
 
     }
