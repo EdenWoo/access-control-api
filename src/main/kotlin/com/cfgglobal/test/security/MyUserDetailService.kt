@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MyUserDetailService(
-        @Value("spring.application.name")
+        @Value("\${spring.application.name}")
         val application:String,
         @Autowired
         val userService: UserService,
@@ -23,7 +23,7 @@ class MyUserDetailService(
 
     @Transactional
     override fun loadUserByUsername(username: String): User {
-        return cacheClient.get(application + "-" + username) { userService.getUserWithPermissions(username) }
+        return cacheClient.get("$application-$username") { userService.getUserWithPermissions(username) }
     }
 
 

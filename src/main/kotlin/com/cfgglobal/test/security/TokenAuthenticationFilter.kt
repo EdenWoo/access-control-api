@@ -82,12 +82,12 @@ class TokenAuthenticationFilter(
 
         )
 
-        val authToken = tokenHelper!!.getToken(request)
+        val authToken = tokenHelper.getToken(request)
         if (skipPathRequest(request, pathsToSkip)) {
             SecurityContextHolder.getContext().authentication = AnonAuthentication()
             chain.doFilter(wrapRequest, response)
         } else if (authToken != null && authToken != "null" && authToken != "undefined") {
-            val username = tokenHelper!!.getUsernameFromToken(authToken)
+            val username = tokenHelper.getUsernameFromToken(authToken)
             if (username == null) {
                 log.error("username is null , token {}", authToken)
                 loginExpired(request, response)
@@ -104,7 +104,7 @@ class TokenAuthenticationFilter(
         }
 
         if (actionReportProperties.isFirewall) {
-            if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor!!.currentAuditor), getClientIp(request))) {
+            if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor.currentAuditor), getClientIp(request))) {
                 val apiResp = ApiResp()
                 apiResp.error = THRESHOLD.toString() + " requests allowed per min, if you need more, please contact us."
                 val msg = objectMapper.writeValueAsString(apiResp)

@@ -15,28 +15,19 @@ class JsonConfigTest extends Specification {
         given:
         EntityPath role = Q.user
         when:
-        List<Path> paths = JsonConfig.firstLevel(role, "role")
+        List<Path> paths = JsonConfig.Companion.firstLevel(role, "role")
         Q.role
         then:
         println paths
 
     }
 
-    def "FirstLevel2"() {
-        given:
-        Class role = TransactionDto.class
-        when:
-        List<String> firstLevels = JsonConfig.firstLevel(role)
-        then:
-        println firstLevels
-
-    }
 
     @Unroll
     def "#uri endpoint is #endpoint"() {
         expect:
 
-        JsonConfig.getRootEndpoint(uri) == endpint
+        JsonConfig.Companion.getRootEndpoint(uri) == endpint
 
         where:
         uri                       || endpint
