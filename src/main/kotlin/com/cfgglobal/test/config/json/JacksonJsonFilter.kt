@@ -69,10 +69,10 @@ class JacksonJsonFilter : FilterProvider() {
         var type = type
         val simpleName = type.simpleName
         if (simpleName.endsWith("Dto")) {
-            type = io.vavr.collection.List.of(*ApplicationProperties.entityScanPackage)
-                    .map<Try<Class<*>>> { p -> Try { Reflect.on(p + "." + StringUtils.substringBefore(simpleName, "Dto")).get<Any>() as Class<*> } }
-                    .filter{ it.isSuccess() }
-                    .head().get()
+            type = ApplicationProperties.entityScanPackage.toList()
+                    .map { p -> Try { Reflect.on(p + "." + StringUtils.substringBefore(simpleName, "Dto")).get<Any>() as Class<*> } }
+                    .first { it.isSuccess() }
+                    .get()
         }
         if (type.superclass == User::class.java && includeMap[type.superclass] != null) {
             type = User::class.java

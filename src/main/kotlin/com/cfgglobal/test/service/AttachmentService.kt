@@ -1,10 +1,10 @@
 package com.cfgglobal.test.service
 
+import arrow.core.Either
 import com.cfgglobal.test.domain.Attachment
 import com.cfgglobal.test.enums.AttachmentType
 import com.cfgglobal.test.service.base.BaseService
 import com.github.leon.ams.s3.UploadUtil
-import io.vavr.control.Either
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -24,7 +24,7 @@ class AttachmentService : BaseService<Attachment, Long>() {
         val attachment = Attachment(name,
                 tempFile.contentType!!,
                 tempFile.size,
-                tempFile.originalFilename!!, null, type, "/v1/attachment/download?filename=" + name)
+                tempFile.originalFilename!!, null, type, "/v1/attachment/download?filename=$name")
         save(attachment)
         return Either.right(attachment)
     }
@@ -36,7 +36,7 @@ class AttachmentService : BaseService<Attachment, Long>() {
                 name = name,
                 size = file.length(),
                 type = AttachmentType.EXPORT,
-                fullPath = "/v1/attachment/download?filename=" + name)
+                fullPath = "/v1/attachment/download?filename=$name")
         return Either.right(attachment)
     }
 
