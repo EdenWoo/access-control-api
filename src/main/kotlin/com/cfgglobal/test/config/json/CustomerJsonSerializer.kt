@@ -21,7 +21,6 @@ class CustomerJsonSerializer {
     private val jacksonFilter = JacksonJsonFilter()
 
     fun filter(clazz: Class<*>?, include: MutableList<Path<*>>, exclude: MutableList<Path<*>>) {
-        objectMapper.registerModule(VavrModule())
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
         objectMapper.registerModule(Jdk8Module())
         objectMapper.registerModule(JavaTimeModule())

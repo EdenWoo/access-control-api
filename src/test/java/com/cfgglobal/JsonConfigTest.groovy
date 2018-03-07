@@ -4,7 +4,7 @@ import com.cfgglobal.test.config.json.JsonConfig
 import com.cfgglobal.test.util.Q
 import com.querydsl.core.types.EntityPath
 import com.querydsl.core.types.Path
-import io.vavr.collection.List
+
 import spock.lang.Specification
 import spock.lang.Unroll
 

@@ -1,9 +1,11 @@
 package com.cfgglobal.test.web.base
 
+import arrow.core.getOrElse
+import arrow.syntax.option.toOption
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User
 import com.cfgglobal.test.service.UserService
-import io.vavr.collection.List
+
 import io.vavr.control.Option
 import org.joor.Reflect
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,9 +24,9 @@ open class BaseController {
         get() = SecurityContextHolder.getContext().authentication.principal as User
 
     protected fun syncFromDb(baseEntity: BaseEntity) {
-        var fields = List.of(*baseEntity.javaClass.declaredFields)
+        var fields = baseEntity.javaClass.declaredFields.toList()
         if (baseEntity.javaClass.superclass == User::class.java) {
-            fields = fields.appendAll(List.of(*User::class.java.declaredFields))
+            fields += listOf(*User::class.java.declaredFields)
         }
         fields.forEach { field ->
             val type = field.type
@@ -34,19 +36,19 @@ open class BaseController {
                     Reflect.on(baseEntity).set(field.name, option.get())
                 }
             } else if (field.type.isAssignableFrom(MutableList::class.java)) {
-                val list = List.ofAll(Option.of(baseEntity)
-                        .flatMap { e -> Option.of(Reflect.on(baseEntity).get<Any>(field.name)) }
+                val list = baseEntity.toOption()
+                        .flatMap { it -> Reflect.on(it).get<Any>(field.name).toOption() }
                         .map { e -> e as MutableList<out BaseEntity> }
-                        .map({ List.ofAll(it) })
-                        .getOrElse(List.empty())
+                        .map { listOf(it) }
+                        .getOrElse{emptyList()}
                         .map { obj ->
                             when {
                                 Reflect.on(obj).get<Any>("id") == null -> obj
                                 else -> entityManager!!.find(obj.javaClass, Option.of(obj).map { e -> Reflect.on(e).get<Any>("id") }.get())
                             }
-                        })
-                if (!list.isEmpty) {
-                    Reflect.on(baseEntity).set(field.name, list.asJava())
+                        }
+                if (!list.isEmpty()) {
+                    Reflect.on(baseEntity).set(field.name, list)
                 }
 
             }

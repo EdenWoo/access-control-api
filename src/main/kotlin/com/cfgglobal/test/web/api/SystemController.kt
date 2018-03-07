@@ -1,5 +1,8 @@
 package com.cfgglobal.test.web.api
 
+import arrow.core.None
+import arrow.core.Some
+import arrow.syntax.option.toOption
 import com.cfgglobal.test.dao.PermissionDao
 import com.cfgglobal.test.dao.RoleDao
 import com.cfgglobal.test.domain.BaseEntity
@@ -74,7 +77,11 @@ class SystemController(
     @Transactional
     fun assign(roleName: String, rule: String): ResponseEntity<Role> {
         val permissions = permissionService.findAll()
-        val role = roleDao.findByName(roleName).getOrElseThrow { IllegalArgumentException(roleName) }
+        val roleOpt = roleDao.findByName(roleName).toOption()
+        val role = when (roleOpt) {
+            is Some -> roleOpt.t
+            None -> throw  IllegalArgumentException(roleName)
+        }
         role.rolePermissions.clear()
         role.rolePermissions.addAll(userService.assignPermission(permissions, rule))
         roleService.save(role)

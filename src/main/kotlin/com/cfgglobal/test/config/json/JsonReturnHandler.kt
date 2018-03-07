@@ -1,7 +1,7 @@
 package com.cfgglobal.test.config.json
 
 import arrow.core.getOrElse
-import io.vavr.collection.List
+
 import org.joor.Reflect
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.core.MethodParameter
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse
 class JsonReturnHandler : HandlerMethodReturnValueHandler, BeanPostProcessor {
 
 
-    internal var advices = List.empty<ResponseBodyAdvice<Any>>()
+    var advices:List<ResponseBodyAdvice<Any>> = emptyList()
 
     override fun supportsReturnType(returnType: MethodParameter): Boolean {
 
@@ -78,12 +78,12 @@ class JsonReturnHandler : HandlerMethodReturnValueHandler, BeanPostProcessor {
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any {
 
         if (bean is ResponseBodyAdvice<*>) {
-            advices = advices.append(bean as ResponseBodyAdvice<Any>)
+            advices += (bean as ResponseBodyAdvice<Any>)
         } else if (bean is RequestMappingHandlerAdapter) {
             println(bean.javaClass.toString() + "  " + beanName)
-            var handlers = List.ofAll(bean.returnValueHandlers!!)
+            var handlers = bean.returnValueHandlers
             var jsonHandler: JsonReturnHandler? = null
-            for (i in 0 until handlers.size()) {
+            for (i in 0 until handlers.size) {
                 val handler = handlers.get(i)
                 if (handler is JsonReturnHandler) {
                     jsonHandler = handler
@@ -91,9 +91,9 @@ class JsonReturnHandler : HandlerMethodReturnValueHandler, BeanPostProcessor {
                 }
             }
             if (jsonHandler != null) {
-                handlers = handlers.remove(jsonHandler)
-                handlers = handlers.prepend(jsonHandler)
-                bean.returnValueHandlers = handlers.toJavaList() // change the jsonhandler sort
+                handlers = handlers.filter { it!= jsonHandler}
+                handlers = listOf(jsonHandler) + handlers
+                bean.returnValueHandlers = handlers // change the jsonhandler sort
             }
         }
         return bean

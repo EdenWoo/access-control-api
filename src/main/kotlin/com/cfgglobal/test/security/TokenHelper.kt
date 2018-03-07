@@ -121,10 +121,10 @@ class TokenHelper(
          * Getting the token from Authentication header
          * e.g Bearer your_token
          */
-        val authHeader = request.getHeader(applicationProperties!!.jwt.header)
+        val authHeader = request.getHeader(applicationProperties.jwt.header)
         return if (authHeader != null && authHeader.startsWith("Bearer ")) {
             authHeader.substring(7)
-        } else request.getParameter(applicationProperties!!.jwt.param)
+        } else request.getParameter(applicationProperties.jwt.param)
 
     }
 

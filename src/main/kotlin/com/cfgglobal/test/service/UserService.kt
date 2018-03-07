@@ -1,5 +1,7 @@
 package com.cfgglobal.test.service
 
+import arrow.core.None
+import arrow.core.Some
 import arrow.core.getOrElse
 import arrow.syntax.option.toOption
 import com.cfgglobal.test.dao.UserDao
@@ -16,11 +18,13 @@ import org.springframework.stereotype.Service
 class UserService(
         @Autowired val userDao: UserDao
 ) : BaseService<User, Long>() {
-
     fun getUserWithPermissions(username: String): User {
-        val user = userDao.findByUsername(username)
+        val userOpt = userDao.findByUsername(username).toOption()
                 .filter { it.verify!! }
-                .getOrElseThrow { AccessDeniedException("invalid user information or user is not verified: " + username) }
+        val user = when (userOpt) {
+            is Some -> userOpt.t
+            None -> throw AccessDeniedException("invalid user information or user is not verified: $username")
+        }
         val permissions = user.role!!.rolePermissions.map { it.permission }
         val grantedAuthorities = permissions.map { SimpleGrantedAuthority(it!!.authKey) as GrantedAuthority }.toMutableList()
         user.grantedAuthorities = grantedAuthorities

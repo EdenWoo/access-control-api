@@ -2,7 +2,7 @@ package com.cfgglobal
 
 import com.cfgglobal.test.vo.Filter
 import io.vavr.API
-import io.vavr.collection.List
+
 import io.vavr.collection.Map
 import spock.lang.Specification
 

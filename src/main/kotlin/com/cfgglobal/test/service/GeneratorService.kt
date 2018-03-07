@@ -1,9 +1,13 @@
 package com.cfgglobal.test.service
 
+import arrow.core.None
+import arrow.core.Some
+import arrow.syntax.option.toOption
 import com.cfgglobal.test.dao.RuleDao
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.Permission
 import com.cfgglobal.test.domain.RolePermission
+import com.cfgglobal.test.domain.Rule
 import io.vavr.Tuple
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -36,8 +40,12 @@ class GeneratorService {
     }
 
     fun assignPermission(permissions: List<Permission>, permissionRule: String): List<RolePermission> {
-        val rule = ruleDao!!.findByName(permissionRule)
-                .getOrElseThrow { IllegalArgumentException(DEFAULT_RULE_NAME) }
+        val ruleOpt = ruleDao!!.findByName(permissionRule).toOption()
+        val rule: Rule = when (ruleOpt) {
+            is Some -> ruleOpt.t
+            None -> throw IllegalArgumentException(DEFAULT_RULE_NAME)
+        }
+
         return permissions.map { permission ->
             RolePermission(permission = permission,
                     rules = mutableListOf(rule))
@@ -46,8 +54,8 @@ class GeneratorService {
 
     companion object {
 
-        val DEFAULT_RULE_NAME = "admin"
-        val DIGIT = "[\\d]+"
+        const val DEFAULT_RULE_NAME = "admin"
+        const val DIGIT = "[\\d]+"
     }
 
 }

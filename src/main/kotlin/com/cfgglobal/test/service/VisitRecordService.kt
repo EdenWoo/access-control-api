@@ -19,14 +19,14 @@ class VisitRecordService(
     fun hasTooManyRequest(user: Optional<User>, ip: String): Boolean {
         if (user.isPresent) {
             val userVisitRecords = visitRecordDao.findAllInLastMinute(user.get().id as Long)
-            log.debug("user visit records size {}", userVisitRecords.length())
-            if (userVisitRecords.size() > THRESHOLD) {
+            log.debug("user visit records size {}", userVisitRecords.size)
+            if (userVisitRecords.size > THRESHOLD) {
                 return true
             }
         } else {
             val ipVisitRecords = visitRecordDao.findAllInLastMinute(ip)
-            log.debug("ip visit records size {}", ipVisitRecords.length())
-            if (ipVisitRecords.size() > THRESHOLD) {
+            log.debug("ip visit records size {}", ipVisitRecords.size)
+            if (ipVisitRecords.size > THRESHOLD) {
                 return true
             }
         }

@@ -41,7 +41,7 @@ class BaseDaoImpl<T, ID : Serializable>(
 
     private fun getaClass(str: String): Class<out Enum<*>> {
         return ApplicationProperties.enumPackages
-                .map { p -> Try { Reflect.on(p + "." + str).get<Any>() as Class<out Enum<*>> } }
+                .map { p -> Try { Reflect.on("$p.$str").get<Any>() as Class<out Enum<*>> } }
                 .firstOption { it.isSuccess() }.get().get()
 
     }
@@ -99,7 +99,7 @@ class BaseDaoImpl<T, ID : Serializable>(
                                     val arr = condition.value as Array<String>
                                     val o1 = arr[0]
                                     val o2 = arr[1]
-                                    return@filter StringUtils.isNoneBlank(o1) && StringUtils.isNoneBlank(o2.toString())
+                                    return@filter StringUtils.isNoneBlank(o1,o2)
                                 } else if (StringUtils.isBlank(`val`)) {
                                     return@filter false
                                 }
@@ -110,11 +110,11 @@ class BaseDaoImpl<T, ID : Serializable>(
                                 val fieldName = condition.fieldName
                                 val fields = fieldName!!.split(".")
                                 if (fields.size > 1) {
-                                    var join: Join<Any, Any> = root.join<Any, Any>(fields.get(0))
+                                    var join: Join<Any, Any> = root.join<Any, Any>(fields[0])
                                     for (i in 1 until fields.size - 1) {
-                                        join = join.join(fields.get(i))
+                                        join = join.join(fields[i])
                                     }
-                                    searchPath = join.get(fields.get(fields.size - 1))
+                                    searchPath = join.get(fields[fields.size - 1])
                                 } else {
                                     searchPath = root.get<Any>(fieldName)
                                 }
@@ -145,7 +145,7 @@ class BaseDaoImpl<T, ID : Serializable>(
     }
 
     private fun getPredicate(cb: CriteriaBuilder, condition: Condition, searchPath: Path<*>): Predicate? {
-        var predicate: Predicate? = null
+        var predicate: Predicate?
         val value = condition.value
         val s = value.toString()
         if (isEnum(s) && condition.operator.toUpperCase() != "NULL" && condition.operator.toUpperCase() != "NOTNULL") {
@@ -190,14 +190,13 @@ class BaseDaoImpl<T, ID : Serializable>(
                     else -> value as Array<Any>
                 }
 
-                if (isEnum(list[0].toString())) {
-                    predicate = searchPath.`in`(list.map { en -> str2Enum(en.toString()).get() })
-                } else {
-                    predicate = searchPath.`in`(*list)
+                predicate = when {
+                    isEnum(list[0].toString()) -> searchPath.`in`(list.map { en -> str2Enum(en.toString()).get() })
+                    else -> searchPath.`in`(*list)
                 }
             }
             else -> predicate = when {
-                s == "true" || s == "false" -> cb.equal(searchPath, java.lang.Boolean.valueOf(s))
+                s == "true" || s == "false" -> cb.equal(searchPath, s.toBoolean())
                 isEnum(s) -> cb.equal(searchPath, str2Enum(s).get())
                 NumberUtils.isCreatable(s) -> cb.equal(searchPath, NumberUtils.toLong(s))
                 s.contains("-") -> cb.equal(searchPath, LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd")))

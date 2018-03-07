@@ -19,10 +19,10 @@ class BranchesAccessRule : AbstractAccessRule() {
     override fun exec(permission: Permission): Filter {
         val branch = securityFilter!!.currentUser().branch
         val orgFilter = Filter()
-        val orgId = branch!!.id
+        val orgId = branch!!.id!!
         var ids = branchDao!!.findSubOrgIds(branch.id)
-        ids = ids.append(orgId)
-        orgFilter.addCondition("creator.branch.id", ids.toJavaArray(), Filter.OPERATOR_IN)
+        ids += orgId
+        orgFilter.addCondition("creator.branch.id", ids, Filter.OPERATOR_IN)
         return orgFilter
     }
 }

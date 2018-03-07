@@ -1,5 +1,7 @@
 package com.cfgglobal.test.web.api
 
+import arrow.core.getOrElse
+import arrow.syntax.collections.firstOption
 import com.cfgglobal.test.config.json.JsonConfig
 import com.cfgglobal.test.domain.Permission
 import com.cfgglobal.test.domain.Role
@@ -11,7 +13,7 @@ import com.cfgglobal.test.util.Q
 import com.cfgglobal.test.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
 import com.querydsl.core.types.Path
-import io.vavr.collection.List
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -53,14 +55,13 @@ class RoleController : BaseController() {
     @GetMapping("{id}")
     fun get(@PathVariable id: Long): ResponseEntity<Role> {
         val role = roleService!!.findOne(id)
-        val selectedRolePermissions = List.ofAll(role.rolePermissions)
+        val selectedRolePermissions = role.rolePermissions
         val list = permissionService!!.findAll()
                 .map { permission ->
                     RolePermission(
                             permission = permission,
                             rules = selectedRolePermissions
-                                    .filter { (permission1) -> permission1!!.id == permission!!.id }
-                                    .toOption()
+                                    .firstOption { it.id == permission.id }
                                     .map { it.rules }
                                     .getOrElse { mutableListOf() })
 
