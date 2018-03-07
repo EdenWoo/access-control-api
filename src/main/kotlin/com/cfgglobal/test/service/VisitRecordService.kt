@@ -36,6 +36,6 @@ class VisitRecordService(
 
     companion object {
 
-        const val THRESHOLD: Long = 500
+        const val THRESHOLD: Long = 1000
     }
 }
