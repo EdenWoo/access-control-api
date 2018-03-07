@@ -65,7 +65,7 @@ class JsonConfig {
         }
 
         fun endpoints(endpoint: String): Option<Pair<Class<*>, EntityPathBase<*>>> {
-            return ApplicationProperties.entityScanPackage.toList()
+            val list = ApplicationProperties.entityScanPackage.toList()
                     .map {
                         Try.monad().binding {
                             val name = LOWER_HYPHEN.to(UPPER_CAMEL, endpoint)
@@ -76,6 +76,8 @@ class JsonConfig {
                             Pair(f, s)
                         }.ev().toOption()
                     }
+            println(list)
+            return list
                     .firstOption { it.isDefined() }
                     .getOrElse { Option.empty() }
 
