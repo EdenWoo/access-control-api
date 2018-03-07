@@ -68,7 +68,7 @@ class JsonConfig {
             return ApplicationProperties.entityScanPackage.toList()
                     .map {
                         Try.monad().binding {
-                            val name = LOWER_HYPHEN.to(UPPER_CAMEL, it)
+                            val name = LOWER_HYPHEN.to(UPPER_CAMEL, endpoint)
                             val first = "$it.$name"
                             val second = "$it.Q$name"
                             val f = Try { Reflect.on(first).get() as Class<*> }.bind()
