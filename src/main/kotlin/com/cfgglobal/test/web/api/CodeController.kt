@@ -2,8 +2,6 @@ package com.cfgglobal.test.web.api
 
 import com.cfgglobal.test.service.PermissionService
 import com.github.leon.freemarker.FreemarkerBuilderUtil
-import io.vavr.collection.HashMap
-import io.vavr.collection.Map
 import org.joor.Reflect
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -32,8 +30,8 @@ class CodeController {
     private val permissionMap: List<Map<String, String>>
         get() = permissionService!!.findAll()
                 .map { (_, authKey) ->
-                    HashMap.of("key", authKey.split(" ").joinToString(separator = "_").toUpperCase().replace("-", "_"),
-                            "value", authKey)
+                    mapOf("key" to authKey.split(" ").joinToString(separator = "_").toUpperCase().replace("-", "_"),
+                            "value" to  authKey)
                 }
 
     @GetMapping(value = ["/permission_constant"], produces = ["text/html;charset=UTF-8"])
@@ -42,7 +40,7 @@ class CodeController {
     fun init(modelMap: ModelMap): ResponseEntity<String> {
         val list = permissionMap
         val map = java.util.HashMap<String, Any>()
-        map["permissions"] = list.map { it.toJavaMap() }.distinctBy { e -> e["key"] }
+        map["permissions"] = list.distinctBy { e -> e["key"] }
         modelMap.putAll(map)
         return ResponseEntity.ok(freemarkerBuilderUtil!!.build("/code/permission.ftl", map)!!)
     }
@@ -56,7 +54,7 @@ class CodeController {
 
         val list = permissionMap
         val map = java.util.HashMap<String, Any>()
-        map["permissions"] = list.map { it.toJavaMap() }.distinctBy { e -> e["key"] }
+        map["permissions"] = list.distinctBy { e -> e["key"] }
         modelMap.putAll(map)
         return ResponseEntity.ok(freemarkerBuilderUtil!!.build("/code/permission-constant_model_ts.ftl", map)!!)
     }
@@ -131,24 +129,25 @@ class CodeController {
         if (entityName != null) {
             val clazz = Reflect.on(userClass).get<Class<*>>()
             val name = clazz.`package`.name + "." + entityName
-            println("entity:  " + name)
+            println("entity:  $name")
 
             modelMap["entity"] = getReplace(name).toLowerCase()
 
-            var reflect: Reflect? = null
+            var reflect: Reflect?
             try {
                 reflect = Reflect.on(name)
             } catch (e: Exception) {
-                reflect = Reflect.on("com.cfgglobal.ccfx.domain." + entityName)
+                reflect = Reflect.on("com.cfgglobal.ccfx.domain.$entityName")
             }
 
             val entityClass = reflect!!.get<Class<*>>()
             val fields = entityClass.declaredFields
                     .map { e ->
-                        HashMap.of(
-                                "name", getReplace(e.getName()),
-                                "type", getTypeReplace(e.getType().getSimpleName())
+                        val mapOf = mapOf(
+                                "name" to getReplace(e.name),
+                                "type" to getTypeReplace(e.getType().getSimpleName())
                         )
+                        mapOf
                     }
             modelMap["fields"] = fields
             println(modelMap)

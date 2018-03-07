@@ -1,8 +1,6 @@
 package com.cfgglobal.test.email
 
 import com.cfgglobal.test.domain.EmailLog
-import io.vavr.Tuple
-import io.vavr.Tuple2
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
@@ -51,7 +49,7 @@ class CustomMailUtil {
         return sender
     }
 
-    fun send(emailItemVO: EmailLog): Tuple2<String, Boolean> {
+    fun send(emailItemVO: EmailLog): Pair<String, Boolean> {
 
         val sender = createSender()
         try {
@@ -64,10 +62,10 @@ class CustomMailUtil {
             messageHelper.setText(String(emailItemVO.content!!), true)
             sender.send(mailMessage)
 
-            return Tuple.of("", true)
+            return Pair("", true)
         } catch (e: Exception) {
             log.error("EmailLog Send Error:" + emailItemVO.sendTo!!, e)
-            return Tuple.of(e.message, false)
+            return Pair(e.message!!, false)
         }
 
     }

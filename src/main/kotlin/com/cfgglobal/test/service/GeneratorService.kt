@@ -8,7 +8,6 @@ import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.Permission
 import com.cfgglobal.test.domain.RolePermission
 import com.cfgglobal.test.domain.Rule
-import io.vavr.Tuple
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -24,18 +23,18 @@ class GeneratorService {
         val endPoint = "/" + name.toLowerCase()
 
         val list = listOf(
-                Tuple.of("Index " + name, "GET", "/v" + DIGIT + endPoint),
-                Tuple.of("Create " + name, "POST", "/v" + DIGIT + endPoint),
-                Tuple.of("Read " + name, "GET", "/v$DIGIT$endPoint/$DIGIT"),
-                Tuple.of("Update " + name, "PUT", "/v$DIGIT$endPoint/$DIGIT"),
-                Tuple.of("Update " + name, "PATCH", "/v$DIGIT$endPoint/$DIGIT"),
-                Tuple.of("Delete " + name, "DELETE", "/v$DIGIT$endPoint/$DIGIT"))
+                Triple("Index $name", "GET", "/v$DIGIT$endPoint"),
+                Triple("Create $name", "POST", "/v$DIGIT$endPoint"),
+                Triple("Read $name", "GET", "/v$DIGIT$endPoint/$DIGIT"),
+                Triple("Update $name", "PUT", "/v$DIGIT$endPoint/$DIGIT"),
+                Triple("Update $name", "PATCH", "/v$DIGIT$endPoint/$DIGIT"),
+                Triple("Delete $name", "DELETE", "/v$DIGIT$endPoint/$DIGIT"))
 
         return list.map { e ->
-            Permission(authKey = e._1,
+            Permission(authKey = e.first,
                     entity = name,
-                    httpMethod = e._2,
-                    authUris = e._3)
+                    httpMethod = e.second,
+                    authUris = e.third)
         }
     }
 
