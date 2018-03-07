@@ -68,7 +68,7 @@ class JsonConfig {
                         val first = "$it.$name"
                         val second = "$it.Q$name"
                         val f = Try { Reflect.on(first).get() as Class<*> }
-                        val s = Try { Reflect.on(second).create(second.substringAfterLast(".Q").toLowerCase()) as EntityPathBase<*> }
+                        val s = Try { Reflect.on(second).create(second.substringAfterLast(".Q").toLowerCase()).get() as EntityPathBase<*> }
                         if (f.isSuccess() && s.isSuccess()) {
                             Pair(f.get(), s.get()).toOption()
                         } else {
