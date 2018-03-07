@@ -4,12 +4,9 @@ import arrow.core.Option
 import arrow.core.Some
 import arrow.core.getOrElse
 import arrow.data.Try
-import arrow.data.ev
 import arrow.data.getOrElse
-import arrow.data.monad
 import arrow.syntax.collections.firstOption
 import arrow.syntax.option.toOption
-import arrow.typeclasses.binding
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User
 import com.github.leon.security.ApplicationProperties
@@ -67,16 +64,17 @@ class JsonConfig {
         fun endpoints(endpoint: String): Option<Pair<Class<*>, EntityPathBase<*>>> {
             val list = ApplicationProperties.entityScanPackage.toList()
                     .map {
-                        Try.monad().binding {
-                            val name = LOWER_HYPHEN.to(UPPER_CAMEL, endpoint)
-                            val first = "$it.$name"
-                            val second = "$it.Q$name"
-                            val f = Try { Reflect.on(first).get() as Class<*> }.bind()
-                            val s = Try { Reflect.on(second).create(second.substringAfterLast(".Q").toLowerCase()) as EntityPathBase<*> }.bind()
-                            Pair(f, s)
-                        }.ev().toOption()
+                        val name = LOWER_HYPHEN.to(UPPER_CAMEL, endpoint)
+                        val first = "$it.$name"
+                        val second = "$it.Q$name"
+                        val f = Try { Reflect.on(first).get() as Class<*> }
+                        val s = Try { Reflect.on(second).create(second.substringAfterLast(".Q").toLowerCase()) as EntityPathBase<*> }
+                        if (f.isSuccess() && s.isSuccess()) {
+                            Pair(f.get(), s.get()).toOption()
+                        } else {
+                            Option.empty()
+                        }
                     }
-            println(list)
             return list
                     .firstOption { it.isDefined() }
                     .getOrElse { Option.empty() }
