@@ -4,9 +4,12 @@ import arrow.core.Option
 import arrow.core.Some
 import arrow.core.getOrElse
 import arrow.data.Try
+import arrow.data.ev
 import arrow.data.getOrElse
+import arrow.data.monad
 import arrow.syntax.collections.firstOption
 import arrow.syntax.option.toOption
+import arrow.typeclasses.binding
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User
 import com.github.leon.security.ApplicationProperties
@@ -16,8 +19,6 @@ import com.querydsl.core.types.EntityPath
 import com.querydsl.core.types.Path
 import com.querydsl.core.types.dsl.EntityPathBase
 import com.querydsl.core.types.dsl.ListPath
-import io.vavr.Tuple
-import io.vavr.Tuple2
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 import java.lang.reflect.Modifier
@@ -63,25 +64,19 @@ class JsonConfig {
             return Option.fromNullable(config.get())
         }
 
-        fun endpoints(endpoint: String): Option<Tuple2<Class<*>, EntityPathBase<*>>> {
+        fun endpoints(endpoint: String): Option<Pair<Class<*>, EntityPathBase<*>>> {
             return ApplicationProperties.entityScanPackage.toList()
-                    .map { packageName ->
-                        Option.fromNullable(endpoint)
-                                .map { e ->
-                                    val name = LOWER_HYPHEN.to(UPPER_CAMEL, e)
-                                    Tuple.of(packageName + "." + name, packageName + ".Q" + name)
-                                }
-                                .flatMap { e ->
-                                    Try {
-                                        e.map(
-                                                { e1 -> Reflect.on(e1).get<Any>() as Class<*> }
-                                        ) { e2 ->
-                                            Reflect.on(e2).create(StringUtils.substringAfterLast(e2, ".Q")
-                                                    .toLowerCase()).get<Any>() as EntityPathBase<*>
-                                        }
-                                    }.toOption()
-                                }
-                    }.firstOption { it.isDefined() }
+                    .map {
+                        Try.monad().binding {
+                            val name = LOWER_HYPHEN.to(UPPER_CAMEL, it)
+                            val first = "$it.$name"
+                            val second = "$it.Q$name"
+                            val f = Try { Reflect.on(first).get() as Class<*> }.bind()
+                            val s = Try { Reflect.on(second).create(second.substringAfterLast(".Q").toLowerCase()) as EntityPathBase<*> }.bind()
+                            Pair(f, s)
+                        }.ev().toOption()
+                    }
+                    .firstOption { it.isDefined() }
                     .getOrElse { Option.empty() }
 
 
@@ -119,9 +114,9 @@ class JsonConfig {
                 return Option.empty()
             }
             val jsonConfig = JsonConfig.start()
-            val fieldsInRequest = getFields(rootElement.get()._1, fields)
-            jsonConfig.include(rootElement.get()._1,
-                    *fieldsInRequest[rootElement.get()._1].toOption().getOrElse { JsonConfig.firstLevelPath(rootElement.get()._2) }.toTypedArray())
+            val fieldsInRequest = getFields(rootElement.get().first, fields)
+            jsonConfig.include(rootElement.get().first,
+                    *fieldsInRequest[rootElement.get().first].toOption().getOrElse { JsonConfig.firstLevelPath(rootElement.get().second) }.toTypedArray())
 
             if (!embeddedEntity.isEmpty()) {
                 checkEmbedded(embeddedEntity)
@@ -135,7 +130,7 @@ class JsonConfig {
                                 //去除最后2级，倒数第二级已经在之前的循环中加入了第一层，只需要把嵌套节点追加进去，最后一层add first level
                                 val lastNode = e.last()
                                 val lastParentNode = e.dropLast(1).last()
-                                var parentElement: Option<Tuple2<Class<*>, EntityPathBase<*>>> = endpoints(lastParentNode)
+                                var parentElement: Option<Pair<Class<*>, EntityPathBase<*>>> = endpoints(lastParentNode)
                                 if (parentElement.isEmpty() && lastParentNode.endsWith("s")) {
                                     parentElement = endpoints(lastParentNode.substring(0, lastParentNode.length - 1))
                                 }
@@ -148,30 +143,32 @@ class JsonConfig {
             return Option.fromNullable(jsonConfig)
         }
 
-        private fun addEmbedded(jsonConfig: JsonConfig, fieldsInRequest: Map<Class<*>, List<Path<*>>>, rootElement: Option<Tuple2<Class<*>, EntityPathBase<*>>>, embeddedNode: String) {
+        private fun addEmbedded(jsonConfig: JsonConfig, fieldsInRequest: Map<Class<*>, List<Path<*>>>, rootElement: Option<Pair<Class<*>, EntityPathBase<*>>>, embeddedNode: String) {
 
-            val rootEntity = rootElement.get()._2
+            val rootEntity = rootElement.get().second
 
-            val embeddedEntityPath = Try {
-                Reflect.on(rootEntity).get<Any>(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode)) as Path<*>
+            val embeddedEntityPath: Path<*>? = Try {
+                Reflect.on(rootEntity).get<Any>(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode)) as Path<*>?
             }.getOrElse {
                 if (rootEntity.type === User::class.java) {//Special process for User class
                     val userClazz = Reflect.on(ApplicationProperties.myUserClass).get<Class<*>>()
                     Reflect.on(JsonConfig.toQ(userClazz)).get(LOWER_HYPHEN.to(LOWER_CAMEL, embeddedNode))
                 } else {
-                    null!!
+                    null
                 }
             }
-                    ?: throw IllegalArgumentException(MessageFormat.format(("Invalid embedded [{0}],does not exist on entity [{1}],avaliable embedded [{2}]." +
-                            "Metadata is based on QueryDSL's Q object, not javabean. " +
-                            "Run `gradle clean build` to generate QueryDSL Q Object."), embeddedNode, rootEntity.toString(), getAvailableEmbeddedPaths(rootEntity)
-                            .map { e -> LOWER_CAMEL.converterTo(LOWER_HYPHEN).convert(e) }.joinToString()))
+            if (embeddedEntityPath == null) {
+                throw IllegalArgumentException(MessageFormat.format(("Invalid embedded [{0}],does not exist on entity [{1}],avaliable embedded [{2}]." +
+                        "Metadata is based on QueryDSL's Q object, not javabean. " +
+                        "Run `gradle clean build` to generate QueryDSL Q Object."), embeddedNode, rootEntity.toString(), getAvailableEmbeddedPaths(rootEntity)
+                        .map { e -> LOWER_CAMEL.converterTo(LOWER_HYPHEN).convert(e) }.joinToString()))
+            }
 
-            jsonConfig.include(rootElement.get()._1, embeddedEntityPath) //追加？
+            jsonConfig.include(rootElement.get().first, embeddedEntityPath) //追加？
 
             val nextEntity = endpoints(getNext(embeddedEntityPath))
-            val include = fieldsInRequest.get(nextEntity.get()._1).toOption().getOrElse { JsonConfig.firstLevelPath(nextEntity.get()._2) }
-            jsonConfig.include(nextEntity.get()._1, *include.toTypedArray())
+            val include = fieldsInRequest.get(nextEntity.get().first).toOption().getOrElse { JsonConfig.firstLevelPath(nextEntity.get().second) }
+            jsonConfig.include(nextEntity.get().first, *include.toTypedArray())
 
 
         }
