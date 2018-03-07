@@ -39,7 +39,7 @@ open class BaseController {
                 val list = baseEntity.toOption()
                         .flatMap { it -> Reflect.on(it).get<Any>(field.name).toOption() }
                         .map { e -> e as MutableList<out BaseEntity> }
-                        .getOrElse{emptyList()}
+                        .getOrElse{ listOf<BaseEntity>()}
                         .map { obj ->
                             val id = Reflect.on(obj).get<Any>("id")
                             when (id) {
