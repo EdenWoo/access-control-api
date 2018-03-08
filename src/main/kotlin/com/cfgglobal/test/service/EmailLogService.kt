@@ -24,7 +24,7 @@ class EmailLogService : BaseService<EmailLog, Long>() {
                 predicates += p
             }
             if (customEmail.times != null) {
-                val p2 = cb.lessThan(root.get("times"), customEmail.times)
+                val p2 = cb.lessThan(root.get<Any>("times"), customEmail.times)
                 predicates += p2
             }
             if (predicates.isEmpty()) null else predicates.reduce({ x, y -> cb.and(x, y) })

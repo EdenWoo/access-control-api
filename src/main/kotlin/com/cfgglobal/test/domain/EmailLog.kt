@@ -14,14 +14,14 @@ import javax.persistence.*
 
 data class EmailLog(
 
-        var subject: String? = null,
+        val subject: String? = null,
         @Lob
         @Column(length = 100000)
         @JsonIgnore
-        var content: ByteArray? = null,
-        var sendTo: String? = null,
+        val content: ByteArray? = null,
+        val sendTo: String? = null,
         @Enumerated(value = EnumType.STRING)
-        var status: TaskStatus? = null,
-        var times: Int? = null,
-        var msg: String? = null
+        val status: TaskStatus? = null,
+        val times: Int? = null,
+        val msg: String? = null
 ) : BaseEntity(), Serializable
