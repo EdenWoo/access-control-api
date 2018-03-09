@@ -12,8 +12,11 @@ import com.github.leon.classpath.ClassSearcher
 import com.github.leon.classpath.PathKit
 import java.io.File
 import java.lang.reflect.ParameterizedType
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Id
+import javax.validation.constraints.Max
+import javax.validation.constraints.NotNull
 
 fun String.remainLastIndexOf(string: String): String {
     return this.substring(this.lastIndexOf(string).inc())
@@ -32,11 +35,11 @@ fun main(args: Array<String>) {
     )
 
     val entities: MutableList<Class<out BaseEntity>> = ClassSearcher.of(BaseEntity::class.java).search()
-    val codeEntities = entities.map {
+    val codeEntities = entities.map { entity: Class<out BaseEntity> ->
         val codeEntity = CodeEntity(
-                name = it.simpleName
+                name = entity.simpleName
         )
-        val fields = it.declaredFields
+        val fields = entity.declaredFields
                 .map {
                     val codeField = CodeField(
                             name = it.name,
@@ -46,14 +49,16 @@ fun main(args: Array<String>) {
                                 else -> FieldType(name = it.type.simpleName)
                             }
                     )
+
                     it.declaredAnnotations
                             .forEach {
+                                println(it)
                                 when (it) {
                                     is Column -> {
                                         codeField.unique = it.unique
                                         codeField.length = it.length
-                                        codeField.required = !it.nullable
                                         codeField.scale = it.scale
+                                        codeField.required = !it.nullable
                                     }
                                     is FieldFeature -> {
                                         codeField.searchable = it.searchable
@@ -61,6 +66,11 @@ fun main(args: Array<String>) {
                                         codeField.display = it.display
                                     }
                                     is Id -> codeField.primaryKey = true
+                                    is NotNull -> {
+                                        codeField.required = true
+                                    }
+
+
                                     else -> {
 
                                     }
@@ -69,7 +79,6 @@ fun main(args: Array<String>) {
                     codeField
                 }
         codeEntity.fields = fields
-        println(fields)
         codeEntity
     }
 
