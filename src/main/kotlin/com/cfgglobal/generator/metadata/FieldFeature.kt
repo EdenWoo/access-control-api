@@ -19,5 +19,6 @@ annotation class FieldFeature(
         val searchable: Boolean = false,
         val display: Boolean = true,
         val boolean: Boolean = true,
-        val require: Boolean = true
+        val require: Boolean = true,
+        val switch: Boolean = false
 )

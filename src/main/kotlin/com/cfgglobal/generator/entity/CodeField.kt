@@ -22,6 +22,8 @@ data class CodeField(
 
         var unique: Boolean = false,
 
-        var display: Boolean? = true
+        var display: Boolean? = true,
+
+        var switch: Boolean? = false
 
 )

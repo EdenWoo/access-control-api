@@ -1,8 +1,6 @@
 package com.cfgglobal.test.domain
 
-import com.cfgglobal.test.domain.Attachment
-import com.cfgglobal.test.domain.BaseEntity
-import com.cfgglobal.test.domain.User
+import com.cfgglobal.generator.metadata.FieldFeature
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
@@ -16,10 +14,11 @@ import javax.validation.constraints.NotNull
 @DynamicInsert
 data class Payee(
 
+        @Column(nullable = false)
         @NotNull
         var name: String = "",
 
-
+        @Column(nullable = false)
         @NotNull
         var country: String = "",
 
@@ -44,11 +43,12 @@ data class Payee(
         @OneToMany(cascade = [(CascadeType.ALL)], orphanRemoval = true)
         var attachments: MutableList<Attachment> = mutableListOf(),
 
-
+        @FieldFeature(switch = true, display = true, sortable = true)
         @Type(type = "yes_no")
         @NotNull
         var enable: Boolean? = false,
 
+        @Column(nullable = false)
         @ManyToOne
         @JoinColumn(name = "payer_id")
         var payer: Payer? = null,
@@ -57,17 +57,17 @@ data class Payee(
         @OneToMany(mappedBy = "payee", cascade = [(CascadeType.ALL)], orphanRemoval = true)
         var payeeBankAccounts: MutableList<PayeeBankAccount> = mutableListOf(),
 
-
+        @Column(nullable = false)
         @Transient
         var payAmount: BigDecimal? = null,
 
         @OneToMany(mappedBy = "payee", cascade = [(CascadeType.PERSIST), (CascadeType.MERGE)], fetch = FetchType.LAZY)
         var transactions: MutableList<Transaction> = mutableListOf(),
 
+        @Column(nullable = false)
         @ManyToOne
         @JoinColumn(name = "user_id")
         var user: User? = null,
-
 
         @Type(type = "yes_no")
         var verify: Boolean? = false

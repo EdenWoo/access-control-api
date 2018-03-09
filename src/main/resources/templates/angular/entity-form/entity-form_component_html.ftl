@@ -59,6 +59,7 @@
                                                [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
                                                name="${Utils.lowerCamel(f.name)}"
                                                placeholder="">
+
                                         <#elseif f.type?? && f.type.name == 'List'>
                                         <!---------------------------------------------------->
                                         <!-----if is multi select and ouput single entity----->
@@ -113,6 +114,25 @@
 
                                             </div>
                                         </div>
+                                        <!-----if is multi select and ouput single entity----->
+                                        <!---------------------------------------------------->
+
+                                        <#elseif f.switch>
+                                        <!---------------------------------------------------->
+                                        <!-------------------if is switch------------------->
+                                        <section class="col col-6">
+                                            <label class="toggle">
+                                                ${f.name}<span style="color: red">*</span>
+                                                <input type="checkbox"
+                                                       formControlName="${Utils.lowerCamel(f.name)}"
+                                                       [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                                       name="checkbox-toggle"
+                                                       checked="checked">
+                                                <i data-swchon-text="YES" data-swchoff-text="NO"></i>
+                                            <validation-error
+                                                    [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
+                                            </label>
+                                        </section>
                                         <!-----if is multi select and ouput single entity----->
                                         <!---------------------------------------------------->
 

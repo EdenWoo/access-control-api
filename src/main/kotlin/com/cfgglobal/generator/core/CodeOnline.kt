@@ -64,6 +64,7 @@ fun main(args: Array<String>) {
                                         codeField.searchable = it.searchable
                                         codeField.sortable = it.sortable
                                         codeField.display = it.display
+                                        codeField.switch = it.switch
                                     }
                                     is Id -> codeField.primaryKey = true
                                     is NotNull -> {
