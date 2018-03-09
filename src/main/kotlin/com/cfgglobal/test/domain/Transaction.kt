@@ -1,7 +1,5 @@
-package com.cfgglobal.ccfx.domain
+package com.cfgglobal.test.domain
 
-import com.cfgglobal.ccfx.enums.TransactionStatusEnum
-import com.cfgglobal.ccfx.enums.TransactionTypeEnum
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User
 import org.hibernate.annotations.DynamicInsert
@@ -48,11 +46,11 @@ data class Transaction(
         var expireAt: ZonedDateTime? = null,
 
         @Enumerated(value = EnumType.STRING)
-        var status: TransactionStatusEnum? = null,
+        var status: String? = null,
 
         @NotNull
         @Enumerated(value = EnumType.STRING)
-        var type: TransactionTypeEnum? = null,
+        var type: String? = null,
 
         var paymentReason: String? = null,
 

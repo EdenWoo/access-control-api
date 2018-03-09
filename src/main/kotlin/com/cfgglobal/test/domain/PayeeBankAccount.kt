@@ -1,4 +1,4 @@
-package com.cfgglobal.ccfx.domain
+package com.cfgglobal.test.domain
 
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User

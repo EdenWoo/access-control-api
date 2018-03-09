@@ -1,8 +1,8 @@
-package com.cfgglobal.ccfx.domain
+package com.cfgglobal.test.domain
 
-import com.cfgglobal.ccfx.enums.BalanceDetailTypeEnum
 import com.cfgglobal.test.domain.BaseEntity
 import com.cfgglobal.test.domain.User
+import com.cfgglobal.test.enums.BalanceDetailTypeEnum
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*

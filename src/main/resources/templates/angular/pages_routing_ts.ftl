@@ -9,7 +9,7 @@ export const routes: Routes = [
         children: [
             // {path: '', redirectTo: '', pathMatch: 'full'},
             <#list project.entities as e>
-            {path: '${Utils.lowerCamel(e.name)}', loadChildren: 'app/pages/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}.module#${Utils.upperCamel(e.name)}Module'},
+            {path: '${Utils.lowerHyphen(e.name)}', loadChildren: 'app/pages/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}.module#${Utils.upperCamel(e.name)}Module'},
             </#list>
         ]
     }
