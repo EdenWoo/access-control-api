@@ -37,12 +37,9 @@ class GlobalExceptionHandler {
     @Throws(Exception::class)
     fun methodArgumentNotValid(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
         val exception = e as MethodArgumentNotValidException
-        val errorMsg = exception.bindingResult.fieldErrors.stream()
+        val errorMsg = exception.bindingResult.fieldErrors
                 .map { it.defaultMessage }
-                .findFirst()
-                .orElse(exception.message)
-
-
+                .joinToString("|")
         val apiResp = ApiResp()
         apiResp.error = errorMsg
         return ResponseEntity.badRequest().body(apiResp)
