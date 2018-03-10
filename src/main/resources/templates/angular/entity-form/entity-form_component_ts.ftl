@@ -102,7 +102,7 @@ this.myNotifyService.notifyFail(err.error.error);
 // =====================================================================
 // =======================Multi Select Event============================
 <#list entity.fields as f>
-    <#if f.type?? && f.type.name == 'List'>
+    <#if f.selectOne>
         ${Utils.lowerCamel(f.type.element)}Selected($event) {
         this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
     }

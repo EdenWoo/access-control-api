@@ -26,6 +26,10 @@ data class CodeField(
 
         var switch: Boolean? = false,
 
-        var attachment: Boolean? = false
+        var attachment: Boolean? = false,
+
+        var selectOne: Boolean? = false
+
+
 
 )

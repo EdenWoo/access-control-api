@@ -48,6 +48,8 @@ data class Payee(
         @NotNull
         var enable: Boolean? = false,
 
+
+        @FieldFeature(selectOne = true)
         @Column(nullable = false)
         @ManyToOne
         @JoinColumn(name = "payer_id")

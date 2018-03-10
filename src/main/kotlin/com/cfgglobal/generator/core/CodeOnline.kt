@@ -66,6 +66,7 @@ fun main(args: Array<String>) {
                                         codeField.display = it.display
                                         codeField.switch = it.switch
                                         codeField.attachment = it.attachment
+                                        codeField.selectOne = it.selectOne
                                     }
                                     is Id -> codeField.primaryKey = true
                                     is NotNull -> {

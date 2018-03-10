@@ -52,9 +52,10 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
     }
 
     get${Utils.upperCamel(entity.name)}s() {
-        this. ${Utils.lowerCamel(entity.name)}Service.getAllFromStore().subscribe(resp => {
+        this.${Utils.lowerCamel(entity.name)}Service.getAll().subscribe(resp => {
             console.log(resp);
-            this.datasForSelect = resp. ${Utils.lowerCamel(entity.name)}s;
+            // this.datasForSelect = resp.${Utils.lowerCamel(entity.name)}s;
+            this.datasForSelect = resp.content;
             this.processDataForSelect();
         });
     }
@@ -63,7 +64,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
         if (this.datasForSelect && this.datasForSelect.length > 0) {
             this.datasForSelect.map(p => {
                 p.text = p.name;
-                p.id = p.pk;
+                p.id = p.id;
             });
         }
     }
@@ -73,7 +74,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
             this.dataIdForLoadSubject.subscribe(event => {
                 console.log(event);
                 this.selectedDatas = [this.datasForSelect.find(p =>
-                    p.pk === event
+                    p.id === event
                 )];
             });
         }
@@ -93,7 +94,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
                 if (this.datasForLoad && this.datasForLoad.length > 0) {
                     this.datasForLoad.map(p => {
                         p.text = p.name;
-                        p.id = p.pk;
+                        p.id = p.id;
                     });
                     this.selectedDatas = this.datasForLoad;
                 }
@@ -108,7 +109,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
     //         if (this.datasForSelect && this.datasForSelect.length > 0) {
     //             this.datasForSelect.map(p => {
     //                 p.text = p.name;
-    //                 p.id = p.pk;
+    //                 p.id = p.id;
     //             });
     //
     //             // if have dataForLoad emit it
@@ -118,7 +119,7 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
     //                 this.selectedDatas = this.datasForLoad;
     //                 this.selectedDatas.map(p => {
     //                     p.text = p.name;
-    //                     p.id = p.pk;
+    //                     p.id = p.id;
     //                 });
     //                 this.datasSelected.emit(this.selectedDatas);
     //             }
@@ -147,12 +148,12 @@ export class ${Utils.upperCamel(entity.name)}MultiSelectComponent implements OnI
 
             if (this.outputArray) {
                 selected = this.datasForSelect.filter(p =>
-                    value.filter(v => v.id === p.pk).length > 0
+                    value.filter(v => v.id === p.id).length > 0
                 );
                 this.datasSelected.emit(selected);
             } else {
                 selected = this.datasForSelect.filter(p =>
-                    value.id === p.pk
+                    value.id === p.id
                 );
                 this.datasSelected.emit(selected);
                 this.datasSelected.emit(selected[0]);

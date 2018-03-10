@@ -91,7 +91,7 @@
                                         <!-----if is multi select and ouput single entity----->
                                         <!---------------------------------------------------->
 
-                                        <#elseif f.type?? && f.type.name == 'List'>
+                                        <#elseif f.selectOne>
                                         <!---------------------------------------------------->
                                         <!-----if is multi select and ouput single entity----->
                                         <input type="text"
