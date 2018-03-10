@@ -34,11 +34,10 @@ class GlobalExceptionHandler {
 
 
     @ExceptionHandler(value = [(MethodArgumentNotValidException::class)])
-    @Throws(Exception::class)
     fun methodArgumentNotValid(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
         val exception = e as MethodArgumentNotValidException
         val errorMsg = exception.bindingResult.fieldErrors
-                .map { it.defaultMessage }
+                .map { "${it.field}-${it.rejectedValue}-${it.defaultMessage}" }
                 .joinToString("|")
         val apiResp = ApiResp()
         apiResp.error = errorMsg
@@ -46,7 +45,6 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = [(ConstraintViolationException::class)])
-    @Throws(Exception::class)
     fun constraintViolationExceptionHandler(req: HttpServletRequest, e: Exception): ResponseEntity<*> {
         val rootCause = e as ConstraintViolationException
 
