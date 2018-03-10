@@ -1,26 +1,26 @@
 package com.cfgglobal.test.domain
 
 
-import lombok.NonNull
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
+import javax.validation.constraints.NotNull
 
 @Entity
 @DynamicUpdate
 @DynamicInsert
 data class Permission(
 
-        @NonNull
+        @NotNull
         var entity: String = "",
 
-        @NonNull
+        @NotNull
         var authKey: String = "",
 
-        @NonNull
+        @NotNull
         var httpMethod: String = "",
 
-        @NonNull
+        @NotNull
         var authUris: String = ""
 
 ) : BaseEntity()

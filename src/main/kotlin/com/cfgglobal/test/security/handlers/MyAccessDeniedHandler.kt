@@ -1,14 +1,11 @@
 package com.cfgglobal.test.security.handlers
 
+import com.cfgglobal.test.exceptions.ApiResp
 import com.fasterxml.jackson.databind.ObjectMapper
-
-import com.github.leon.exceptions.ApiResp
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
-import java.io.IOException
-import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -17,7 +14,6 @@ class MyAccessDeniedHandler : AccessDeniedHandler {
     @Autowired
     private val objectMapper: ObjectMapper? = null
 
-    @Throws(IOException::class, ServletException::class)
     override fun handle(request: HttpServletRequest, response: HttpServletResponse, accessDeniedException: AccessDeniedException) {
 
         val apiResp = ApiResp()

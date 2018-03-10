@@ -6,10 +6,10 @@ import arrow.syntax.option.toOption
 import com.cfgglobal.test.config.ActionReportProperties
 import com.cfgglobal.test.config.jpa.SecurityAuditor
 import com.cfgglobal.test.domain.VisitRecord
+import com.cfgglobal.test.exceptions.ApiResp
 import com.cfgglobal.test.service.VisitRecordService
 import com.cfgglobal.test.service.VisitRecordService.Companion.THRESHOLD
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.leon.exceptions.ApiResp
 import com.github.leon.security.ApplicationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

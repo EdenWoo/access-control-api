@@ -2,9 +2,7 @@ package com.cfgglobal.test.exceptions
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.leon.exceptions.ApiResp
 import com.google.common.collect.Maps
-import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,15 +17,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.ModelAndView
-
-import javax.servlet.http.HttpServletRequest
-import javax.validation.ConstraintViolationException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
+import javax.servlet.http.HttpServletRequest
+import javax.validation.ConstraintViolationException
 
 @ControllerAdvice
-@Slf4j
 class GlobalExceptionHandler {
 
     @Value("\${spring.application.name}")
@@ -42,7 +38,7 @@ class GlobalExceptionHandler {
     fun methodArgumentNotValid(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
         val exception = e as MethodArgumentNotValidException
         val errorMsg = exception.bindingResult.fieldErrors.stream()
-                .map{ it.defaultMessage }
+                .map { it.defaultMessage }
                 .findFirst()
                 .orElse(exception.message)
 
@@ -60,7 +56,7 @@ class GlobalExceptionHandler {
         val apiResp = ApiResp()
         val message: String
         message = rootCause.constraintViolations
-                .map{ it.propertyPath + " " + it.message + ", but the actual value is " + it.invalidValue }
+                .map { it.propertyPath + " " + it.message + ", but the actual value is " + it.invalidValue }
                 .joinToString(";")
         apiResp.error = message
         return ResponseEntity.badRequest().body(apiResp)
@@ -118,7 +114,11 @@ class GlobalExceptionHandler {
             message = "It's used by a $message"
 
         }
-        return ResponseEntity.badRequest().body(ApiResp().setError(message).setMessage(e.message))
+        return ResponseEntity.badRequest().body(
+                ApiResp(
+                        error = message, message = e.message
+                )
+        )
     }
 
     @ExceptionHandler(value = [(Exception::class)])

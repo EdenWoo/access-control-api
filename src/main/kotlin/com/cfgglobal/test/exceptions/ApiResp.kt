@@ -1,23 +1,9 @@
 package com.cfgglobal.test.exceptions
 
-import lombok.Data
 
-@Data
-class ApiResp {
-    var code: Int? = null
-        set(code) {
-            field = this.code
-        }
 
-    var message: String? = null
-        set(message) {
-            field = this.message
-        }
-
+data class ApiResp (
+    val code: Int? = null,
+    var message: String? = null,
     var error: String? = null
-        set(error) {
-            field = this.error
-        }
-
-}
-
+)

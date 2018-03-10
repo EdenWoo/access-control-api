@@ -17,53 +17,49 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.io.IOException
-import javax.servlet.ServletException
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @EnableConfigurationProperties(value = [(ApplicationProperties::class)])
 @Component
-class AuthenticationSuccessHandler : SimpleUrlAuthenticationSuccessHandler() {
+class AuthenticationSuccessHandler(
+        @Value("\${spring.application.name}")
+        var application: String,
+        @Autowired
+        var tokenHelper: TokenHelper,
+        @Autowired
+        var objectMapper: ObjectMapper,
 
-    @Value("spring.profiles.active")
-    internal var profile: String? = null
-    @Autowired
-    internal var tokenHelper: TokenHelper? = null
-    @Autowired
-    internal var objectMapper: ObjectMapper? = null
+        @Autowired
+        var applicationProperties: ApplicationProperties,
 
-    @Autowired
-    internal var applicationProperties: ApplicationProperties? = null
+        @Autowired
+        var userService: UserService,
 
+        @Autowired
+        var cacheClient: CacheClient
 
-    @Autowired
-    internal var userService: UserService? = null
+) : SimpleUrlAuthenticationSuccessHandler() {
 
-    @Autowired
-    internal var cacheClient: CacheClient? = null
 
     @Transactional
-    @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse,
                                          authentication: Authentication) {
         clearAuthenticationAttributes(request)
         val user = authentication.principal as User
 
-        if ("local" != profile) {
-            cacheClient!!.set(applicationProperties!!.userClass + "-" + user.username, userService!!.getUserWithPermissions(user.username))
-        }
+        cacheClient.set("$application-${user.username}", userService.getUserWithPermissions(user.username))
 
-        val jws = tokenHelper!!.generateToken(user.username)
+        val jws = tokenHelper.generateToken(user.username)
 
-        val jwt = applicationProperties!!.jwt!!
+        val jwt = applicationProperties.jwt!!
         val authCookie = Cookie(jwt.cookie, jws)
         authCookie.path = "/"
         authCookie.isHttpOnly = true
         authCookie.maxAge = jwt.expiresIn!!.toInt()
 
-        val userCookie = Cookie(applicationProperties!!.userCookie, user.username)
+        val userCookie = Cookie(applicationProperties.userCookie, user.username)
         userCookie.path = "/"
         userCookie.maxAge = jwt.expiresIn!!.toInt()
 
@@ -77,7 +73,7 @@ class AuthenticationSuccessHandler : SimpleUrlAuthenticationSuccessHandler() {
         )
 
 
-        val jwtResponse = objectMapper!!.writeValueAsString(userTokenState)
+        val jwtResponse = objectMapper.writeValueAsString(userTokenState)
         response.contentType = "application/json"
         response.writer.write(jwtResponse)
     }

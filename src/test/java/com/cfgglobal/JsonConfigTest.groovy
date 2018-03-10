@@ -35,7 +35,7 @@ class JsonConfigTest extends Specification {
         "/v1/payer/111/payee"     || "payee"
         "/v1/payer/1"             || "payer"
         "/v1/payer"               || "payer"
-        "/v1/user/profile"        || "user"
+        "/v1/user/application"        || "user"
         "/v1/transaction/1/split" || "transaction"
     }
 
