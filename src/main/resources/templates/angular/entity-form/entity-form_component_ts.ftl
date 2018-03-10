@@ -28,7 +28,7 @@ public ${Utils.lowerCamel(entity.name)}: ${Utils.upperCamel(entity.name)}Model =
 // =====================================================================
 // =============================Dropzone Variable=======================
 <#list entity.fields as f>
-    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
+    <#if f.attachment>
         public ${Utils.lowerCamel(f.name)}ImageSubject: Subject<ImageModel[] | any> = new Subject<ImageModel[] | any>();
     </#if>
 </#list>
@@ -117,7 +117,7 @@ this.myNotifyService.notifyFail(err.error.error);
 emitDropzoneFiles(){
 
 <#list entity.fields as f>
-    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
+    <#if f.attachment>
         this.${Utils.lowerCamel(f.name)}ImageSubject.next(this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)});
     </#if>
 </#list>
@@ -126,7 +126,7 @@ emitDropzoneFiles(){
 
 
 <#list entity.fields as f>
-    <#if f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
+    <#if f.attachment>
         ${Utils.lowerCamel(entity.name)}FileObjectsChanged($event) {
         this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
     }

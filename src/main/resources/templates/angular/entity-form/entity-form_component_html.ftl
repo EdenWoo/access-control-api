@@ -60,6 +60,37 @@
                                                name="${Utils.lowerCamel(f.name)}"
                                                placeholder="">
 
+                                        <#elseif f.attachment>
+                                        <!---------------------------------------------------->
+                                        <!--------------------if is dropzone------------------>
+                                        <input type="text"
+                                               style="display: none;"
+                                               formControlName="${Utils.lowerCamel(f.name)}"
+                                               [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
+                                               name="${Utils.lowerCamel(f.name)}"
+                                               placeholder="">
+
+                                        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${f.name}</label>
+                                        <div class="row dropzone-area" style="margin: 12px 15px !important;">
+                                            <div class="" role="content">
+                                                <!-- widget content -->
+                                                <div class="widget-body">
+
+                                                    <my-drop-zone-component [maxFiles]="10"
+                                                                            [subject]="${Utils.lowerCamel(f.name)}ImageSubject"
+                                                                            (fileObjectsChanged)="${Utils.lowerCamel(f.name)}FileObjectsChanged($event)">
+                                                    </my-drop-zone-component>
+                                                    <validation-error
+                                                            [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
+
+                                                </div>
+                                                <!-- end widget content -->
+
+                                            </div>
+                                        </div>
+                                        <!-----if is multi select and ouput single entity----->
+                                        <!---------------------------------------------------->
+
                                         <#elseif f.type?? && f.type.name == 'List'>
                                         <!---------------------------------------------------->
                                         <!-----if is multi select and ouput single entity----->
@@ -82,38 +113,6 @@
                                                         [control]="myForm.get('${Utils.lowerCamel(f.type.element)}')"></validation-error>
                                             </label>
                                         </section>
-                                        <!-----if is multi select and ouput single entity----->
-                                        <!---------------------------------------------------->
-
-
-                                        <#elseif f.type?? && f.type.name == 'Entity'&& f.type.element == 'Attachment'>
-                                        <!---------------------------------------------------->
-                                        <!--------------------if is dropzone------------------>
-                                        <input type="text"
-                                               style="display: none;"
-                                               formControlName="${Utils.lowerCamel(f.name)}"
-                                               [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
-                                               name="${Utils.lowerCamel(f.name)}"
-                                               placeholder="">
-
-                                        <label>${f.name}</label>
-                                        <div class="row dropzone-area">
-                                            <div class="" role="content">
-                                                <!-- widget content -->
-                                                <div class="widget-body">
-
-                                                    <my-drop-zone-component [maxFiles]="10"
-                                                                            [subject]="${Utils.lowerCamel(f.name)}ImageSubject"
-                                                                            (fileObjectsChanged)="${Utils.lowerCamel(f.name)}FileObjectsChanged($event)">
-                                                    </my-drop-zone-component>
-                                                    <validation-error
-                                                            [control]="myForm.get('${Utils.lowerCamel(f.name)}')"></validation-error>
-
-                                                </div>
-                                                <!-- end widget content -->
-
-                                            </div>
-                                        </div>
                                         <!-----if is multi select and ouput single entity----->
                                         <!---------------------------------------------------->
 

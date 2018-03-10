@@ -26,12 +26,18 @@ import {SmartadminLayoutModule} from './shared/layout/layout.module';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AppReadyEvent} from './app-ready.component';
 
+import {DropzoneConfigInterface, DropzoneModule} from 'ngx-dropzone-wrapper';
+
+import {Constants} from './constants/app.constant';
+
 import {HelperService} from './services/helper.service';
 import {MyNotifyService} from './services/my-notify.service';
 import {AuthenticationService} from './services/authentication.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthInterceptor} from './services/auth.interceptor';
 import {RespInterceptor} from 'app/services/resp.interceptor';
+import {DownloadService} from './services/download.service';
+
 <#list project.entities as e>
 import {${Utils.upperCamel(e.name)}Service} from './pages/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}.service';
 </#list>
@@ -49,6 +55,16 @@ type StoreType = {
     disposeOldHosts: () => void
 };
 
+const DROPZONE_CONFIG: DropzoneConfigInterface = {
+    // Change this to your upload POST address:
+    url: Constants.API_ENDPOINT + 'v1/attachment/upload',
+    maxFilesize: 50,
+    // acceptedFiles: 'image/*, application/pdf, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel',
+    acceptedFiles: '',
+    addRemoveLinks: true,
+    clickable: true
+};
+
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
@@ -64,7 +80,7 @@ type StoreType = {
         FormsModule,
 
         ModalModule.forRoot(),
-
+DropzoneModule.forRoot(DROPZONE_CONFIG),
 
         CoreModule,
         SmartadminLayoutModule,
@@ -84,6 +100,7 @@ AuthenticationService,
         {provide: HTTP_INTERCEPTORS, useClass: RespInterceptor, multi: true},
         AppReadyEvent,
         HelperService,
+DownloadService,
 MyNotifyService,
 <#list project.entities as e>
     ${Utils.upperCamel(e.name)}Service,

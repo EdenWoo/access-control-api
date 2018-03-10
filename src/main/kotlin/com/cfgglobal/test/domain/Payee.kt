@@ -39,7 +39,7 @@ data class Payee(
 
         var postCode: String? = null,
 
-
+        @FieldFeature(attachment = true)
         @OneToMany(cascade = [(CascadeType.ALL)], orphanRemoval = true)
         var attachments: MutableList<Attachment> = mutableListOf(),
 
@@ -69,6 +69,7 @@ data class Payee(
         @JoinColumn(name = "user_id")
         var user: User? = null,
 
+        @FieldFeature(switch = true)
         @Type(type = "yes_no")
         var verify: Boolean? = false
 

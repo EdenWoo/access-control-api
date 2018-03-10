@@ -20,5 +20,6 @@ annotation class FieldFeature(
         val display: Boolean = true,
         val boolean: Boolean = true,
         val require: Boolean = true,
-        val switch: Boolean = false
+        val switch: Boolean = false,
+        val attachment: Boolean = false
 )

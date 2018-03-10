@@ -5,6 +5,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {DropzoneModule} from 'ngx-dropzone-wrapper';
 import {SelectModule} from 'ng2-select';
 import {ValidationErrorComponent} from './bases/validation-error/validation-error.component';
+import {MyDropZoneComponent} from './my-drop-zone-component/my-drop-zone.component';
 
 <#list project.entities as e>
 import {${Utils.upperCamel(e.name)}MultiSelectComponent} from './multi-select/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}-multi-select.component';
@@ -27,6 +28,7 @@ import {${Utils.upperCamel(e.name)}MultiSelectComponent} from './multi-select/${
         // MyDropZoneComponent,
         // OrgDropZoneComponent
         ValidationErrorComponent,
+        MyDropZoneComponent,
         <#list project.entities as e>
             ${Utils.upperCamel(e.name)}MultiSelectComponent,
         </#list>
@@ -37,6 +39,7 @@ import {${Utils.upperCamel(e.name)}MultiSelectComponent} from './multi-select/${
         // MyDropZoneComponent,
         // OrgDropZoneComponent
         ValidationErrorComponent,
+        MyDropZoneComponent,
         <#list project.entities as e>
             ${Utils.upperCamel(e.name)}MultiSelectComponent,
         </#list>

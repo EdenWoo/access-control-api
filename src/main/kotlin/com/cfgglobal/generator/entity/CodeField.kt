@@ -24,6 +24,8 @@ data class CodeField(
 
         var display: Boolean? = true,
 
-        var switch: Boolean? = false
+        var switch: Boolean? = false,
+
+        var attachment: Boolean? = false
 
 )
