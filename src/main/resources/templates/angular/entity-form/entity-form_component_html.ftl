@@ -103,7 +103,10 @@
 
                                         <section class="col col-6">
                                             <label class="select">
-                                                ${f.type.element}<span style="color: red">*</span>
+                                                ${f.type.element}
+
+                                               <#if f.required> <span style="color: red">*</span> </#if>
+
                                                 <${Utils.lowerHyphen(f.type.element)}-multi-select
                                                         (datasSelected)="${Utils.lowerCamel(f.type.element)}Selected($event)"
                                                         [multiple]="false"
@@ -121,7 +124,7 @@
                                         <!-------------------if is switch------------------->
                                         <section class="col col-6">
                                             <label class="toggle">
-                                                ${f.name}<span style="color: red">*</span>
+                                                ${f.name}<#if f.required> <span style="color: red">*</span> </#if>
                                                 <input type="checkbox"
                                                        formControlName="${Utils.lowerCamel(f.name)}"
                                                        [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"
@@ -141,7 +144,7 @@
                                         <!--------------------else is normal field----------------->
                                           <section class="col col-6">
                                               <label class="input">
-                                                  ${f.name}<span style="color: red">*</span>
+                                                  ${f.name}<#if f.required> <span style="color: red">*</span> </#if>
                                                   <input type="text"
                                                          formControlName="${Utils.lowerCamel(f.name)}"
                                                          [(ngModel)]="${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)}"

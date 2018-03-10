@@ -127,7 +127,7 @@ emitDropzoneFiles(){
 
 <#list entity.fields as f>
     <#if f.attachment>
-        ${Utils.lowerCamel(entity.name)}FileObjectsChanged($event) {
+        ${Utils.lowerCamel(f.name)}FileObjectsChanged($event) {
         this.${Utils.lowerCamel(entity.name)}.${Utils.lowerCamel(f.name)} = $event;
     }
     </#if>
