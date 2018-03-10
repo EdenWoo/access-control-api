@@ -74,6 +74,9 @@ class WebConfig : WebMvcConfigurerAdapter() {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
 
         registry.addResourceHandler("/documentation/**").addResourceLocations("classpath:/META-INF/resources/")
+        registry.addResourceHandler("/v1/**")
+                .addResourceLocations("/v1/")
+                .setCachePeriod(60)
 
     }
     /*    @Bean
@@ -82,6 +85,7 @@ class WebConfig : WebMvcConfigurerAdapter() {
         beanNameViewResolver.setOrder(100);
         return beanNameViewResolver;
     }*/
+
 
     @Bean
     fun mappingJackson2HttpMessageConverter(): MappingJackson2HttpMessageConverter {

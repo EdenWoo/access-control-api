@@ -22,6 +22,6 @@ data class EmailLog(
         val sendTo: String? = null,
         @Enumerated(value = EnumType.STRING)
         val status: TaskStatus? = null,
-        val times: Int? = null,
+        var times: Int? = null,
         val msg: String? = null
 ) : BaseEntity(), Serializable

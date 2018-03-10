@@ -12,7 +12,6 @@ import java.io.File
 import java.io.IOException
 import java.time.Instant
 
-
 @RestController
 @RequestMapping("/v1/excel")
 
@@ -22,7 +21,6 @@ class ExcelController : BaseController() {
     var excelParsingRules: MutableList<ExcelParsingRule<*>> = mutableListOf()
 
     @PostMapping
-    @Throws(IOException::class)
     fun submit(file: MultipartFile, rule: String) {
         val excelParsingRule = excelParsingRules.first { e -> e.ruleName == rule }
         val fileName = "/tmp/" + Instant.now().epochSecond
