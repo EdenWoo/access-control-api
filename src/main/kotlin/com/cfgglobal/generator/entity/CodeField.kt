@@ -12,9 +12,10 @@ data class CodeField(
         val unique: Boolean = false,
         val hidden: Boolean = false,
         val limit:Int = 255,
-        val min: Long? = null,
-        val max: Long? = null,
-        val size: Size? = null,
+        val sizeMin: Int? = null,
+        val sizeMax: Int? = null,
+        val rangeMin: Long? = null,
+        val rangeMax: Long? = null,
         val switch: Boolean? = false,
         val attachment: Boolean? = false,
         val selectOne: Boolean? = false,
@@ -24,10 +25,6 @@ data class CodeField(
 
 )
 
-data class Size(
-        val min: Int? = null,
-        val max: Int? = null
-)
 
 
 

@@ -44,13 +44,13 @@ data class CodeEntity(
                                         codeField = codeField.copy(required = true)
                                     }
                                     is javax.validation.constraints.Size -> {
-                                        codeField = codeField.copy(size = Size(min = it.min, max = it.max))
+                                        codeField = codeField.copy(sizeMin  = it.min, sizeMax =  it.max)
                                     }
                                     is Max -> {
-                                        codeField = codeField.copy(max = it.value)
+                                        codeField = codeField.copy(rangeMax = it.value)
                                     }
                                     is Min -> {
-                                        codeField = codeField.copy(min = it.value)
+                                        codeField = codeField.copy(rangeMin = it.value)
                                     }
                                     is Column -> {
                                         codeField = codeField.copy(
