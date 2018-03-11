@@ -14,6 +14,7 @@ annotation class FieldFeature(
         val attachment: Boolean = false,
         val selectOne: Boolean = false,
         val selectMany: Boolean = false,
+        val addDynamicMany: Boolean = false,
         /**
          * 不在表单显示
          */

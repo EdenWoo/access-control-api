@@ -65,6 +65,8 @@ data class CodeEntity(
                                                 switch = it.switch,
                                                 attachment = it.attachment,
                                                 selectOne = it.selectOne,
+                                                selectMany = it.selectMany,
+                                                addDynamicMany = it.addDynamicMany,
                                                 hidden = it.hidden,
                                                 limit = it.limit)
                                     }
