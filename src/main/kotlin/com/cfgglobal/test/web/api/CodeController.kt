@@ -71,14 +71,14 @@ class CodeController {
 
     }
 
-    @GetMapping(value = ["/entity-scanForCodeEntities-component_ts"], produces = ["text/html;charset=UTF-8"])
+    @GetMapping(value = ["/entity-list-component_ts"], produces = ["text/html;charset=UTF-8"])
     @ResponseBody
     @Throws(IOException::class)
     fun component(entityName: String, modelMap: ModelMap): ResponseEntity<String> {
         var modelMap = modelMap
         modelMap = codeFetch(entityName, modelMap)
 
-        return ResponseEntity.ok(freemarkerBuilderUtil!!.build("/code/entity-scanForCodeEntities-component_ts.ftl", modelMap)!!)
+        return ResponseEntity.ok(freemarkerBuilderUtil!!.build("/code/entity-list-component_ts.ftl", modelMap)!!)
 
     }
 
