@@ -2,26 +2,24 @@ package com.cfgglobal.generator.entity
 
 
 data class CodeField(
-        var id: Int? = null,
+        val name: String,
+        val display: String? = null,
+        val type: FieldType,
+        val primaryKey: Boolean = false,
+        val searchable: Boolean = false,
+        val sortable: Boolean = false,
+        val required: Boolean = false,
+        val unique: Boolean = false,
+        val limit:Int = 255,
+        val min: Long? = null,
+        val max: Long? = null,
+        val size: Size? = null
 
-        var name: String,
-
-        var display: String? = null,
-
-        var length: Int? = null,
-
-        var scale: Int? = null,
-
-        var type: FieldType,
-
-        var isPrimaryKey: Boolean = false,
-
-        var searchable: Boolean = false,
-
-        var sortable: Boolean = false,
-
-        var required: Boolean = false,
-
-        var isUnique: Boolean = false
 
 )
+
+data class Size(
+        val min: Int? = null,
+        val max: Int? = null
+)
+

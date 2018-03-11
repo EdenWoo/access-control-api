@@ -2,6 +2,7 @@ package com.cfgglobal.generator.task.service
 
 import com.cfgglobal.generator.entity.CodeProject
 import com.cfgglobal.generator.entity.Task
+import com.cfgglobal.generator.entity.TaskOfProject
 import com.google.common.collect.Maps
 import freemarker.ext.beans.BeansWrapper
 import freemarker.template.TemplateHashModel
@@ -17,7 +18,7 @@ object TaskService {
         val scope = Maps.newHashMap<String, Any>()
         scope["project"] = codeProject
         scope["entities"] = entities
-        codeProject.utilClasses!!.forEach { util ->
+        codeProject.utilClasses.forEach { util ->
 
 
             val wrapper = BeansWrapper.getDefaultInstance()
@@ -51,14 +52,16 @@ object TaskService {
         }*/
         val templateFilename = codeProject.scriptHelper.exec<Any>(task.templatePath, root).toString()
         var folder = codeProject.scriptHelper.exec<Any>(task.folder, root).toString()
-        folder = codeProject.targetPath + File.separator + folder
+        folder = when (task.taskOfProject) {
+            TaskOfProject.API -> codeProject.apiTargetPath + File.separator + folder
+            TaskOfProject.UI -> codeProject.uiTargetPath + File.separator + folder
+        }
         val folderDir = File(folder)
         if (!folderDir.exists()) {
             folderDir.mkdirs()
         }
         val filename = codeProject.scriptHelper.exec<Any>(task.filename, root).toString()
         val outputFilename = folder + File.separator + filename
-        // log.debug(outputFilename)
         codeProject.templateEngine.exec(templateFilename, outputFilename)
         return outputFilename
 

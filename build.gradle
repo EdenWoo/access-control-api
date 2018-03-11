@@ -133,7 +133,7 @@ dependencies {
     compile "io.arrow-kt:arrow-optics:$arrowVersion"
 
     compile 'com.github.b1412:java-toolbox:317937d9b4'
-    compile 'com.github.b1412:kotlin-extensions:34a0953942'
+    compile 'com.github.b1412:kotlin-extensions:0a7b85b170'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
