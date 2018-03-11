@@ -10,10 +10,16 @@ data class CodeField(
         val sortable: Boolean = false,
         val required: Boolean = false,
         val unique: Boolean = false,
+        val hidden: Boolean = false,
         val limit:Int = 255,
         val min: Long? = null,
         val max: Long? = null,
-        val size: Size? = null
+        val size: Size? = null,
+        val switch: Boolean? = false,
+        val attachment: Boolean? = false,
+        val selectOne: Boolean? = false,
+        val selectMany: Boolean? = false,
+        val addDynamicMany: Boolean? = false
 
 
 )

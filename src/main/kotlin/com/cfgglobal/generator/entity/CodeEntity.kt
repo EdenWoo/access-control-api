@@ -62,6 +62,10 @@ data class CodeEntity(
                                         codeField = codeField.copy(
                                                 searchable = it.searchable,
                                                 sortable = it.sortable,
+                                                switch = it.switch,
+                                                attachment = it.attachment,
+                                                selectOne = it.selectOne,
+                                                hidden = it.hidden,
                                                 limit = it.limit)
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
