@@ -34,8 +34,8 @@ class CommonController(
             val filter = Filter().addCondition(field, value, Filter.OPERATOR_EQ)
             val result = Try{service.findByFilter(filter)}.toOption().bind()
             val status = when (result.size) {
-                0 -> 409
-                else -> 200
+                0 -> 200
+                else -> 409
             }
             ResponseEntity.status(status).body(field)
         }.ev().getOrElse { ResponseEntity.badRequest().body(f + v) }
