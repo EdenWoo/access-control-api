@@ -52,7 +52,7 @@ open class User(
         @Enumerated(value = EnumType.STRING)
         var userType: UserType? = null,
 
-        var expiresIn:Long?
+        var expiresIn: Long? = null
 
 ) : BaseEntity(), UserDetails {
 
