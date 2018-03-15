@@ -87,6 +87,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         http.headers().frameOptions().sameOrigin()
         http.cors()
         http.csrf().disable()
+        http.headers().cacheControl().disable()
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .addFilter(corsFilter())

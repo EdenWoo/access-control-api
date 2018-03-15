@@ -1,9 +1,10 @@
 package com.cfgglobal.test.security
 
+import com.cfgglobal.test.domain.User
+import com.github.leon.extentions.orElse
 import com.github.leon.security.ApplicationProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -12,102 +13,47 @@ import org.springframework.stereotype.Component
 import java.util.*
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
-
+import io.jsonwebtoken.SignatureAlgorithm.HS512
 
 @EnableConfigurationProperties(value = [(ApplicationProperties::class)])
 @Component
 class TokenHelper(
         @Autowired
-        val applicationProperties: ApplicationProperties
+        val applicationProperties: ApplicationProperties,
+        @Autowired
+        var userDetailsService: UserDetailsService,
+        @Value("\${spring.application.name}")
+        val application: String
 ) {
-    @Autowired
-    var userDetailsService: UserDetailsService? = null
-    @Value("\${spring.application.name}")
-    private val APP_NAME: String? = null
-    private val SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512
 
-    private val currentTimeMillis: Long
-        get() = System.currentTimeMillis()
-
-    fun getUsernameFromToken(token: String): String? {
-        var username: String?
-        try {
-            val claims = this.getClaimsFromToken(token)
-            username = claims!!.subject
-        } catch (e: Exception) {
-            username = null
-        }
-
-        return username
+    fun getUsernameFromToken(token: String): String {
+        val claims = this.getClaimsFromToken(token)
+        return claims.subject
     }
 
     fun generateToken(username: String): String {
-        // User userDetails = (User) userDetailsService.loadUserByUsername(username);
+        val user = userDetailsService.loadUserByUsername(username) as User
+        val currentTimeMillis = System.currentTimeMillis()
+        val currentDate = Date(currentTimeMillis)
+        val expirationDate = Date(currentTimeMillis + user.expiresIn.orElse(applicationProperties.jwt.expiresIn!!) * 1000)
         return Jwts.builder()
-                .setIssuer(APP_NAME)
+                .setIssuer(application)
                 .setSubject(username)
-                .setIssuedAt(generateCurrentDate())
-                .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, applicationProperties.jwt.secret)
+                .setIssuedAt(currentDate)
+                .setExpiration(expirationDate)
+                .signWith(HS512, applicationProperties.jwt.secret)
                 //  .claim("user", userDetails)
                 .compact()
     }
 
-    private fun getClaimsFromToken(token: String): Claims? {
-        var claims: Claims?
-        try {
-            claims = Jwts.parser()
-                    .setSigningKey(applicationProperties.jwt.secret)
-                    .parseClaimsJws(token)
-                    .body
-        } catch (e: Exception) {
-            claims = null
-        }
+    private fun getClaimsFromToken(token: String): Claims {
 
-        return claims
+        return Jwts.parser()
+                .setSigningKey(applicationProperties.jwt.secret)
+                .parseClaimsJws(token)
+                .body
     }
 
-    internal fun generateToken(claims: Map<String, Any>): String {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, applicationProperties.jwt.secret)
-                .compact()
-    }
-
-    fun canTokenBeRefreshed(token: String): Boolean? {
-        try {
-            val expirationDate = getClaimsFromToken(token)!!.expiration
-            val username = getUsernameFromToken(token)
-            val userDetails = userDetailsService!!.loadUserByUsername(username)
-            return expirationDate.compareTo(generateCurrentDate()) > 0
-        } catch (e: Exception) {
-            return false
-        }
-
-    }
-
-    fun refreshToken(token: String): String? {
-        var refreshedToken: String?
-        try {
-            val claims = getClaimsFromToken(token)
-            claims!!.issuedAt = generateCurrentDate()
-            refreshedToken = generateToken(claims)
-        } catch (e: Exception) {
-            refreshedToken = null
-        }
-
-        return refreshedToken
-    }
-
-    private fun generateCurrentDate(): Date {
-        return Date(currentTimeMillis)
-    }
-
-    private fun generateExpirationDate(): Date {
-
-        return Date(currentTimeMillis + applicationProperties.jwt.expiresIn!! * 1000)
-    }
 
     fun getToken(request: HttpServletRequest): String? {
         /**

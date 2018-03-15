@@ -50,7 +50,9 @@ open class User(
         var attachments: MutableList<Attachment> = mutableListOf(),
 
         @Enumerated(value = EnumType.STRING)
-        var userType: UserType? = null
+        var userType: UserType? = null,
+
+        var expiresIn:Long?
 
 ) : BaseEntity(), UserDetails {
 
