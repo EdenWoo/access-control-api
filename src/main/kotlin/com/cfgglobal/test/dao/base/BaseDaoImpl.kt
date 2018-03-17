@@ -31,15 +31,16 @@ class BaseDaoImpl<T, ID : Serializable>(
 ) : SimpleJpaRepository<T, ID>(myDomainClass, entityManager), BaseDao<T, ID> {
 
     val log = LoggerFactory.getLogger(BaseDaoImpl::class.java)!!
+
     private fun str2Enum(str: String): Option<Enum<*>> {
         return ApplicationProperties.enums
-                .map { e -> getaClass(e) }
+                .map { e -> getClass(e) }
                 .map { e -> Try { Reflect.on(e).call("valueOf", str).get<Any>() } }
                 .firstOption({ it.isSuccess() })
                 .map { t -> t.get() as Enum<*> }
     }
 
-    private fun getaClass(str: String): Class<out Enum<*>> {
+    private fun getClass(str: String): Class<out Enum<*>> {
         return ApplicationProperties.enumPackages
                 .map { p -> Try { Reflect.on("$p.$str").get<Any>() as Class<out Enum<*>> } }
                 .firstOption { it.isSuccess() }.get().get()
