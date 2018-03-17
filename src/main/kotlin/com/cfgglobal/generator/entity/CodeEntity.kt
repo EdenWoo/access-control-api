@@ -26,7 +26,9 @@ fun scanForCodeEnum(): List<CodeEnum> {
     return ClassSearcher.of(Enum::class.java).search<Enum<*>>().map {
         CodeEnum(
                 name = it.name,
-                value = (Reflect.on(it).call("values").get() as Array<String>).toList())
+                value = (Reflect.on(it).call("values").get() as Array<*>)
+                        .map { it.toString().remainLastIndexOf(".") }
+                        .toList())
     }
 }
 
