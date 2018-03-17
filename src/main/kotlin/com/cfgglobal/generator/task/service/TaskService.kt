@@ -6,7 +6,6 @@ import com.cfgglobal.generator.entity.TaskOfProject
 import com.google.common.collect.Maps
 import freemarker.ext.beans.BeansWrapper
 import freemarker.template.TemplateHashModel
-import freemarker.template.TemplateModelException
 import java.io.File
 
 
@@ -14,23 +13,15 @@ object TaskService {
 
     fun processTask(codeProject: CodeProject, task: Task): List<String> {
         val paths: List<String>
-        val entities = codeProject.entities
         val scope = Maps.newHashMap<String, Any>()
         scope["project"] = codeProject
-        scope["entities"] = entities
+        scope["entities"] = codeProject.entities
+        scope["enums"] = codeProject.templateEngine
         codeProject.utilClasses.forEach { util ->
-
-
             val wrapper = BeansWrapper.getDefaultInstance()
             val staticModels = wrapper.staticModels
-            try {
-                val fileStatics = staticModels.get(util.name) as TemplateHashModel
-                scope[util.simpleName] = fileStatics
-            } catch (e: TemplateModelException) {
-                e.printStackTrace()
-            }
-
-
+            val fileStatics = staticModels.get(util.name) as TemplateHashModel
+            scope[util.simpleName] = fileStatics
         }
 
         codeProject.templateEngine.putAll(scope)

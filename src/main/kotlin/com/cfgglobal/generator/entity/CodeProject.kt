@@ -16,6 +16,8 @@ data class CodeProject(
 
         var entities: List<CodeEntity> = listOf(),
 
+        val enums: List<CodeEnum> = listOf(),
+
         var utilClasses: List<Class<*>> = listOf(),
 
         var apiTasks: List<Task> = listOf(),

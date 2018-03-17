@@ -58,7 +58,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity?) {
-        web!!.ignoring().antMatchers("/singleSave", "/admin/**", "/js/**", "/css/**", "/images/**", "/**/favicon.ico")
+        web!!.ignoring().antMatchers( "/js/**", "/css/**", "/images/**", "/**/favicon.ico")
     }
 
 

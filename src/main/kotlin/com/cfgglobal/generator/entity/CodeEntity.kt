@@ -4,6 +4,7 @@ import com.cfgglobal.generator.metadata.FieldFeature
 import com.cfgglobal.test.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
+import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
 import javax.persistence.Id
@@ -21,8 +22,15 @@ data class CodeEntity(
         var display: String? = null
 )
 
+fun scanForCodeEnum(): List<CodeEnum> {
+    return ClassSearcher.of(Enum::class.java).search<Enum<*>>().map {
+        CodeEnum(
+                name = it.name,
+                value = (Reflect.on(it).call("values").get() as Array<String>).toList())
+    }
+}
 
- fun scanForCodeEntities(): List<CodeEntity> {
+fun scanForCodeEntities(): List<CodeEntity> {
     return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>().map {
         val codeEntity = CodeEntity(
                 name = it.simpleName
@@ -40,11 +48,11 @@ data class CodeEntity(
                     it.declaredAnnotations
                             .forEach {
                                 when (it) {
-                                    is NotNull-> {
+                                    is NotNull -> {
                                         codeField = codeField.copy(required = true)
                                     }
                                     is javax.validation.constraints.Size -> {
-                                        codeField = codeField.copy(sizeMin  = it.min, sizeMax =  it.max)
+                                        codeField = codeField.copy(sizeMin = it.min, sizeMax = it.max)
                                     }
                                     is Max -> {
                                         codeField = codeField.copy(rangeMax = it.value)
