@@ -1,8 +1,9 @@
-package com.github.leon.aci.security
+package com.cfgglobal.test.security
 
+import arrow.data.Try
 import com.github.leon.aci.domain.User
-import com.github.leon.extentions.orElse
 import com.github.leon.aci.security.ApplicationProperties
+import com.github.leon.extentions.orElse
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,9 +27,9 @@ class TokenHelper(
         val application: String
 ) {
 
-    fun getUsernameFromToken(token: String): String {
+    fun getUsernameFromToken(token: String?): Try<String> {
         val claims = this.getClaimsFromToken(token)
-        return claims.subject
+        return claims.map { it.subject }
     }
 
     fun generateToken(username: String): String {
@@ -46,12 +47,13 @@ class TokenHelper(
                 .compact()
     }
 
-    private fun getClaimsFromToken(token: String): Claims {
-
-        return Jwts.parser()
-                .setSigningKey(applicationProperties.jwt.secret)
-                .parseClaimsJws(token)
-                .body
+    private fun getClaimsFromToken(token: String?): Try<Claims> {
+        return Try {
+            Jwts.parser()
+                    .setSigningKey(applicationProperties.jwt.secret)
+                    .parseClaimsJws(token)
+                    .body
+        }
     }
 
 

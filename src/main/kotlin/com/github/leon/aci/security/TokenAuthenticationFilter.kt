@@ -1,16 +1,19 @@
 package com.github.leon.aci.security
 
 import arrow.core.getOrElse
+import arrow.data.Failure
+import arrow.data.Success
 import arrow.data.Try
 import arrow.syntax.option.toOption
+import com.cfgglobal.test.security.TokenHelper
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.aci.config.ActionReportProperties
 import com.github.leon.aci.config.jpa.SecurityAuditor
 import com.github.leon.aci.domain.VisitRecord
 import com.github.leon.aci.exceptions.ApiResp
 import com.github.leon.aci.service.VisitRecordService
 import com.github.leon.aci.service.VisitRecordService.Companion.THRESHOLD
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.leon.aci.security.ApplicationProperties
+
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -83,26 +86,27 @@ class TokenAuthenticationFilter(
         )
 
         val authToken = tokenHelper.getToken(request)
-        if (skipPathRequest(request, pathsToSkip)) {
-            SecurityContextHolder.getContext().authentication = AnonAuthentication()
-            chain.doFilter(wrapRequest, response)
-        } else if (authToken != null && authToken != "null" && authToken != "undefined") {
-            val username = tokenHelper.getUsernameFromToken(authToken)
-            if (username == null) {
-                log.error("username is null , token {}", authToken)
-                loginExpired(request, response)
-            } else {
-                val userDetails = userDetailsService.loadUserByUsername(username)
-                val authentication = TokenBasedAuthentication(userDetails)
-                authentication.token = authToken
-                SecurityContextHolder.getContext().authentication = authentication
+        when {
+            skipPathRequest(request, pathsToSkip) -> {
+                SecurityContextHolder.getContext().authentication = AnonAuthentication()
                 chain.doFilter(wrapRequest, response)
             }
-        } else {
-            println("URI" + request.requestURI)
-            loginExpired(request, response)
+            else -> {
+                val usernameTry = tokenHelper.getUsernameFromToken(authToken)
+                when (usernameTry) {
+                    is Success -> {
+                        val userDetails = userDetailsService.loadUserByUsername(usernameTry.value)
+                        val authentication = TokenBasedAuthentication(userDetails)
+                        authentication.token = authToken
+                        SecurityContextHolder.getContext().authentication = authentication
+                        chain.doFilter(wrapRequest, response)
+                    }
+                    is Failure -> {
+                        loginExpired(request, response, usernameTry.exception.message!!)
+                    }
+                }
+            }
         }
-
         if (actionReportProperties.isFirewall) {
             if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor.currentAuditor), getClientIp(request))) {
                 val apiResp = ApiResp()
@@ -129,9 +133,10 @@ class TokenAuthenticationFilter(
 
     }
 
-    private fun loginExpired(request: HttpServletRequest, response: HttpServletResponse) {
+    private fun loginExpired(request: HttpServletRequest, response: HttpServletResponse, message: String) {
         logger.warn(request.method + request.requestURI)
         val apiResp = ApiResp()
+        apiResp.message = message
         apiResp.error = "login expired"
         val msg = objectMapper.writeValueAsString(apiResp)
         response.status = 403
