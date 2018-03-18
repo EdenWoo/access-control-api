@@ -1,7 +1,7 @@
 package com.cfgglobal
 
-import com.cfgglobal.test.config.json.JsonConfig
-import com.cfgglobal.test.util.Q
+import com.github.leon.aci.config.json.JsonConfig
+import com.github.leon.aci.util.Q
 import com.querydsl.core.types.EntityPath
 import com.querydsl.core.types.Path
 
@@ -9,7 +9,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class JsonConfigTest extends Specification {
-    def jsonConfig = new JsonConfig()
 
     def "FirstLevel"() {
         given:
