@@ -44,7 +44,6 @@ class BaseDaoImpl<T, ID : Serializable>(
         return ApplicationProperties.enumPackages
                 .map { p -> Try { Reflect.on("$p.$str").get<Any>() as Class<out Enum<*>> } }
                 .firstOption { it.isSuccess() }.get().get()
-
     }
 
 
