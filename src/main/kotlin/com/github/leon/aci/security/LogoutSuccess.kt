@@ -3,7 +3,7 @@ package com.github.leon.aci.security
 import org.springframework.beans.factory.annotation.Value
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.cache.CacheClient
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler

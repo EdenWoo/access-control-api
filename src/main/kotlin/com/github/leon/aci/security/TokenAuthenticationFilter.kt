@@ -10,7 +10,7 @@ import com.github.leon.aci.exceptions.ApiResp
 import com.github.leon.aci.service.VisitRecordService
 import com.github.leon.aci.service.VisitRecordService.Companion.THRESHOLD
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties

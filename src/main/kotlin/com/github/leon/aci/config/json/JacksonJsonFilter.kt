@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ser.PropertyFilter
 import com.fasterxml.jackson.databind.ser.PropertyWriter
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter
 
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import org.apache.commons.lang3.StringUtils
 import org.hibernate.collection.spi.PersistentCollection
 import org.hibernate.proxy.HibernateProxy

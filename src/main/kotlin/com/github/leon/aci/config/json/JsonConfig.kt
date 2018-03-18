@@ -9,7 +9,7 @@ import arrow.syntax.collections.firstOption
 import arrow.syntax.option.toOption
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.domain.User
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import com.google.common.base.CaseFormat
 import com.google.common.base.CaseFormat.*
 import com.querydsl.core.types.EntityPath

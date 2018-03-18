@@ -9,7 +9,7 @@ import com.github.leon.aci.security.UserTokenState
 import com.github.leon.aci.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.cache.CacheClient
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties

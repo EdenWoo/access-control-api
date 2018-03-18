@@ -4,13 +4,11 @@ import arrow.core.Option
 import arrow.core.getOrElse
 import arrow.data.Try
 import arrow.syntax.option.toOption
-import com.github.leon.cache.CacheClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
-import java.util.function.Supplier
 
 
 @Component
@@ -20,11 +18,11 @@ class RedisCacheClient : CacheClient {
     private val template: RedisTemplate<String, Any>? = null
 
 
-    override fun <T> get(key: String): T {
-        return template!!.opsForValue().get(key) as T
+    override fun <T> get(key: String): T? {
+        return template!!.opsForValue().get(key) as T?
     }
 
-    override fun <T> get(key: String, supplier: Supplier<T>): T? {
+    override fun <T> get(key: String, supplier: () -> T): T? {
         val cache = Try { template!!.opsForValue().get(key) as T? }
         return when (cache) {
             is Try.Success -> cache.value.toOption()
@@ -35,7 +33,7 @@ class RedisCacheClient : CacheClient {
         }.getOrElse {
             var value: T? = null
             try {
-                value = supplier.get()
+                value = supplier()
             } catch (e: Exception) {
                 logger.error("cannot find cached configuration {}, {}", key, e.message)
             }
@@ -45,7 +43,7 @@ class RedisCacheClient : CacheClient {
         }
     }
 
-    override fun <T> get(key: String, supplier: Supplier<T>, expire: Long): T? {
+    override fun <T> get(key: String, supplier: () -> T, expire: Long): T? {
         val value = get(key, supplier)
         template!!.expire(key, expire, TimeUnit.SECONDS)
         return value

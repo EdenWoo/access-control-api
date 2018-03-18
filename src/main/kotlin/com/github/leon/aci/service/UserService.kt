@@ -6,8 +6,10 @@ import arrow.core.getOrElse
 import arrow.syntax.option.toOption
 import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.User
+import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -15,12 +17,19 @@ import org.springframework.stereotype.Service
 
 
 @Service
+@EnableConfigurationProperties(value = [(ApplicationProperties::class)])
 class UserService(
-        @Autowired val userDao: UserDao
+        @Autowired val userDao: UserDao,
+        @Autowired val applicationProperties: ApplicationProperties
 ) : BaseService<User, Long>() {
     fun getUserWithPermissions(username: String): User {
         val userOpt = userDao.findByUsername(username).toOption()
-                .filter { it.verify!! }
+                .filter {
+                    when (applicationProperties.user.needVerify) {
+                        true -> it.verify!!
+                        false -> true
+                    }
+                }
         val user = when (userOpt) {
             is Some -> userOpt.t
             None -> throw AccessDeniedException("invalid user information or user is not verified: $username")

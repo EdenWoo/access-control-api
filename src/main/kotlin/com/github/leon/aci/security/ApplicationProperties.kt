@@ -15,16 +15,22 @@ class ApplicationProperties {
     var userCookie: String? = null
 
 
-    var jwt: Jwt? = null
+    var jwt: Jwt = Jwt()
+
+    var user: User = User()
 
 
     class Jwt {
-        internal var header = "Authorization"
-        internal var expiresIn: Long? = 864000L
-        internal var secret = "queenvictoria"
-        internal var cookie = "AUTH-TOKEN"
-        internal var param = "token"
-        internal var anonymousUrls: String? = null
+         var header = "Authorization"
+         var expiresIn: Long? = 864000L
+         var secret = "queenvictoria"
+         var cookie = "AUTH-TOKEN"
+         var param = "token"
+         var anonymousUrls: String? = null
+    }
+
+    class User {
+        var needVerify  = false
     }
 
     companion object {

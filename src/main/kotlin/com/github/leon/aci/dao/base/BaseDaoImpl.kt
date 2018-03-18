@@ -7,7 +7,7 @@ import arrow.syntax.collections.firstOption
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import com.github.leon.aci.vo.createFilters
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.math.NumberUtils
 import org.joor.Reflect

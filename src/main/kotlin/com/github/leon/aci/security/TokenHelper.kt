@@ -2,7 +2,7 @@ package com.github.leon.aci.security
 
 import com.github.leon.aci.domain.User
 import com.github.leon.extentions.orElse
-import com.github.leon.security.ApplicationProperties
+import com.github.leon.aci.security.ApplicationProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import org.springframework.beans.factory.annotation.Autowired
