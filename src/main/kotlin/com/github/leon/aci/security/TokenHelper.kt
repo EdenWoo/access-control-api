@@ -1,8 +1,7 @@
-package com.cfgglobal.test.security
+package com.github.leon.aci.security
 
 import arrow.data.Try
 import com.github.leon.aci.domain.User
-import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.extentions.orElse
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

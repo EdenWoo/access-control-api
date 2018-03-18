@@ -5,7 +5,6 @@ import arrow.data.Failure
 import arrow.data.Success
 import arrow.data.Try
 import arrow.syntax.option.toOption
-import com.cfgglobal.test.security.TokenHelper
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.aci.config.ActionReportProperties
 import com.github.leon.aci.config.jpa.SecurityAuditor
