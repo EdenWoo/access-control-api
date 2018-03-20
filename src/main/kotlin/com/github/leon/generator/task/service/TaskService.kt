@@ -46,6 +46,7 @@ object TaskService {
         folder = when (task.taskOfProject) {
             TaskOfProject.API -> codeProject.apiTargetPath + File.separator + folder
             TaskOfProject.UI -> codeProject.uiTargetPath + File.separator + folder
+            TaskOfProject.TEST -> codeProject.testTargetPath + File.separator + folder
         }
         val folderDir = File(folder)
         if (!folderDir.exists()) {

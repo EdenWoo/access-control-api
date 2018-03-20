@@ -25,7 +25,11 @@ data class CodeProject(
 
         var uiTargetPath: String,
 
-        var uiTasks: List<Task> = listOf()
+        var uiTasks: List<Task> = listOf(),
+
+        var testTargetPath: String,
+
+        var testTasks: List<Task> = listOf()
 
 ){
     fun generate(){
@@ -34,6 +38,10 @@ data class CodeProject(
         }
 
         this.uiTasks.forEach {
+            TaskService.processTask(this,it)
+        }
+
+        this.testTasks.forEach {
             TaskService.processTask(this,it)
         }
     }
