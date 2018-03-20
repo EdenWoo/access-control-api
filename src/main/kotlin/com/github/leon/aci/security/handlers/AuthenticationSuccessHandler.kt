@@ -10,6 +10,7 @@ import com.github.leon.aci.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.cache.CacheClient
 import com.github.leon.aci.security.ApplicationProperties
+import com.github.leon.extentions.orElse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -53,7 +54,7 @@ class AuthenticationSuccessHandler(
 
         val jws = tokenHelper.generateToken(user.username)
 
-        val jwt = applicationProperties.jwt!!
+        val jwt = applicationProperties.jwt
         val authCookie = Cookie(jwt.cookie, jws)
         authCookie.path = "/"
         authCookie.isHttpOnly = true
@@ -68,7 +69,7 @@ class AuthenticationSuccessHandler(
 
         val userTokenState = UserTokenState(
                 access_token = jws,
-                expires_in = jwt.expiresIn,
+                expires_in = user.expiresIn.orElse(jwt.expiresIn),
                 type = user.userType.toOption().map { it.name }.getOrElse { "" }
         )
 
