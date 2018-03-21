@@ -18,7 +18,11 @@ annotation class FieldFeature(
         /**
          * 不在表单显示
          */
-        val hidden: Boolean = false,
+        val hiddenInForm: Boolean = false,
+        /**
+         * 不在列表显示
+         */
+        val hiddenInList: Boolean = false,
         /**
          * 字符显示长度，剩下的用...省略
          */

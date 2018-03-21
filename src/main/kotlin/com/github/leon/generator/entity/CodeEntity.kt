@@ -77,7 +77,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 selectOne = it.selectOne,
                                                 selectMany = it.selectMany,
                                                 addDynamicMany = it.addDynamicMany,
-                                                hidden = it.hidden,
+                                                hiddenInForm = it.hiddenInForm,
+                                                hiddenInList = it.hiddenInList,
                                                 limit = it.limit)
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
