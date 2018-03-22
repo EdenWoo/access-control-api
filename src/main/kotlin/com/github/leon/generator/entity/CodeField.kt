@@ -3,7 +3,6 @@ package com.github.leon.generator.entity
 
 data class CodeField(
         val name: String,
-        val display: String? = null,
         val type: FieldType,
         val primaryKey: Boolean = false,
         val searchable: Boolean = false,
@@ -21,7 +20,9 @@ data class CodeField(
         val attachment: Boolean? = false,
         val selectOne: Boolean? = false,
         val selectMany: Boolean? = false,
-        val addDynamicMany: Boolean? = false
+        val addDynamicMany: Boolean? = false,
+        val textarea: Boolean = false,
+        val richText: Boolean = false
 
 
 )

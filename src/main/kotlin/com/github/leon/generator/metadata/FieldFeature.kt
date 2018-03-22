@@ -1,4 +1,3 @@
-
 package com.github.leon.generator.metadata
 
 
@@ -7,9 +6,7 @@ package com.github.leon.generator.metadata
 annotation class FieldFeature(
         val sortable: Boolean = false,
         val searchable: Boolean = false,
-        val display: Boolean = true,
         val boolean: Boolean = true,
-        val require: Boolean = true,
         val switch: Boolean = false,
         val attachment: Boolean = false,
         val selectOne: Boolean = false,
@@ -26,7 +23,9 @@ annotation class FieldFeature(
         /**
          * 字符显示长度，剩下的用...省略
          */
-        val limit:Int=255
+        val limit: Int = 255,
+        val textarea: Boolean = false,
+        val richText: Boolean = false
 
 )
 

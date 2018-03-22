@@ -79,7 +79,9 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 addDynamicMany = it.addDynamicMany,
                                                 hiddenInForm = it.hiddenInForm,
                                                 hiddenInList = it.hiddenInList,
-                                                limit = it.limit)
+                                                limit = it.limit,
+                                                textarea = it.textarea,
+                                                richText = it.richText)
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
 

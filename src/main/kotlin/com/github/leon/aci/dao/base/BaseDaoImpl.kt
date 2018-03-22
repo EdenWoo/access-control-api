@@ -154,6 +154,7 @@ class BaseDaoImpl<T, ID : Serializable>(
         }
         when (condition.operator.toUpperCase()) {
             Filter.OPERATOR_NULL -> predicate = cb.isNull(searchPath)
+            Filter.OPERATOR_NOT_NULL -> predicate = cb.isNotNull(searchPath)
             Filter.OPERATOR_LIKE -> predicate = cb.like(searchPath as Path<String>, "%$s%")
             Filter.OPERATOR_LESS_EQ -> predicate = cb.lessThan<String>(searchPath as Path<String>, s)
             Filter.OPERATOR_BETWEEN -> {
