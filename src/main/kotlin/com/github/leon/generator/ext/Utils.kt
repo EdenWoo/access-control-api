@@ -64,6 +64,19 @@ object Utils {
     }
 
     /**
+     * e.g., "Capital Spaced".
+     * payAmount → Payment Amount
+     */
+    @JvmStatic
+    fun capitalSpaced(source: String): String {
+        return CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE)
+                .convert(source)!!
+                .split("_")
+                .map { it.capitalize() }
+                .joinToString(" ")
+    }
+
+    /**
      * e.g., "UPPER_UNDERSCORE".
      */
     @JvmStatic
@@ -72,4 +85,9 @@ object Utils {
     }
 
 
+}
+
+fun main(args: Array<String>) {
+    val str = Utils.capitalSpaced("payAmount")
+    println(str)
 }
