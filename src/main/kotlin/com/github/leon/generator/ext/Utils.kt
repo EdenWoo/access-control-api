@@ -46,30 +46,10 @@ object Utils {
 
     /**
      * e.g., "Spaced Capital".
-     */
-    @JvmStatic
-    fun spacedCapital(source: String): String {
-        val s = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.UPPER_CAMEL).convert(source)
-        var out = StringBuilder(s)
-        val p = Pattern.compile("[A-Z]")
-        val m = p.matcher(s)
-        var extraFeed = 0
-        while (m.find()) {
-            if (m.start() != 0) {
-                out = out.insert(m.start() + extraFeed, " ")
-                extraFeed++
-            }
-        }
-        //        return  CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_CAMEL).convert(source).replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
-        return out.toString()
-    }
-
-    /**
-     * e.g., "Capital Spaced".
      * payAmount → Payment Amount
      */
     @JvmStatic
-    fun capitalSpaced(source: String): String {
+    fun spacedCapital(source: String): String {
         return CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE)
                 .convert(source)!!
                 .split("_").joinToString(" ") { it.capitalize() }
