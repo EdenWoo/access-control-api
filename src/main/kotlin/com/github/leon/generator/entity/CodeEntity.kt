@@ -42,8 +42,11 @@ fun scanForCodeEntities(): List<CodeEntity> {
                     var codeField = CodeField(
                             name = it.name,
                             type = when {
-                                List::class.java.isAssignableFrom(it.type) -> FieldType(name = "List", element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
-                                BaseEntity::class.java.isAssignableFrom(it.type) -> FieldType(name = "Entity", element = it.type.simpleName)
+                                List::class.java.isAssignableFrom(it.type) ->
+                                    FieldType(name = "List",
+                                            element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
+                                BaseEntity::class.java.isAssignableFrom(it.type) ->
+                                    FieldType(name = "Entity", element = it.type.simpleName)
                                 else -> FieldType(name = it.type.simpleName)
                             }
                     )
@@ -81,7 +84,9 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 hiddenInList = it.hiddenInList,
                                                 limit = it.limit,
                                                 textarea = it.textarea,
-                                                richText = it.richText)
+                                                richText = it.richText,
+                                                display = it.display
+                                                )
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
 

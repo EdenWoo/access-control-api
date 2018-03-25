@@ -11,7 +11,7 @@ data class CodeField(
         val unique: Boolean = false,
         val hiddenInForm: Boolean = false,
         val hiddenInList: Boolean = false,
-        val limit:Int = 255,
+        val limit: Int = 255,
         val sizeMin: Int? = null,
         val sizeMax: Int? = null,
         val rangeMin: Long? = null,
@@ -22,7 +22,8 @@ data class CodeField(
         val selectMany: Boolean? = false,
         val addDynamicMany: Boolean? = false,
         val textarea: Boolean = false,
-        val richText: Boolean = false
+        val richText: Boolean = false,
+        val display: String? = null
 
 
 )

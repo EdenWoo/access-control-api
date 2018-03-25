@@ -25,7 +25,11 @@ annotation class FieldFeature(
          */
         val limit: Int = 255,
         val textarea: Boolean = false,
-        val richText: Boolean = false
+        val richText: Boolean = false,
+        /**
+         * 列表中管理实体显示的字段
+         */
+        val display: String = ""
 
 )
 
