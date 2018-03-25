@@ -14,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.ModelAndView
 import java.util.concurrent.Executors
 import javax.servlet.http.HttpServletRequest
@@ -88,6 +89,14 @@ class GlobalExceptionHandler(
         apiResp.error = e.message
         return ResponseEntity.badRequest().body(apiResp)
     }
+    @ExceptionHandler(value = [(MethodArgumentTypeMismatchException::class)])
+    fun methodArgumentTypeMismatchException(e: Exception): ResponseEntity<ApiResp> {
+        val apiResp = ApiResp()
+        apiResp.error = e.message
+        return ResponseEntity.badRequest().body(apiResp)
+    }
+
+
 
     @ExceptionHandler(value = [(DataIntegrityViolationException::class)])
     @Throws(Exception::class)
