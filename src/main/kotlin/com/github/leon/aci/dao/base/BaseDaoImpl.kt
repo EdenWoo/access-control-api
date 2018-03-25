@@ -4,10 +4,10 @@ package com.github.leon.aci.dao.base
 import arrow.core.Option
 import arrow.data.Try
 import arrow.syntax.collections.firstOption
+import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import com.github.leon.aci.vo.createFilters
-import com.github.leon.aci.security.ApplicationProperties
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.math.NumberUtils
 import org.joor.Reflect
@@ -100,7 +100,7 @@ class BaseDaoImpl<T, ID : Serializable>(
                                     val arr = condition.value as Array<String>
                                     val o1 = arr[0]
                                     val o2 = arr[1]
-                                    return@filter StringUtils.isNoneBlank(o1,o2)
+                                    return@filter StringUtils.isNoneBlank(o1, o2)
                                 } else if (StringUtils.isBlank(`val`)) {
                                     return@filter false
                                 }
@@ -161,15 +161,10 @@ class BaseDaoImpl<T, ID : Serializable>(
                 val arr = condition.value as Array<String>
                 val o1 = arr[0]
                 val o2 = arr[1]
-
-
                 var from = o1
                 var to = o2
 
-                if (condition.fieldName.equals("verificationDate") || condition.fieldName.equals("incorporatedDate")) { //
-                    predicate = cb.between<String>(searchPath as Path<String>, from, to)
-
-                } else if (NumberUtils.isCreatable(from)) {
+                if (NumberUtils.isCreatable(from)) {
                     predicate = cb.between<Int>(searchPath as Path<Int>, NumberUtils.toInt(from), NumberUtils.toInt(to))
                 } else {
                     if (from.length == "1970-01-01".length) {
@@ -202,7 +197,19 @@ class BaseDaoImpl<T, ID : Serializable>(
                 isEnum(s) -> cb.equal(searchPath, str2Enum(s).get())
                 NumberUtils.isCreatable(s) -> cb.equal(searchPath, NumberUtils.toLong(s))
                 s.contains("-") -> cb.equal(searchPath, LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                else -> cb.equal(searchPath, s)
+                else -> {
+                    when (condition.fieldFunction) {
+                        null -> cb.equal(searchPath, s)
+                        "length" -> {
+                            val exp = cb.length(searchPath as Expression<String>)
+                            cb.equal(exp, s.toInt())
+                        }
+                        else -> {
+                            cb.equal(searchPath, s)
+                        }
+                    }
+
+                }
             }
         }
         return predicate

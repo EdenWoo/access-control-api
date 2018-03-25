@@ -2,6 +2,7 @@ package com.github.leon.aci.service.rule.access
 
 
 import com.github.leon.aci.domain.Permission
+import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import org.springframework.stereotype.Component
 
@@ -13,8 +14,13 @@ class UserAccessRule : AbstractAccessRule() {
 
     override fun exec(permission: Permission): Filter {
         val user = securityFilter!!.currentUser()
-        val orgFilter = Filter()
-        orgFilter.addCondition("user.id", user.id, Filter.OPERATOR_GREATER_EQ)
-        return orgFilter
+        return Filter(
+                conditions = listOf(
+                        Condition(
+                                fieldName =  "user.id",
+                                value = user.id,
+                                operator =  Filter.OPERATOR_EQ)
+                )
+        )
     }
 }

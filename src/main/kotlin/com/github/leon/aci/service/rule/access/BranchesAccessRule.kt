@@ -3,6 +3,7 @@ package com.github.leon.aci.service.rule.access
 
 import com.github.leon.aci.dao.BranchDao
 import com.github.leon.aci.domain.Permission
+import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -18,11 +19,16 @@ class BranchesAccessRule : AbstractAccessRule() {
 
     override fun exec(permission: Permission): Filter {
         val branch = securityFilter!!.currentUser().branch
-        val orgFilter = Filter()
         val orgId = branch!!.id!!
         var ids = branchDao!!.findSubOrgIds(branch.id)
         ids += orgId
-        orgFilter.addCondition("creator.branch.id", ids, Filter.OPERATOR_IN)
-        return orgFilter
+        return Filter(
+                conditions = listOf(
+                        Condition(
+                                fieldName = "creator.branch.id",
+                                value = ids,
+                                operator = Filter.OPERATOR_IN)
+                )
+        )
     }
 }

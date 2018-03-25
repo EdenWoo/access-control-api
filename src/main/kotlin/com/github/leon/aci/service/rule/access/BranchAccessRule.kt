@@ -2,6 +2,7 @@ package com.github.leon.aci.service.rule.access
 
 
 import com.github.leon.aci.domain.Permission
+import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import org.springframework.stereotype.Component
 
@@ -14,9 +15,13 @@ class BranchAccessRule : AbstractAccessRule() {
 
     override fun exec(permission: Permission): Filter {
         val branch = securityFilter!!.currentUser().branch
-        val orgFilter = Filter()
-        val orgId = branch!!.id
-        orgFilter.addCondition("creator.branch.id", orgId, Filter.OPERATOR_EQ)
-        return orgFilter
+        return Filter(
+                conditions = listOf(
+                        Condition(
+                               fieldName =  "creator.branch.id",
+                               value = branch!!.id,
+                               operator =  Filter.OPERATOR_EQ)
+                )
+        )
     }
 }

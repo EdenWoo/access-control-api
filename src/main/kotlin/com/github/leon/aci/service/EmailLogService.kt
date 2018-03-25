@@ -3,6 +3,7 @@ package com.github.leon.aci.service
 import com.github.leon.aci.dao.EmailLogDao
 import com.github.leon.aci.domain.EmailLog
 import com.github.leon.aci.service.base.BaseService
+import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import org.apache.commons.lang3.math.NumberUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,8 +17,21 @@ class EmailLogService : BaseService<EmailLog, Long>() {
 
 
     fun findForSend(customEmail: EmailLog): List<EmailLog> {
-        val filter = Filter().addCondition("status", customEmail.status, Filter.OPERATOR_EQ)
-                .addCondition("times", customEmail.times, Filter.OPERATOR_LESS_EQ)
+        val filter = Filter(
+                conditions = listOf(
+                        Condition(
+                                fieldName = "statue",
+                                value = customEmail.status,
+                                operator = Filter.OPERATOR_EQ
+                        ),
+                        Condition(
+                                fieldName = "times",
+                                value = customEmail.times,
+                                operator = Filter.OPERATOR_LESS_EQ
+                        )
+
+                ))
+
         return findByFilter(filter)
     }
 

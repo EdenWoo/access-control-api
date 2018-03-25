@@ -10,6 +10,7 @@ import arrow.syntax.option.toOption
 import arrow.typeclasses.binding
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
+import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.extentions.remainLastIndexOf
@@ -32,7 +33,11 @@ class CommonController(
         return Option.monad().binding {
             val field = f.toOption().bind()
             val value = v.toOption().bind()
-            val filter = Filter().addCondition(field, value, Filter.OPERATOR_EQ)
+            val filter = Filter(conditions = listOf(Condition(
+                    fieldName = field,
+                    value = value,
+                    operator = Filter.OPERATOR_EQ
+            )))
             val result = Try { service.findByFilter(filter) }.toOption().bind()
             val status = when (result.size) {
                 0 -> 200

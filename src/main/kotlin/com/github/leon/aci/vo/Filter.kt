@@ -1,7 +1,9 @@
 package com.github.leon.aci.vo
 
 import arrow.core.getOrElse
+import arrow.syntax.collections.firstOption
 import arrow.syntax.option.toOption
+import com.github.leon.aci.vo.Filter.Companion.FUNCTION_SUFFIX
 import com.github.leon.aci.vo.Filter.Companion.OPERATOR_BETWEEN
 import com.github.leon.aci.vo.Filter.Companion.OPERATOR_IN
 import com.github.leon.aci.vo.Filter.Companion.OPERATOR_LIKE
@@ -15,66 +17,49 @@ import java.text.MessageFormat
 import java.util.*
 
 
-class Filter {
-
-
-    var conditions = listOf<Condition>()
-
-    var relation = RELATION_AND
-
-    fun addCondition(fieldName: String, value: Any?, operator: String?, relation: String): Filter {
-        conditions += Condition(fieldName, value, operator!!, relation)
-        return this
-    }
-
-    fun addCondition(fieldName: String, value: Any?, operator: String?): Filter {
-        conditions += (Condition(fieldName, value, operator!!, Filter.RELATION_AND))
-        return this
-    }
-
-    fun addCondition(condition: Condition): Filter {
-        conditions += condition
-        return this
-    }
-
-
+data class Filter (
+    var conditions:List<Condition> = emptyList(),
+    var relation:String = RELATION_AND
+){
     companion object {
 
         val EMPTY = Filter()
 
-        val OPERATOR_LIKE = "LIKE"
+        const val OPERATOR_LIKE = "LIKE"
 
-        val OPERATOR_EQ = "="
+        const val OPERATOR_EQ = "="
 
-        val OPERATOR_NOT_EQ = "<>"
+        const val OPERATOR_NOT_EQ = "<>"
 
-        val OPERATOR_GREATER_THAN = ">"
+        const val OPERATOR_GREATER_THAN = ">"
 
-        val OPERATOR_LESS_THEN = "<"
+        const val OPERATOR_LESS_THEN = "<"
 
-        val OPERATOR_GREATER_EQ = ">="
+        const val OPERATOR_GREATER_EQ = ">="
 
-        val OPERATOR_LESS_EQ = "<="
+        const val OPERATOR_LESS_EQ = "<="
 
-        val OPERATOR_NULL = "NULL"
+        const val OPERATOR_NULL = "NULL"
 
-        val OPERATOR_NOT_NULL = "NOTNULL"
+        const val OPERATOR_NOT_NULL = "NOTNULL"
 
-        val OPERATOR_BETWEEN = "BETWEEN"
+        const val OPERATOR_BETWEEN = "BETWEEN"
 
-        val OPERATOR_IN = "IN"
+        const val OPERATOR_IN = "IN"
 
-        val RELATION_AND = "AND"
+        const val RELATION_AND = "AND"
 
-        val RELATION_OR = "OR"
+        const val RELATION_OR = "OR"
 
-        val RELATION_NOT = "NOT"
+        const val RELATION_NOT = "NOT"
 
-        val OPERATOR_SUFFIX = "_op"
+        const val OPERATOR_SUFFIX = "_op"
 
-        val RELATION_SUFFIX = "_rl"
+        const val RELATION_SUFFIX = "_rl"
 
-        val FILTER_PREFIX = "f_"
+        const val FUNCTION_SUFFIX = "_fun"
+
+        const val FILTER_PREFIX = "f_"
 
     }
 
@@ -82,12 +67,13 @@ class Filter {
 
 fun createFilters(params: Map<String, Array<String>>): List<Filter> {
 
-    return params.filter { it -> it.key.contains("f_") && !it.key.endsWith("_op") && !it.key.endsWith("_rl") }
+    return params.filter { it -> it.key.contains("f_") && !it.key.endsWith("_op") && !it.key.endsWith("_rl") &&!it.key.endsWith("_fun")}
             .map { it ->
                 val tempField = it.key
                 var operator: String? = null
                 var value: Any? = null
                 val tempValue = it.value
+                val fieldFunction = params[tempField + FUNCTION_SUFFIX].toOption().getOrElse { arrayOf() }.firstOption()
                 val tempOperator = params[tempField + OPERATOR_SUFFIX].toOption().getOrElse { arrayOf() }
                 val tempRelation = params[tempField + RELATION_SUFFIX].toOption().getOrElse { arrayOf() }
 
@@ -105,9 +91,9 @@ fun createFilters(params: Map<String, Array<String>>): List<Filter> {
                         }
                     }
                 }
-                var filter = Filter()
+                val filter:Filter
                 if (operatorSize >= 2) {
-                    filter = tempValue.zip(tempOperator)
+                    val conditions = tempValue.zip(tempOperator)
                             .map { (value, operator) ->
                                 Condition().apply {
                                     this.fieldName = field
@@ -116,7 +102,7 @@ fun createFilters(params: Map<String, Array<String>>): List<Filter> {
                                     this.relation = tempRelation[0]
                                 }
                             }
-                            .fold(Filter()) { f, cond -> f.addCondition(cond) }
+                    filter = Filter(conditions = conditions)
                 } else {
                     if (operatorSize == 0) {
                         operator = OPERATOR_LIKE
@@ -135,16 +121,25 @@ fun createFilters(params: Map<String, Array<String>>): List<Filter> {
                         operator = OPERATOR_IN
                     }
 
-                    if (isMultiField(field)) {
-                        for (f in StringUtils.split(field, "-")) {
-                            filter.addCondition(f, value, operator, RELATION_OR)
+                    filter = when {
+                        isMultiField(field) -> {
+                            val conditions = field.split("-")
+                                    .map {
+                                        Condition(fieldName = it,value = value,operator = operator!!,relation = RELATION_OR)
+                                    }
+                            Filter(conditions = conditions )
                         }
-                    } else {
-                        filter.addCondition(field, value, operator)
+                        else -> Filter(conditions = listOf(
+                                Condition(
+                                        fieldName = field,
+                                        fieldFunction = fieldFunction.orNull(),
+                                        value = value,
+                                        operator = operator!!,
+                                        relation = RELATION_AND)
+                        ))
                     }
                 }
 
-                filter.relation = RELATION_AND
                 filter
             }.toList()
 }
