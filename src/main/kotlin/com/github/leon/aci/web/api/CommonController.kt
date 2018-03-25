@@ -28,7 +28,7 @@ class CommonController(
 ) : BaseController() {
 
     @RequestMapping(value = ["/{entity}/{f}/{v}"], method = [RequestMethod.HEAD])
-    fun existenceCheck(@PathVariable entity: String, @PathVariable f: String, @PathVariable v: String): ResponseEntity<String> {
+    fun existenceCheck(@PathVariable entity: String, @PathVariable(required = false) f: String, @PathVariable v: String): ResponseEntity<String> {
         val service = context.getBean("${entity}Service") as BaseService<*, *>
         return Option.monad().binding {
             val field = f.toOption().bind()
@@ -44,7 +44,7 @@ class CommonController(
                 else -> 409
             }
             ResponseEntity.status(status).body(field)
-        }.ev().getOrElse { ResponseEntity.badRequest().body(f + v) }
+        }.ev().getOrElse { ResponseEntity.status(200).body("") }
     }
 
     @GetMapping("/enum/{name}")
