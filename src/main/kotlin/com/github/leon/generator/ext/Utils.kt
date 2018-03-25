@@ -72,9 +72,7 @@ object Utils {
     fun capitalSpaced(source: String): String {
         return CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE)
                 .convert(source)!!
-                .split("_")
-                .map { it.capitalize() }
-                .joinToString(" ")
+                .split("_").joinToString(" ") { it.capitalize() }
     }
 
     /**

@@ -117,6 +117,13 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = [(Exception::class)])
+    fun defaultErrorHandler(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
+        val apiResp = ApiResp()
+        apiResp.error = e.message
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResp)
+    }
+
+ /*   @ExceptionHandler(value = [(Exception::class)])
     @Throws(Exception::class)
     fun defaultErrorHandler(req: HttpServletRequest, e: Exception): ModelAndView {
         val mav = ModelAndView()
@@ -162,7 +169,7 @@ class GlobalExceptionHandler {
             }
         }
     }
-
+*/
     companion object {
 
         private val service = Executors.newCachedThreadPool()
