@@ -1,5 +1,6 @@
 package com.github.leon.generator.ext
 
+import com.github.leon.generator.entity.CodeEntity
 import com.google.common.base.CaseFormat
 import java.util.regex.Pattern
 
@@ -85,9 +86,10 @@ object Utils {
     }
 
 
+    @JvmStatic
+    fun findCodeEntity(entities: List<CodeEntity>, name: String): CodeEntity? {
+        return entities.firstOrNull { it.name == name }
+    }
+
 }
 
-fun main(args: Array<String>) {
-    val str = Utils.capitalSpaced("payAmount")
-    println(str)
-}
