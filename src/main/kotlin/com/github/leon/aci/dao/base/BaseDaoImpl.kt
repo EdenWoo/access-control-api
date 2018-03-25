@@ -195,7 +195,7 @@ class BaseDaoImpl<T, ID : Serializable>(
             else -> predicate = when {
                 s == "true" || s == "false" -> cb.equal(searchPath, s.toBoolean())
                 isEnum(s) -> cb.equal(searchPath, str2Enum(s).get())
-                NumberUtils.isCreatable(s) -> cb.equal(searchPath, NumberUtils.toLong(s))
+                condition.fieldFunction == null && NumberUtils.isCreatable(s) -> cb.equal(searchPath, NumberUtils.toLong(s))
                 s.contains("-") -> cb.equal(searchPath, LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 else -> {
                     when (condition.fieldFunction) {
