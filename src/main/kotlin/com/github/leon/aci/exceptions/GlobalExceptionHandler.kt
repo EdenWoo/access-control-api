@@ -1,10 +1,8 @@
 package com.github.leon.aci.exceptions
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.common.collect.Maps
 import org.apache.commons.lang3.StringUtils
-import org.apache.commons.lang3.exception.ExceptionUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.DataIntegrityViolationException
@@ -17,21 +15,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.ModelAndView
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.concurrent.Executors
 import javax.servlet.http.HttpServletRequest
 import javax.validation.ConstraintViolationException
 
 @ControllerAdvice
-class GlobalExceptionHandler {
+class GlobalExceptionHandler(
+        @Value("\${spring.application.name}")
+        val project: String,
 
-    @Value("\${spring.application.name}")
-    private val project: String? = null
+        @Autowired
+        val objectMapper: ObjectMapper
 
-    @Autowired
-    private val objectMapper: ObjectMapper? = null
-
+) {
+    val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)!!
 
     @ExceptionHandler(value = [(MethodArgumentNotValidException::class)])
     fun methodArgumentNotValid(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
@@ -118,58 +115,59 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(value = [(Exception::class)])
     fun defaultErrorHandler(req: HttpServletRequest, e: Exception): ResponseEntity<ApiResp> {
+        log.error("unknown error ", e)
         val apiResp = ApiResp()
         apiResp.error = e.message
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResp)
     }
 
- /*   @ExceptionHandler(value = [(Exception::class)])
-    @Throws(Exception::class)
-    fun defaultErrorHandler(req: HttpServletRequest, e: Exception): ModelAndView {
-        val mav = ModelAndView()
-        mav.addObject("exception", e)
-        mav.addObject("url", req.requestURL)
-        mav.viewName = "error"
-        if ("XMLHttpRequest" == req.getHeader("X-Requested-With")) {
-            mav.addObject("msg", e.message)
-            mav.viewName = "ajaxError"
-        }
-        //   reportError(req, e);
-        return mav
-    }
+    /*   @ExceptionHandler(value = [(Exception::class)])
+       @Throws(Exception::class)
+       fun defaultErrorHandler(req: HttpServletRequest, e: Exception): ModelAndView {
+           val mav = ModelAndView()
+           mav.addObject("exception", e)
+           mav.addObject("url", req.requestURL)
+           mav.viewName = "error"
+           if ("XMLHttpRequest" == req.getHeader("X-Requested-With")) {
+               mav.addObject("msg", e.message)
+               mav.viewName = "ajaxError"
+           }
+           //   reportError(req, e);
+           return mav
+       }
 
-    private fun reportError(req: HttpServletRequest, e: Exception) {
-        val ip = req.remoteAddr
-        val stackTrace = ExceptionUtils.getStackTrace(e)
-        service.submit {
-            val param = Maps.newHashMap<String, String>()
-            param["ip"] = ip
-            param["url"] = req.requestURI
-            param["project"] = project
-            param["query_string"] = req.queryString
-            param["stackTrace"] = stackTrace
-            var data = ""
-            try {
-                data = objectMapper!!.writeValueAsString(param)
-            } catch (e1: JsonProcessingException) {
-                e1.printStackTrace()
-            } finally {
+       private fun reportError(req: HttpServletRequest, e: Exception) {
+           val ip = req.remoteAddr
+           val stackTrace = ExceptionUtils.getStackTrace(e)
+           service.submit {
+               val param = Maps.newHashMap<String, String>()
+               param["ip"] = ip
+               param["url"] = req.requestURI
+               param["project"] = project
+               param["query_string"] = req.queryString
+               param["stackTrace"] = stackTrace
+               var data = ""
+               try {
+                   data = objectMapper!!.writeValueAsString(param)
+               } catch (e1: JsonProcessingException) {
+                   e1.printStackTrace()
+               } finally {
 
-                val urlConn: HttpURLConnection
-                try {
-                    val mUrl = URL("http://discover.cfg-global.com/exception")
-                    urlConn = mUrl.openConnection() as HttpURLConnection
-                    urlConn.addRequestProperty("Content-Type", "application/" + "POST")
-                    urlConn.setRequestProperty("Content-Length", Integer.toString(data.length))
-                    urlConn.outputStream.write(data.toByteArray(charset("UTF8")))
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                }
+                   val urlConn: HttpURLConnection
+                   try {
+                       val mUrl = URL("http://discover.cfg-global.com/exception")
+                       urlConn = mUrl.openConnection() as HttpURLConnection
+                       urlConn.addRequestProperty("Content-Type", "application/" + "POST")
+                       urlConn.setRequestProperty("Content-Length", Integer.toString(data.length))
+                       urlConn.outputStream.write(data.toByteArray(charset("UTF8")))
+                   } catch (ex: Exception) {
+                       ex.printStackTrace()
+                   }
 
-            }
-        }
-    }
-*/
+               }
+           }
+       }
+   */
     companion object {
 
         private val service = Executors.newCachedThreadPool()
