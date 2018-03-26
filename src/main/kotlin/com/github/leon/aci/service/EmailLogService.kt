@@ -17,20 +17,22 @@ class EmailLogService : BaseService<EmailLog, Long>() {
 
 
     fun findForSend(customEmail: EmailLog): List<EmailLog> {
-        val filter = Filter(
-                conditions = listOf(
-                        Condition(
-                                fieldName = "status",
-                                value = customEmail.status,
-                                operator = Filter.OPERATOR_EQ
-                        ),
-                        Condition(
-                                fieldName = "times",
-                                value = customEmail.times,
-                                operator = Filter.OPERATOR_LESS_EQ
-                        )
+        val cond1 = Condition(
+                fieldName = "status",
+                value = customEmail.status,
+                operator = Filter.OPERATOR_EQ
+        )
+        val cond2 = Condition(
+                fieldName = "times",
+                value = customEmail.times,
+                operator = Filter.OPERATOR_LESS_EQ
+        )
+        val conds = listOf(
+                cond1,
+                cond2
 
-                ))
+        ).filter { it.value != null }
+        val filter = Filter(conditions = conds)
 
         return findByFilter(filter)
     }
