@@ -20,7 +20,7 @@ class EmailLogService : BaseService<EmailLog, Long>() {
         val filter = Filter(
                 conditions = listOf(
                         Condition(
-                                fieldName = "statue",
+                                fieldName = "status",
                                 value = customEmail.status,
                                 operator = Filter.OPERATOR_EQ
                         ),
