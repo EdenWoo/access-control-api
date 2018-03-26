@@ -1,16 +1,14 @@
 package com.github.leon.generator.entity
 
-import com.github.leon.generator.metadata.FieldFeature
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
+import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
 import javax.persistence.Id
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.*
 
 
 data class CodeEntity(
@@ -65,6 +63,16 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     is Min -> {
                                         codeField = codeField.copy(rangeMin = it.value)
                                     }
+                                    is Pattern -> {
+                                        codeField = codeField.copy(pattern = it.regexp)
+                                    }
+                                    is Future ->{
+                                        codeField =codeField.copy(future = true)
+                                    }
+
+                                    is Past ->{
+                                        codeField =codeField.copy(past = true)
+                                    }
                                     is Column -> {
                                         codeField = codeField.copy(
                                                 unique = it.unique,
@@ -86,7 +94,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 textarea = it.textarea,
                                                 richText = it.richText,
                                                 display = it.display
-                                                )
+                                        )
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
 
