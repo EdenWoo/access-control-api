@@ -8,6 +8,7 @@ annotation class FieldFeature(
         val searchable: Boolean = false,
         val boolean: Boolean = true,
         val switch: Boolean = false,
+        val range: Boolean = false,
         val attachment: Boolean = false,
         val selectOne: Boolean = false,
         val selectMany: Boolean = false,
@@ -38,7 +39,6 @@ annotation class FieldFeature(
          * Form中字段宽度 out of 12
          */
         val weight: Int = 6
-
 
 
 )

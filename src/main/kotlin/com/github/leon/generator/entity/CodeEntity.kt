@@ -98,7 +98,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 textarea = it.textarea,
                                                 richText = it.richText,
                                                 display = it.display,
-                                                weight = it.weight
+                                                weight = it.weight,
+                                                range = it.range
                                         )
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)

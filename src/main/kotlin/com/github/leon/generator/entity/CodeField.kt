@@ -20,6 +20,7 @@ data class CodeField(
         val future: Boolean? = null,
         val past: Boolean? = null,
         val switch: Boolean? = false,
+        val range: Boolean? = false,
         val attachment: Boolean? = false,
         val selectOne: Boolean? = false,
         val selectMany: Boolean? = false,
