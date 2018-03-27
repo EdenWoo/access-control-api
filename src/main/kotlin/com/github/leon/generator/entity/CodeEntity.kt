@@ -1,9 +1,11 @@
 package com.github.leon.generator.entity
 
 import arrow.syntax.collections.tail
+import arrow.syntax.option.toOption
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
+import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
@@ -39,7 +41,10 @@ fun scanForCodeEntities(): List<CodeEntity> {
         val codeEntity = CodeEntity(
                 name = it.simpleName
         )
+        val entityFeature = it.getDeclaredAnnotation(EntityFeature::class.java).toOption()
+        println(entityFeature)
         val fields = (it.declaredFields + it.superclass.declaredFields)
+                .filter { listOf("serialVersionUID","Companion").all { ignoreField->ignoreField!=it.name } }
                 .map {
                     var codeField = CodeField(
                             name = it.name,

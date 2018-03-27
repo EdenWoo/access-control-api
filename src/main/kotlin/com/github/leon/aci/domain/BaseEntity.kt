@@ -27,7 +27,7 @@ abstract class BaseEntity(
         var createdAt: ZonedDateTime? = null,
 
         @LastModifiedDate
-        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)")
+        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP")
         var updatedAt: ZonedDateTime? = null,
 
         @CreatedBy
