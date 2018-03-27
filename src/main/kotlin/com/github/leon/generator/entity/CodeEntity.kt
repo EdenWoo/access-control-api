@@ -1,10 +1,8 @@
+package com.github.leon.generator.entity
 import arrow.syntax.collections.tail
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
-import com.github.leon.generator.entity.CodeEnum
-import com.github.leon.generator.entity.CodeField
-import com.github.leon.generator.entity.FieldType
 import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
