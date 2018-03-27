@@ -8,6 +8,7 @@ import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
 import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.FieldFeature
+import org.hibernate.validator.constraints.Range
 import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
@@ -93,6 +94,9 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     }
                                     is Min -> {
                                         codeField = codeField.copy(rangeMin = it.value)
+                                    }
+                                    is Range -> {
+                                        codeField = codeField.copy(rangeMin = it.min, rangeMax = it.max)
                                     }
                                     is Pattern -> {
                                         codeField = codeField.copy(pattern = it.regexp)
