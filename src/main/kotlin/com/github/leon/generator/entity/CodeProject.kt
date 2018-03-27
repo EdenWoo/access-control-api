@@ -31,19 +31,12 @@ data class CodeProject(
 
         var testTasks: List<Task> = listOf()
 
-){
-    fun generate(){
-        this.apiTasks.forEach {
-            TaskService.processTask(this,it)
+) {
+    fun generate() {
+        (apiTasks + uiTasks + testTasks).parallelStream().forEach {
+            TaskService.processTask(this, it)
         }
 
-        this.uiTasks.forEach {
-            TaskService.processTask(this,it)
-        }
-
-        this.testTasks.forEach {
-            TaskService.processTask(this,it)
-        }
     }
 }
 
