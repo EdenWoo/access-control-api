@@ -1,5 +1,6 @@
 package com.github.leon.generator.entity
 
+import arrow.core.Some
 import arrow.syntax.collections.tail
 import arrow.syntax.option.toOption
 import com.github.leon.aci.domain.BaseEntity
@@ -8,6 +9,7 @@ import com.github.leon.extentions.remainLastIndexOf
 import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
+import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
 import javax.persistence.Id
@@ -37,14 +39,32 @@ fun scanForCodeEnum(): List<CodeEnum> {
 }
 
 fun scanForCodeEntities(): List<CodeEntity> {
+    var ignoredFields = listOf("serialVersionUID", "Companion")
     return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>().map {
         val codeEntity = CodeEntity(
                 name = it.simpleName
         )
         val entityFeature = it.getDeclaredAnnotation(EntityFeature::class.java).toOption()
-        println(entityFeature)
+        when (entityFeature) {
+            is Some -> {
+                val en = entityFeature.t
+                if (!en.createdAtInList) {
+                    ignoredFields += "createdAt"
+                }
+                if (!en.creatorInList) {
+                    ignoredFields += "creator"
+                }
+                if (!en.updatedAtInList) {
+                    ignoredFields += "updatedAt"
+                }
+                if (!en.modifierInList) {
+                    ignoredFields += "modifier"
+                }
+            }
+        }
+        val ignoredFieldPredict: (Field) -> Boolean = { ignoredFields.all { ignoreField -> ignoreField != it.name } }
         val fields = (it.declaredFields + it.superclass.declaredFields)
-                .filter { listOf("serialVersionUID","Companion").all { ignoreField->ignoreField!=it.name } }
+                .filter(ignoredFieldPredict)
                 .map {
                     var codeField = CodeField(
                             name = it.name,
