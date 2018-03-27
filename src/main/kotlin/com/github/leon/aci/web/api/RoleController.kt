@@ -61,7 +61,7 @@ class RoleController : BaseController() {
                     RolePermission(
                             permission = permission,
                             rules = selectedRolePermissions
-                                    .firstOption { it.id == permission.id }
+                                    .firstOption { it.permission!!.id == permission.id }
                                     .map { it.rules }
                                     .getOrElse { mutableListOf() })
 

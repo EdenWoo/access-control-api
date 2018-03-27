@@ -1,12 +1,20 @@
-package com.github.leon.aci.service.excel
+package com.github.leon.excel.service
 
+import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.User
 import com.github.leon.files.parser.FileParser
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 
 @Component
-class UserExcelParsingRule : ExcelParsingRule<User> {
+class UserExcelParsingRule(
+        @Autowired
+        val userDao: UserDao,
+        @Autowired
+        val passwordEncoder: PasswordEncoder
+) : ExcelParsingRule<User> {
     override val fileParser: FileParser
         get() {
             val fileParser = FileParser()
@@ -23,6 +31,9 @@ class UserExcelParsingRule : ExcelParsingRule<User> {
         get() = "user"
 
     override fun process(data: List<User>) {
-
+        data.forEach {
+            it.password = passwordEncoder.encode(it.password)
+            userDao.save(it)
+        }
     }
 }

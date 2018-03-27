@@ -1,6 +1,6 @@
-package com.github.leon.aci.web.api
+package com.github.leon.excel
 
-import com.github.leon.aci.service.excel.ExcelParsingRule
+import com.github.leon.excel.service.ExcelParsingRule
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.files.PoiImporter
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
-import java.io.IOException
 import java.time.Instant
 
 @RestController
@@ -22,7 +21,7 @@ class ExcelController : BaseController() {
 
     @PostMapping
     fun submit(file: MultipartFile, rule: String) {
-        val excelParsingRule = excelParsingRules.first { e -> e.ruleName == rule }
+        val excelParsingRule = excelParsingRules.first { it.ruleName == rule }
         val fileName = "/tmp/" + Instant.now().epochSecond
         val tmpFile = File(fileName)
         file.transferTo(tmpFile)
