@@ -1,4 +1,5 @@
 package com.github.leon.generator.entity
+
 import arrow.syntax.collections.tail
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
@@ -38,7 +39,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
         val codeEntity = CodeEntity(
                 name = it.simpleName
         )
-        val fields = it.declaredFields
+        val fields = (it.declaredFields + it.superclass.declaredFields)
                 .map {
                     var codeField = CodeField(
                             name = it.name,
@@ -108,9 +109,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 }
         codeEntity.fields = fields
         val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
-        codeEntity.formHiddenFields = formHiddenFields.sortedBy { it.order }
-        val groupedFields: List<List<CodeField>> = subOrders(otherFields).takeWhile { it.isNotEmpty() }.toList()
-        codeEntity.groupedFields = groupedFields
+        codeEntity.formHiddenFields = formHiddenFields//.sortedBy { it.order }
+        codeEntity.groupedFields = subOrders(otherFields).takeWhile { it.isNotEmpty() }.toList()
         codeEntity
     }
 }
@@ -131,12 +131,10 @@ fun subOrders(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSeq
             terms.first().weight + terms.tail().first().weight > 12 -> {
                 yield(listOf(terms.first()))
                 terms = terms.tail()
-
             }
             terms.first().weight + terms.tail().first().weight == 12 -> {
                 yield(listOf(terms.first(), terms.tail().first()))
                 terms = terms.tail().tail()
-
             }
         }
     }
