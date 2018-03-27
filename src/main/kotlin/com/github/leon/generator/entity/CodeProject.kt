@@ -33,7 +33,7 @@ data class CodeProject(
 
 ) {
     fun generate() {
-        (apiTasks + uiTasks + testTasks).parallelStream().forEach {
+        (apiTasks + uiTasks + testTasks).forEach {
             TaskService.processTask(this, it)
         }
 
