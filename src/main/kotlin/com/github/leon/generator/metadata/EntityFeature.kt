@@ -7,7 +7,8 @@ annotation class EntityFeature(
         val createdAtInList: Boolean = false,
         val updatedAtInList: Boolean = false,
         val creatorInList: Boolean = false,
-        val modifierInList: Boolean = false
+        val modifierInList: Boolean = false,
+        val version: Boolean = false
 
 )
 

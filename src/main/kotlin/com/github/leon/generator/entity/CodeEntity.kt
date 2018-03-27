@@ -9,7 +9,6 @@ import com.github.leon.extentions.remainLastIndexOf
 import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
-import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
 import javax.persistence.Id
@@ -39,11 +38,12 @@ fun scanForCodeEnum(): List<CodeEnum> {
 }
 
 fun scanForCodeEntities(): List<CodeEntity> {
-    var ignoredFields = listOf("serialVersionUID", "Companion")
+
     return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>().map {
         val codeEntity = CodeEntity(
                 name = it.simpleName
         )
+        var ignoredFields = listOf("serialVersionUID", "Companion")
         val entityFeature = it.getDeclaredAnnotation(EntityFeature::class.java).toOption()
         when (entityFeature) {
             is Some -> {
@@ -60,11 +60,13 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 if (!en.modifierInList) {
                     ignoredFields += "modifier"
                 }
+                if (!en.version) {
+                    ignoredFields += "version"
+                }
             }
         }
-        val ignoredFieldPredict: (Field) -> Boolean = { ignoredFields.all { ignoreField -> ignoreField != it.name } }
         val fields = (it.declaredFields + it.superclass.declaredFields)
-                .filter(ignoredFieldPredict)
+                .filter({ ignoredFields.all { ignoreField -> ignoreField != it.name } })
                 .map {
                     var codeField = CodeField(
                             name = it.name,
