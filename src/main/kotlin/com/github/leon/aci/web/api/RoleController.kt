@@ -66,10 +66,8 @@ class RoleController : BaseController() {
                                     .getOrElse { mutableListOf() })
 
                 }
-        role.copy(rolePermissions = list.toMutableList())
         CLEAN_ROLE.end()
-        return ResponseEntity.ok(role)
-
+        return ResponseEntity.ok(role.copy(rolePermissions = list.toMutableList()))
     }
 
     @PostMapping

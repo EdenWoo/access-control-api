@@ -12,6 +12,8 @@ import javax.validation.constraints.*
 
 
 data class CodeEntity(
+        var groupedFields: List<List<CodeField>> = listOf(),
+        var formHiddenFields: List<CodeField> = listOf(),
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
 
@@ -66,12 +68,12 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     is Pattern -> {
                                         codeField = codeField.copy(pattern = it.regexp)
                                     }
-                                    is Future ->{
-                                        codeField =codeField.copy(future = true)
+                                    is Future -> {
+                                        codeField = codeField.copy(future = true)
                                     }
 
-                                    is Past ->{
-                                        codeField =codeField.copy(past = true)
+                                    is Past -> {
+                                        codeField = codeField.copy(past = true)
                                     }
                                     is Column -> {
                                         codeField = codeField.copy(
@@ -103,6 +105,11 @@ fun scanForCodeEntities(): List<CodeEntity> {
                     codeField
                 }
         codeEntity.fields = fields
+        val (f1, f2) = fields.partition { it.hiddenInForm || it.primaryKey }
+        println(f1)
+        println(f2)
+        codeEntity.formHiddenFields = f1
+        //codeEntity.groupedFields =
         codeEntity
     }
 }

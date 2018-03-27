@@ -29,7 +29,17 @@ annotation class FieldFeature(
         /**
          * 列表中管理实体显示的字段
          */
-        val display: String = ""
+        val display: String = "",
+        /**
+         * 字段显示顺序
+         */
+        val order: Int = 0,
+        /**
+         * Form中字段宽度 out of 12
+         */
+        val weight: Int = 6
+
+
 
 )
 
