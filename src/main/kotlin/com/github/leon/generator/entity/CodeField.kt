@@ -26,7 +26,9 @@ data class CodeField(
         val addDynamicMany: Boolean? = false,
         val textarea: Boolean = false,
         val richText: Boolean = false,
-        val display: String? = null
+        val display: String? = null,
+        val order: Int = 0,
+        val weight: Int = 6
 
 
 )

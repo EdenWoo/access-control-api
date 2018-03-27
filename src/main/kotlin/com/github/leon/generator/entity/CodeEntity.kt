@@ -1,5 +1,6 @@
 package com.github.leon.generator.entity
 
+import arrow.syntax.collections.tail
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
@@ -9,6 +10,7 @@ import java.lang.reflect.ParameterizedType
 import javax.persistence.Column
 import javax.persistence.Id
 import javax.validation.constraints.*
+import kotlin.coroutines.experimental.buildSequence
 
 
 data class CodeEntity(
@@ -95,7 +97,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 limit = it.limit,
                                                 textarea = it.textarea,
                                                 richText = it.richText,
-                                                display = it.display
+                                                display = it.display,
+                                                weight = it.weight
                                         )
                                     }
                                     is Id -> codeField = codeField.copy(primaryKey = true)
@@ -105,11 +108,24 @@ fun scanForCodeEntities(): List<CodeEntity> {
                     codeField
                 }
         codeEntity.fields = fields
-        val (f1, f2) = fields.partition { it.hiddenInForm || it.primaryKey }
-        println(f1)
-        println(f2)
-        codeEntity.formHiddenFields = f1
-        //codeEntity.groupedFields =
+        val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
+        codeEntity.formHiddenFields = formHiddenFields.sortedBy { it.order }
+        val groupedFields: List<List<CodeField>> = subOrders(otherFields).toList()
+        codeEntity.groupedFields = groupedFields
         codeEntity
     }
 }
+
+
+fun subOrders(order: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
+    var terms = Pair(order.first(), order.tail())
+    while (true) {
+        when {
+            terms.second.isEmpty() -> yield(listOf(terms.first))
+            terms.first.weight + terms.second.first().weight > 12 -> yield(listOf(terms.first))
+            terms.first.weight + terms.second.first().weight == 12 -> yield(listOf(terms.first, terms.second.first()))
+        }
+        terms = Pair(order.tail().first(), order.tail().tail())
+    }
+}
+
