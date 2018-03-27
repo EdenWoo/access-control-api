@@ -23,11 +23,11 @@ abstract class BaseEntity(
         var version: Long? = null,
 
         @CreatedDate
-        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)", insertable = false, updatable = false)
+        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)")
         var createdAt: ZonedDateTime? = null,
 
         @LastModifiedDate
-        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3)", insertable = false, updatable = false)
+        @Column(columnDefinition = "DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP")
         var updatedAt: ZonedDateTime? = null,
 
         @CreatedBy
@@ -40,9 +40,5 @@ abstract class BaseEntity(
         @JoinColumn(name = "modifier_id")
         var modifier: User? = null
 
+)
 
-) : Serializable {
-    companion object {
-        protected const val serialVersionUID = 1L
-    }
-}
