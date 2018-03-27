@@ -1,9 +1,10 @@
-package com.github.leon.generator.entity
-
 import arrow.syntax.collections.tail
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
+import com.github.leon.generator.entity.CodeEnum
+import com.github.leon.generator.entity.CodeField
+import com.github.leon.generator.entity.FieldType
 import com.github.leon.generator.metadata.FieldFeature
 import org.joor.Reflect
 import java.lang.reflect.ParameterizedType
@@ -110,22 +111,35 @@ fun scanForCodeEntities(): List<CodeEntity> {
         codeEntity.fields = fields
         val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
         codeEntity.formHiddenFields = formHiddenFields.sortedBy { it.order }
-        val groupedFields: List<List<CodeField>> = subOrders(otherFields).toList()
+        val groupedFields: List<List<CodeField>> = subOrders(otherFields).takeWhile { it.isNotEmpty() }.toList()
         codeEntity.groupedFields = groupedFields
         codeEntity
     }
 }
 
 
-fun subOrders(order: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
-    var terms = Pair(order.first(), order.tail())
+fun subOrders(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
+    var terms = codeFields
     while (true) {
         when {
-            terms.second.isEmpty() -> yield(listOf(terms.first))
-            terms.first.weight + terms.second.first().weight > 12 -> yield(listOf(terms.first))
-            terms.first.weight + terms.second.first().weight == 12 -> yield(listOf(terms.first, terms.second.first()))
+            terms.isEmpty() -> {
+                yield(emptyList())
+                terms = emptyList()
+            }
+            terms.tail().isEmpty() -> {
+                yield(listOf(terms.first()))
+                terms = terms.tail()
+            }
+            terms.first().weight + terms.tail().first().weight > 12 -> {
+                yield(listOf(terms.first()))
+                terms = terms.tail()
+
+            }
+            terms.first().weight + terms.tail().first().weight == 12 -> {
+                yield(listOf(terms.first(), terms.tail().first()))
+                terms = terms.tail().tail()
+
+            }
         }
-        terms = Pair(order.tail().first(), order.tail().tail())
     }
 }
-
