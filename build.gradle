@@ -130,8 +130,7 @@ dependencies {
     compile "io.arrow-kt:arrow-effects-kotlinx-coroutines:$arrowVersion"
     compile "io.arrow-kt:arrow-optics:$arrowVersion"
 
-
-    compile 'com.github.b1412:java-toolbox:300dc9714a'
+    compile 'com.github.b1412:java-toolbox:7b979e30b1'
     compile 'com.github.b1412:kotlin-extensions:b0436c1f80'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
