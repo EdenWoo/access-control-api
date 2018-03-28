@@ -111,7 +111,6 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     is Column -> {
                                         codeField = codeField.copy(
                                                 unique = it.unique,
-                                                required = !it.nullable
                                         )
                                     }
                                     is FieldFeature -> {
