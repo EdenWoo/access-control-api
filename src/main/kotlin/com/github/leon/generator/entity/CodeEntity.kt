@@ -66,7 +66,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 }
             }
         }
-        val fields = (it.declaredFields + it.superclass.declaredFields)
+        val fields = (it.superclass.declaredFields + it.declaredFields)
                 .filter({ ignoredFields.all { ignoreField -> ignoreField != it.name } })
                 .map {
                     var codeField = CodeField(
