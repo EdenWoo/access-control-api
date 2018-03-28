@@ -20,6 +20,7 @@ import kotlin.coroutines.experimental.buildSequence
 data class CodeEntity(
         var groupedFields: List<List<CodeField>> = listOf(),
         var formHiddenFields: List<CodeField> = listOf(),
+        var requiredFields: List<CodeField> = listOf(),
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
 
@@ -142,6 +143,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
         val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
         codeEntity.formHiddenFields = formHiddenFields//.sortedBy { it.order }
         codeEntity.groupedFields = subOrders(otherFields).takeWhile { it.isNotEmpty() }.toList()
+        codeEntity.requiredFields = fields.filter { it.required }
         codeEntity
     }
 }
