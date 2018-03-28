@@ -110,7 +110,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     }
                                     is Column -> {
                                         codeField = codeField.copy(
-                                                unique = it.unique,
+                                                unique = it.unique
                                         )
                                     }
                                     is FieldFeature -> {
