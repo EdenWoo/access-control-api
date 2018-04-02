@@ -62,13 +62,13 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 if (!en.modifierInList) {
                     ignoredFields += "modifier"
                 }
-                if (!en.version) {
+                if (!en.versionInList) {
                     ignoredFields += "version"
                 }
             }
         }
         val fields = (it.superclass.declaredFields + it.declaredFields)
-                .filter({ ignoredFields.all { ignoreField -> ignoreField != it.name } })
+                .filter { ignoredFields.all { ignoreField -> ignoreField != it.name } }
                 .map {
                     var codeField = CodeField(
                             name = it.name,
