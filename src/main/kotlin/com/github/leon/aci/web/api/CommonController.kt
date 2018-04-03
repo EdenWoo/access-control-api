@@ -1,4 +1,4 @@
-package com.github.leon.aci.web.api;
+package com.github.leon.aci.web.api
 
 import arrow.core.Option
 import arrow.core.ev

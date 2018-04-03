@@ -157,6 +157,7 @@ class BaseDaoImpl<T, ID : Serializable>(
             Filter.OPERATOR_NOT_NULL -> predicate = cb.isNotNull(searchPath)
             Filter.OPERATOR_LIKE -> predicate = cb.like(searchPath as Path<String>, "%$s%")
             Filter.OPERATOR_LESS_EQ -> predicate = cb.lessThan<String>(searchPath as Path<String>, s)
+            Filter.OPERATOR_NOT_EQ -> predicate = cb.notEqual(searchPath, s)
             Filter.OPERATOR_BETWEEN -> {
                 val arr = condition.value as Array<String>
                 val o1 = arr[0]
