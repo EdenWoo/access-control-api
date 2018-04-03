@@ -20,6 +20,11 @@ import kotlin.coroutines.experimental.buildSequence
 data class CodeEntity(
         var groupedFields: List<List<CodeField>> = listOf(),
         var formHiddenFields: List<CodeField> = listOf(),
+
+        var listFields: List<CodeField> = listOf(),
+        /**
+         * EXCEL 导入导出临时使用
+         */
         var requiredFields: List<CodeField> = listOf(),
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
@@ -141,15 +146,19 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 }
         codeEntity.fields = fields
         val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
-        codeEntity.formHiddenFields = formHiddenFields//.sortedBy { it.order }
-        codeEntity.groupedFields = subOrders(otherFields).takeWhile { it.isNotEmpty() }.toList()
+        codeEntity.formHiddenFields = formHiddenFields
+        codeEntity.groupedFields = groupeFields(otherFields).takeWhile { it.isNotEmpty() }.toList()
+
+
+        val (_, listFields) = fields.partition { it.hiddenInList || it.primaryKey }
+        codeEntity.listFields = listFields
         codeEntity.requiredFields = fields.filter { it.required }
         codeEntity
     }
 }
 
 
-fun subOrders(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
+fun groupeFields(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
     var terms = codeFields
     while (true) {
         when {
