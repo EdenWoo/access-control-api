@@ -17,7 +17,7 @@ data class RolePermission(
 
 
         @ManyToMany(fetch = FetchType.EAGER)
-        @JoinTable(name = "role_permission_rule", joinColumns = [(JoinColumn(name = "role_permission_id"))],
+        @JoinTable(name = "aci_role_permission_rule", joinColumns = [(JoinColumn(name = "role_permission_id"))],
                 inverseJoinColumns = [(JoinColumn(name = "rule_id"))])
         val rules: MutableList<Rule> = mutableListOf()
 
