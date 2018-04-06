@@ -1,8 +1,8 @@
-package com.github.leon.aci.email
+package com.github.leon.email
 
 
-import com.github.leon.aci.dao.EmailLogDao
-import com.github.leon.aci.domain.EmailLog
+import com.github.leon.email.dao.EmailLogDao
+import com.github.leon.email.domain.EmailLog
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.freemarker.FreemarkerBuilderUtil
 import org.slf4j.LoggerFactory

@@ -16,7 +16,6 @@ import javax.persistence.Id
 import javax.validation.constraints.*
 import kotlin.coroutines.experimental.buildSequence
 
-
 data class CodeEntity(
         var groupedFields: List<List<CodeField>> = listOf(),
         var formHiddenFields: List<CodeField> = listOf(),
@@ -147,7 +146,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
         codeEntity.fields = fields
         val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
         codeEntity.formHiddenFields = formHiddenFields
-        codeEntity.groupedFields = groupeFields(otherFields).takeWhile { it.isNotEmpty() }.toList()
+        codeEntity.groupedFields = groupFields(otherFields).takeWhile { it.isNotEmpty() }.toList()
 
 
         val (_, listFields) = fields.partition { it.hiddenInList || it.primaryKey }
@@ -158,7 +157,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
 }
 
 
-fun groupeFields(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
+
+fun groupFields(codeFields: List<CodeField>): Sequence<List<CodeField>> = buildSequence {
     var terms = codeFields
     while (true) {
         when {

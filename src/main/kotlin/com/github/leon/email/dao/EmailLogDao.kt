@@ -1,9 +1,8 @@
-package com.github.leon.aci.dao
+package com.github.leon.email.dao
 
 
 import com.github.leon.aci.dao.base.BaseDao
-import com.github.leon.aci.domain.EmailLog
-import org.springframework.data.querydsl.QueryDslPredicateExecutor
+import com.github.leon.email.domain.EmailLog
 import org.springframework.stereotype.Repository
 
 

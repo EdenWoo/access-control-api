@@ -1,11 +1,10 @@
 package com.github.leon.aci.web.api
 
-import arrow.core.getOrElse
-import arrow.syntax.option.toOption
 import com.github.leon.aci.enums.AttachmentType
 import com.github.leon.aci.enums.AttachmentType.CUSTOMER_BANK_ACCOUNT_DOC
 import com.github.leon.aci.service.AttachmentService
 import com.github.leon.ams.s3.AmazonService
+import com.github.leon.extentions.orElse
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -40,7 +39,7 @@ class AttachmentController(
     fun create(file: MultipartFile, type: AttachmentType?): ResponseEntity<*> {
 
         return attachmentService
-                .createFile(file, type.toOption().getOrElse { CUSTOMER_BANK_ACCOUNT_DOC })
+                .createFile(file, type.orElse(CUSTOMER_BANK_ACCOUNT_DOC))
                 .fold(
                         { ResponseEntity.ok(it) },
                         { attachment ->

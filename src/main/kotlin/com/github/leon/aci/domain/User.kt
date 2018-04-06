@@ -11,7 +11,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
+@Table(name = "aci_user",uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
 @DynamicUpdate
 @DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)

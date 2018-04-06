@@ -6,6 +6,7 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
+@Table(name = "aci_role_permission")
 @DynamicUpdate
 @DynamicInsert
 data class RolePermission(

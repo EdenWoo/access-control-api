@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull
 
 
 @Entity
+@Table(name = "aci_role")
 @DynamicUpdate
 @DynamicInsert
 

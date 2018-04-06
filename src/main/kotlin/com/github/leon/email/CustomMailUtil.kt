@@ -1,6 +1,6 @@
-package com.github.leon.aci.email
+package com.github.leon.email
 
-import com.github.leon.aci.domain.EmailLog
+import com.github.leon.email.domain.EmailLog
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
@@ -10,29 +10,28 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class CustomMailUtil {
+class CustomMailUtil(
 
+        @Value("\${mail.sender.timeout}")
+        val timeout: String,
+        @Value("\${mail.sender.host}")
+        val host: String,
 
-    @Value("\${mail.sender.timeout}")
-    private val timeout: String? = null
+        @Value("\${mail.sender.port}")
+        val port: Int = 0,
 
-    @Value("\${mail.sender.host}")
-    private val host: String? = null
+        @Value("\${mail.sender.alias}")
+        val alias: String?,
 
-    @Value("\${mail.sender.port}")
-    private val port: Int = 0
+        @Value("\${mail.sender.from}")
+        val from: String?,
 
-    @Value("\${mail.sender.alias}")
-    private val alias: String? = null
+        @Value("\${mail.sender.username}")
+        val username: String?,
 
-    @Value("\${mail.sender.from}")
-    private val from: String? = null
-
-    @Value("\${mail.sender.username}")
-    private val username: String? = null
-
-    @Value("\${mail.sender.password}")
-    private val password: String? = null
+        @Value("\${mail.sender.password}")
+        val password: String?
+) {
 
 
     private fun createSender(): JavaMailSender {
@@ -52,7 +51,7 @@ class CustomMailUtil {
     fun send(emailItemVO: EmailLog): Pair<String, Boolean> {
 
         val sender = createSender()
-        try {
+        return try {
             val mailMessage = sender.createMimeMessage()
             val messageHelper = MimeMessageHelper(mailMessage, true, "UTF-8")
             messageHelper.setFrom(from!!, from)
@@ -62,10 +61,10 @@ class CustomMailUtil {
             messageHelper.setText(String(emailItemVO.content!!), true)
             sender.send(mailMessage)
 
-            return Pair("", true)
+            Pair("", true)
         } catch (e: Exception) {
             log.error("EmailLog Send Error:" + emailItemVO.sendTo!!, e)
-            return Pair(e.message!!, false)
+            Pair(e.message!!, false)
         }
 
     }

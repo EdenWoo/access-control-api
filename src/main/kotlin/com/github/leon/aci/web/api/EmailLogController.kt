@@ -1,7 +1,7 @@
 package com.github.leon.aci.web.api
 
 import com.github.leon.aci.enums.TaskStatus
-import com.github.leon.aci.service.EmailLogService
+import com.github.leon.email.service.EmailLogService
 import com.github.leon.aci.util.handleStatus
 import com.github.leon.aci.web.api.vo.EmailLogVo
 import com.github.leon.aci.web.base.BaseController

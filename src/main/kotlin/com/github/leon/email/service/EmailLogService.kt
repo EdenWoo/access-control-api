@@ -1,7 +1,7 @@
-package com.github.leon.aci.service
+package com.github.leon.email.service
 
-import com.github.leon.aci.dao.EmailLogDao
-import com.github.leon.aci.domain.EmailLog
+import com.github.leon.email.dao.EmailLogDao
+import com.github.leon.email.domain.EmailLog
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
