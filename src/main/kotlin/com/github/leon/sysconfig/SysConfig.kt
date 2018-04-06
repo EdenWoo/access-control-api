@@ -1,5 +1,6 @@
-package com.github.leon.aci.domain
+package com.github.leon.sysconfig
 
+import com.github.leon.aci.domain.BaseEntity
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
