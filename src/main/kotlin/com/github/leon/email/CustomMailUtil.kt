@@ -10,28 +10,28 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class CustomMailUtil(
+class CustomMailUtil {
 
-        @Value("\${mail.sender.timeout}")
-        val timeout: String,
-        @Value("\${mail.sender.host}")
-        val host: String,
+    @Value("\${mail.sender.timeout}")
+    val timeout: String? = null
+    @Value("\${mail.sender.host}")
+    val host: String? = null
 
-        @Value("\${mail.sender.port}")
-        val port: Int = 0,
+    @Value("\${mail.sender.port}")
+    val port: Int = 0
 
-        @Value("\${mail.sender.alias}")
-        val alias: String?,
+    @Value("\${mail.sender.alias}")
+    val alias: String? = null
 
-        @Value("\${mail.sender.from}")
-        val from: String?,
+    @Value("\${mail.sender.from}")
+    val from: String? = null
 
-        @Value("\${mail.sender.username}")
-        val username: String?,
+    @Value("\${mail.sender.username}")
+    val username: String? = null
 
-        @Value("\${mail.sender.password}")
-        val password: String?
-) {
+    @Value("\${mail.sender.password}")
+    val password: String? = null
+
     private fun createSender(): JavaMailSender {
         val sender = JavaMailSenderImpl()
         sender.host = host
