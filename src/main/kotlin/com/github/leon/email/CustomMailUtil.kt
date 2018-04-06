@@ -32,8 +32,6 @@ class CustomMailUtil(
         @Value("\${mail.sender.password}")
         val password: String?
 ) {
-
-
     private fun createSender(): JavaMailSender {
         val sender = JavaMailSenderImpl()
         sender.host = host
