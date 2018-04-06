@@ -4,6 +4,7 @@ import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
+import com.github.leon.email.CustomMailUtil
 import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
 import com.github.leon.freemarker.FreemarkerBuilderUtil
@@ -18,7 +19,9 @@ class EmailLogService(
         @Autowired
         val emailLogDao: EmailLogDao,
         @Autowired
-        val freemarkerBuilderUtil: FreemarkerBuilderUtil
+        val freemarkerBuilderUtil: FreemarkerBuilderUtil,
+        @Autowired
+        val customMailUtil: CustomMailUtil
 ) : BaseService<EmailLog, Long>() {
 
     val log = LoggerFactory.getLogger(EmailLogService::class.java)!!
@@ -63,11 +66,44 @@ class EmailLogService(
     }
 
 
-    operator fun get(id: String): EmailLog {
+    fun execute() {
+
+        var email = EmailLog(status = TaskStatus.TODO)
+        var list = findForSend(email)
+
+        email = EmailLog(
+                status = TaskStatus.FAILURE,
+                times = 3
+        )
+        list += (findForSend(email))
+        list.forEach { item ->
+            val resultVO = customMailUtil.send(item)
+            val result: EmailLog
+            result = when {
+                resultVO.second -> item.copy(
+                        status = TaskStatus.SUCCESS
+                ).apply {
+                    this.id = item.id
+                    this.version = item.version
+                }
+                else -> item.copy(
+                        status = TaskStatus.FAILURE,
+                        times = item.times!!.inc(),
+                        msg = resultVO.first
+                ).apply {
+                    this.id = item.id
+                    this.version = item.version
+                }
+            }
+            update(result)
+        }
+    }
+
+    fun get(id: String): EmailLog {
         return emailLogDao.findOne(NumberUtils.createLong(id)!!)
     }
 
-    operator fun get(id: Long?): EmailLog {
-        return emailLogDao!!.findOne(id!!)
+    fun get(id: Long?): EmailLog {
+        return emailLogDao.findOne(id!!)
     }
 }
