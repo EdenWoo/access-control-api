@@ -1,8 +1,10 @@
-package com.github.leon.sysconfig
+package com.github.leon.sysconfig.controller
 
 import com.github.leon.aci.service.UserService
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
+import com.github.leon.sysconfig.domain.SysConfig
+import com.github.leon.sysconfig.service.SysConfigService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity

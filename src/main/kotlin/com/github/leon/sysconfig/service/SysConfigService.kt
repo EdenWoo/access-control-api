@@ -1,10 +1,12 @@
-package com.github.leon.sysconfig
+package com.github.leon.sysconfig.service
 
 import arrow.core.getOrElse
 import arrow.syntax.option.toOption
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.date.DateUtils
+import com.github.leon.sysconfig.dao.SysConfigDao
+import com.github.leon.sysconfig.domain.SysConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate

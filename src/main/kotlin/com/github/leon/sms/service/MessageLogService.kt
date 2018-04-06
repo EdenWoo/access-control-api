@@ -11,7 +11,7 @@ import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
 import com.github.leon.sms.dao.MessageLogDao
 import com.github.leon.sms.domain.MessageLog
-import com.github.leon.sysconfig.SysConfigDao
+import com.github.leon.sysconfig.dao.SysConfigDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional

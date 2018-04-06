@@ -1,4 +1,4 @@
-package com.github.leon.sysconfig
+package com.github.leon.sysconfig.domain
 
 import com.github.leon.aci.domain.BaseEntity
 import org.hibernate.annotations.DynamicInsert
