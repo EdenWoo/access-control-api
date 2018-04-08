@@ -21,7 +21,9 @@ data class Task(
 
         var templatePath: String,
 
-        var replaceFile: Boolean = true
+        var replaceFile: Boolean = true,
+
+        var active: Boolean = true
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {

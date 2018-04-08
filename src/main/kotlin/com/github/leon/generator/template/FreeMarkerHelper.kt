@@ -10,19 +10,11 @@ import java.io.*
 
 
 class FreeMarkerHelper(templatesBaseDir: String) : TemplateHelper() {
-    protected var freeMarkerEngine: Configuration
-    protected var context: SimpleHash
+    protected var freeMarkerEngine: Configuration = Configuration(Configuration.VERSION_2_3_21)
+    protected var context: SimpleHash = SimpleHash()
 
     init {
-        freeMarkerEngine = Configuration(Configuration.VERSION_2_3_21)
-        context = SimpleHash()
-        val loader: TemplateLoader
-        try {
-            loader = FileTemplateLoader(File(templatesBaseDir))
-        } catch (e: IOException) {
-            throw RuntimeException(e)
-        }
-
+        val loader  = FileTemplateLoader(File(templatesBaseDir))
         freeMarkerEngine.templateLoader = loader
     }
 

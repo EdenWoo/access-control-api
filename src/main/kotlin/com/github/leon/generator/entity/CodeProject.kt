@@ -33,7 +33,9 @@ data class CodeProject(
 
 ) {
     fun generate() {
-        (apiTasks + uiTasks + testTasks).forEach {
+        (apiTasks + uiTasks + testTasks)
+                .filter { it.active }
+                .forEach {
             TaskService.processTask(this, it)
         }
 

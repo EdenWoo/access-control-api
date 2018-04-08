@@ -23,17 +23,11 @@ object TaskService {
             val fileStatics = staticModels.get(util.name) as TemplateHashModel
             scope[util.simpleName] = fileStatics
         }
-
         codeProject.templateEngine.putAll(scope)
         paths = task.run(codeProject, scope)
         return paths
     }
 
-    /**
-     * @param root
-     * @param task
-     * @return 生成文件的路径
-     */
     fun processTemplate(codeProject: CodeProject, task: Task, root: Map<String, Any>): String {
         /*    List<TaskParam> params = task.getTaskParams();
         for (TaskParam param : params) {
@@ -55,7 +49,6 @@ object TaskService {
         val filename = codeProject.scriptHelper.exec<Any>(task.filename, root).toString()
         val outputFilename = folder + File.separator + filename
         val outputFile = File(outputFilename)
-        println("outfile exist ${outputFile.exists()}")
         if (task.replaceFile || !outputFile.exists()) {
             codeProject.templateEngine.exec(templateFilename, outputFilename)
         }
