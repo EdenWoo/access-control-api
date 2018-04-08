@@ -19,12 +19,13 @@ data class Task(
 
         var filename: String,
 
-        var templatePath: String
+        var templatePath: String,
+
+        var replaceFile: Boolean = true
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {
-        val paths = taskProcessor(this.taskType).run(codeProject, this, root)
-        return paths
+        return taskProcessor(taskType).run(codeProject, this, root)
     }
 
     private fun taskProcessor(taskType: String): ITaskProcessor {
