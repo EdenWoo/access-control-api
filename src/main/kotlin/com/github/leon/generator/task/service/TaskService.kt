@@ -55,6 +55,7 @@ object TaskService {
         val filename = codeProject.scriptHelper.exec<Any>(task.filename, root).toString()
         val outputFilename = folder + File.separator + filename
         val outputFile = File(outputFilename)
+        println("outfile exist ${outputFile.exists()}")
         if (task.replaceFile || !outputFile.exists()) {
             codeProject.templateEngine.exec(templateFilename, outputFilename)
         }
