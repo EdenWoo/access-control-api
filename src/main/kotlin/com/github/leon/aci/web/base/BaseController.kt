@@ -32,7 +32,7 @@ abstract class BaseController<T, in ID : Serializable> {
     private val userService: UserService? = null
 
     @Autowired
-    private lateinit var baseService: BaseService<T, ID>
+    protected lateinit var baseService: BaseService<T, ID>
 
     protected val loginUser: User
         get() = SecurityContextHolder.getContext().authentication.principal as User
