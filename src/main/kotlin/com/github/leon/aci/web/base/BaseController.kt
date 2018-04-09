@@ -37,7 +37,7 @@ abstract class BaseController<T,  ID : Serializable> {
     protected val loginUser: User
         get() = SecurityContextHolder.getContext().authentication.principal as User
 
-    @GetMapping
+
     open fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<T>> {
         val page = baseService.findByRequestParameters(request.parameterMap, pageable)
         return ResponseEntity.ok(page)
@@ -48,7 +48,7 @@ abstract class BaseController<T,  ID : Serializable> {
         return ResponseEntity.ok(baseService.findOneBySecurity(id, request.method, request.requestURI))
     }
 
-    @PostMapping
+
     open fun saveOne(@Validated @RequestBody input: T): ResponseEntity<*> {
         return ResponseEntity.ok(baseService.save(input))
     }
