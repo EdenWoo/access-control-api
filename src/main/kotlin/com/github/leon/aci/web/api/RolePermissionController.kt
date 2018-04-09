@@ -3,7 +3,6 @@ package com.github.leon.aci.web.api
 import com.github.leon.aci.domain.RolePermission
 import com.github.leon.aci.service.PermissionService
 import com.github.leon.aci.service.rule.RuleService
-import com.github.leon.aci.web.base.BaseController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +20,7 @@ class RolePermissionController(
         @Autowired
         val permissionService: PermissionService
 
-) : BaseController() {
+) {
 
     @GetMapping
     fun list(): ResponseEntity<List<RolePermission>> {

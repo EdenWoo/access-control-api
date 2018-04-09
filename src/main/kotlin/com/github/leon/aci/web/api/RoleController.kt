@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping(value = ["/v1/role"])
 
-class RoleController : BaseController() {
+class RoleController : BaseController<Role, Long>() {
 
     @Autowired
     private val roleService: RoleService? = null
@@ -53,7 +53,7 @@ class RoleController : BaseController() {
 
 
     @GetMapping("{id}")
-    fun get(@PathVariable id: Long): ResponseEntity<Role> {
+    fun findOne(@PathVariable id: Long): ResponseEntity<Role> {
         val role = roleService!!.findOne(id)
         val selectedRolePermissions = role.rolePermissions
         val list = permissionService!!.findAll()
@@ -79,7 +79,7 @@ class RoleController : BaseController() {
 
 
     @PutMapping("{id}")
-            // @Transactional
+    // @Transactional
     fun role(@PathVariable id: Long, @RequestBody role: Role, request: HttpServletRequest): ResponseEntity<Role> {
 
         val cleanedRole = roleService!!.removeEmptyRules(role)

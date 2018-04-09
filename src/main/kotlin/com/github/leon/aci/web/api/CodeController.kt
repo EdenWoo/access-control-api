@@ -31,7 +31,7 @@ class CodeController {
         get() = permissionService!!.findAll()
                 .map { (_, authKey) ->
                     mapOf("key" to authKey.split(" ").joinToString(separator = "_").toUpperCase().replace("-", "_"),
-                            "value" to  authKey)
+                            "value" to authKey)
                 }
 
     @GetMapping(value = ["/permission_constant"], produces = ["text/html;charset=UTF-8"])

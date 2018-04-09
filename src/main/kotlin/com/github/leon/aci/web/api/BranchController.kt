@@ -2,7 +2,6 @@ package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.Branch
 import com.github.leon.aci.service.BranchService
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping(value = ["/v1/branch"])
 
-class BranchController : BaseController() {
+class BranchController {
 
     @Autowired
     private val branchService: BranchService? = null

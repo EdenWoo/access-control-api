@@ -14,7 +14,7 @@ import java.time.Instant
 @RestController
 @RequestMapping("/v1/excel")
 
-class ExcelController : BaseController() {
+class ExcelController {
 
     @Autowired
     var excelParsingRules: MutableList<ExcelParsingRule<*>> = mutableListOf()

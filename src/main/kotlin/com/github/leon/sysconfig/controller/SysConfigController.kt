@@ -6,6 +6,7 @@ import com.github.leon.bean.JpaBeanUtil
 import com.github.leon.sysconfig.domain.SysConfig
 import com.github.leon.sysconfig.service.SysConfigService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -19,7 +20,7 @@ class SysConfigController(
         val sysConfigService: SysConfigService,
         @Autowired
         val userService: UserService
-) : BaseController() {
+) : BaseController<SysConfig,Long>() {
 
     @GetMapping("/can-trade")
     fun canTrade(): ResponseEntity<Map<*, *>> {
@@ -29,33 +30,26 @@ class SysConfigController(
     }
 
     @GetMapping
-    fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<*> {
-        val page = sysConfigService.findBySecurity(request.method, request.requestURI, request.parameterMap, pageable)
-        return ResponseEntity.ok(page)
+    override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<SysConfig>> {
+        return super.page(pageable, request)
     }
-
     @GetMapping("{id}")
-    operator fun get(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<SysConfig> {
-        return ResponseEntity.ok(sysConfigService.findOneBySecurity(id, request.method, request.requestURI))
+    override fun findOne(id: Long, request: HttpServletRequest): ResponseEntity<SysConfig> {
+        return super.findOne(id, request)
     }
 
     @PostMapping
-    fun save(@RequestBody sysConfig: SysConfig, request: HttpServletRequest): ResponseEntity<SysConfig> {
-        return ResponseEntity.ok(sysConfigService.saveBySecurity(sysConfig, request.method, request.requestURI))
+    override fun saveOne(input: SysConfig): ResponseEntity<*> {
+        return super.saveOne(input)
     }
 
-    @PutMapping("{id}")
-    fun save(@PathVariable id: Long, @RequestBody sysConfig: SysConfig, request: HttpServletRequest): ResponseEntity<*> {
-        val oldSysConfig = sysConfigService.findOne(id)
-        JpaBeanUtil.copyNonNullProperties(sysConfig, oldSysConfig)
-        return ResponseEntity.ok(sysConfigService.saveBySecurity(oldSysConfig, request.method, request.requestURI))
+    @PutMapping
+    override fun updateOne(id: Long, input: SysConfig, request: HttpServletRequest): ResponseEntity<*> {
+        return super.updateOne(id, input, request)
     }
 
-
-    @DeleteMapping("delete")
-    fun delete(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
-        sysConfigService.deleteBySecurity(id, request.method, request.requestURI)
-        return ResponseEntity.noContent().build<Any>()
+    @DeleteMapping("{id}")
+    override fun deleteOne(id: Long, request: HttpServletRequest): ResponseEntity<*> {
+        return super.deleteOne(id, request)
     }
-
 }

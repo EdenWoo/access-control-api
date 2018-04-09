@@ -15,7 +15,10 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import java.io.Serializable
 import java.lang.reflect.Field
 import javax.persistence.EntityManager
@@ -40,7 +43,7 @@ abstract class BaseController<T, in ID : Serializable> {
         return ResponseEntity.ok(page)
     }
 
-    @GetMapping("{id}")
+
     open fun findOne(@PathVariable id: ID, request: HttpServletRequest): ResponseEntity<T> {
         return ResponseEntity.ok(baseService.findOneBySecurity(id, request.method, request.requestURI))
     }
@@ -50,7 +53,7 @@ abstract class BaseController<T, in ID : Serializable> {
         return ResponseEntity.ok(baseService.save(input))
     }
 
-    @PutMapping("{id}")
+
     open fun updateOne(@PathVariable id: ID, @Validated @RequestBody input: T, request: HttpServletRequest): ResponseEntity<*> {
         val persisted = baseService.findOne(id)
         JpaBeanUtil.copyNonNullProperties(input, persisted)
@@ -58,7 +61,7 @@ abstract class BaseController<T, in ID : Serializable> {
         return ResponseEntity.ok(persisted)
     }
 
-    @DeleteMapping("{id}")
+
     open fun deleteOne(@PathVariable id: ID, request: HttpServletRequest): ResponseEntity<*> {
         baseService.deleteBySecurity(id, request.method, request.requestURI)
         return ResponseEntity.noContent().build<Any>()

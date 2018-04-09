@@ -12,7 +12,6 @@ import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.ams.s3.AmazonService
 import com.github.leon.ams.s3.UploadUtil
 import com.github.leon.extentions.execCmd
@@ -37,7 +36,7 @@ class CommonController(
         val uploadUtil: UploadUtil,
         @Autowired
         val amazonService: AmazonService
-) : BaseController() {
+) {
 
     @RequestMapping(value = ["/{entity}/{f}/{v}"], method = [RequestMethod.HEAD])
     fun existenceCheck(@PathVariable entity: String, @PathVariable f: String, @PathVariable v: String, id: Long?): ResponseEntity<String> {

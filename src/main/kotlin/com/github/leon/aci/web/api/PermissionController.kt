@@ -2,7 +2,6 @@ package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.Permission
 import com.github.leon.aci.service.PermissionService
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -18,7 +17,7 @@ class PermissionController(
         @Autowired
         val permissionService: PermissionService
 
-) : BaseController() {
+) {
 
 
     @GetMapping

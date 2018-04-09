@@ -2,7 +2,6 @@ package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.Rule
 import com.github.leon.aci.service.rule.RuleService
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping(value = ["/v1/rule"])
-class RuleController : BaseController() {
+class RuleController {
 
     @Autowired
     private val ruleService: RuleService? = null

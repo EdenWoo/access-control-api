@@ -23,7 +23,7 @@ class MessageLogController(
         val messageLogService: MessageLogService,
         @Autowired
         val messageLogDao: MessageLogDao
-) : BaseController() {
+) {
 
     @GetMapping
     fun page(pageable: Pageable): ResponseEntity<Page<MessageLog>> {
