@@ -24,7 +24,7 @@ import java.lang.reflect.Field
 import javax.persistence.EntityManager
 import javax.servlet.http.HttpServletRequest
 
-abstract class BaseController<T, in ID : Serializable> {
+abstract class BaseController<T,  ID : Serializable> {
 
     @Autowired
     private val entityManager: EntityManager? = null
@@ -32,7 +32,7 @@ abstract class BaseController<T, in ID : Serializable> {
     private val userService: UserService? = null
 
     @Autowired
-    protected lateinit var baseService: BaseService<T, ID>
+    lateinit var baseService: BaseService<T, ID>
 
     protected val loginUser: User
         get() = SecurityContextHolder.getContext().authentication.principal as User
