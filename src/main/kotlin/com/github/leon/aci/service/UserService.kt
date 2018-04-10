@@ -8,6 +8,7 @@ import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.security.access.AccessDeniedException
@@ -22,6 +23,9 @@ class UserService(
         @Autowired val userDao: UserDao,
         @Autowired val applicationProperties: ApplicationProperties
 ) : BaseService<User, Long>() {
+
+    val log = LoggerFactory.getLogger(UserService::class.java)!!
+
     fun getUserWithPermissions(username: String): User {
         val userOpt = userDao.findByUsername(username).toOption()
                 .filter {
@@ -30,6 +34,7 @@ class UserService(
                         false -> true
                     }
                 }
+        log.debug("login user $userOpt")
         val user = when (userOpt) {
             is Some -> userOpt.t
             None -> throw AccessDeniedException("invalid user information or user is not verified: $username")
