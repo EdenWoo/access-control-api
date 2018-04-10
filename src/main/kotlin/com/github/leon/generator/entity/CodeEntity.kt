@@ -137,7 +137,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                         limit = it.limit,
                                                         textarea = it.textarea,
                                                         richText = it.richText,
-                                                        display = it.display,
+                                                        display = it.display.split(","),
                                                         weight = it.weight,
                                                         range = it.range
                                                 )
