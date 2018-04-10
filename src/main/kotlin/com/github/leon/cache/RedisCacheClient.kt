@@ -31,12 +31,7 @@ class RedisCacheClient : CacheClient {
                 Option.empty()
             }
         }.getOrElse {
-            var value: T? = null
-            try {
-                value = supplier()
-            } catch (e: Exception) {
-                logger.error("cannot find cached configuration {}, {}", key, e.message)
-            }
+            val value =  supplier()
             logger.debug("Query key [{}] from cache success, value [{}] ", key, value)
             template!!.opsForValue().set(key, value)
             value
