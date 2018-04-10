@@ -2,13 +2,12 @@ package com.github.leon.sms.service
 
 import arrow.core.None
 import arrow.core.Some
-import arrow.core.getOrElse
 import arrow.syntax.collections.firstOption
-import arrow.core.toOption
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
+import com.github.leon.setting.dao.SettingDao
 import com.github.leon.sms.dao.MessageLogDao
 import com.github.leon.sms.domain.MessageLog
 import com.github.leon.sysconfig.dao.SysConfigDao
@@ -25,12 +24,19 @@ class MessageLogService(
         @Autowired
         val emailLogDao: EmailLogDao,
         @Autowired
-        val sysConfigDao: SysConfigDao
+        val sysConfigDao: SysConfigDao,
+        @Autowired
+        val settingDao: SettingDao
 
 ) : BaseService<MessageLog, Long>() {
 
     fun send(message: MessageLog): Pair<String?, String> {
-        val enableProvider = sysConfigDao.findByConfKey("sms_provider").toOption().map { it.confVal }.getOrElse { "clicktale" }
+        val enableProvider: String
+        val settingOpt = settingDao.findByActive(true).firstOption()
+        when (settingOpt) {
+            is Some -> enableProvider = settingOpt.t.smsProviderType.name
+            None -> throw  IllegalArgumentException("no setting")
+        }
         val providerOpt = messageProviders.firstOption {
             it.javaClass.simpleName.substringBefore(MessageProvider::class.java.simpleName).equals(enableProvider, ignoreCase = true)
         }

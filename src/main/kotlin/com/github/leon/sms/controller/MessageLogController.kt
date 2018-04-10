@@ -3,7 +3,6 @@ package com.github.leon.sms.controller
 
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.util.handleStatus
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.bean.JpaBeanUtil
 import com.github.leon.sms.dao.MessageLogDao
 import com.github.leon.sms.domain.MessageLog
