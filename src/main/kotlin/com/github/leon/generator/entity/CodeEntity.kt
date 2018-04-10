@@ -3,7 +3,7 @@ package com.github.leon.generator.entity
 import arrow.core.Some
 import arrow.core.getOrElse
 import arrow.syntax.collections.tail
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf

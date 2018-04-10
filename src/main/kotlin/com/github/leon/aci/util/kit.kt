@@ -1,7 +1,7 @@
 package com.github.leon.aci.util
 
 import arrow.core.getOrElse
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
 import org.apache.commons.lang3.StringUtils
 

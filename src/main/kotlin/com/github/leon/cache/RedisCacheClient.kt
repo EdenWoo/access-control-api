@@ -2,8 +2,8 @@ package com.github.leon.cache
 
 import arrow.core.Option
 import arrow.core.getOrElse
-import arrow.data.Try
-import arrow.syntax.option.toOption
+import arrow.core.Try
+import arrow.core.toOption
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.RedisTemplate

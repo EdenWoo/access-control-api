@@ -1,6 +1,6 @@
 package com.github.leon.aci.security
 
-import arrow.data.Try
+import arrow.core.Try
 import com.github.leon.aci.domain.User
 import com.github.leon.extentions.orElse
 import io.jsonwebtoken.Claims

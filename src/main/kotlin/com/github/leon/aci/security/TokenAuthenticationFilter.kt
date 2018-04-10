@@ -1,10 +1,6 @@
 package com.github.leon.aci.security
 
-import arrow.core.getOrElse
-import arrow.data.Failure
-import arrow.data.Success
-import arrow.data.Try
-import arrow.syntax.option.toOption
+import arrow.core.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.leon.aci.config.ActionReportProperties
 import com.github.leon.aci.config.jpa.SecurityAuditor
@@ -93,14 +89,14 @@ class TokenAuthenticationFilter(
             else -> {
                 val usernameTry = tokenHelper.getUsernameFromToken(authToken)
                 when (usernameTry) {
-                    is Success -> {
+                    is Success<String> -> {
                         val userDetails = userDetailsService.loadUserByUsername(usernameTry.value)
                         val authentication = TokenBasedAuthentication(userDetails)
                         authentication.token = authToken
                         SecurityContextHolder.getContext().authentication = authentication
                         chain.doFilter(wrapRequest, response)
                     }
-                    is Failure -> {
+                    is Failure<String> -> {
                         loginExpired(request, response, usernameTry.exception.message!!)
                     }
                 }

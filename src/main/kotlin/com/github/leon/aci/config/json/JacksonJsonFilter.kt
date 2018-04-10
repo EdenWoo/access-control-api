@@ -1,6 +1,6 @@
 package com.github.leon.aci.config.json
 
-import arrow.data.Try
+import arrow.core.Try
 import com.github.leon.aci.domain.User
 import com.fasterxml.jackson.annotation.JsonFilter
 import com.fasterxml.jackson.core.JsonGenerator

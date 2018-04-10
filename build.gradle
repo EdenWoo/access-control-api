@@ -2,7 +2,7 @@ buildscript {
     ext {
         kotlinVersion = '1.2.31'
         springBootVersion = '1.5.8.RELEASE'
-        arrowVersion = '0.6.1'
+        arrowVersion = '0.7.0'
         //springBootVersion = '2.0.0.RC1'
 	}
 	repositories {
@@ -120,10 +120,12 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-jsr223:2.4.3'
 
     compile "io.arrow-kt:arrow-core:$arrowVersion"
+    compile "io.arrow-kt:arrow-syntax:$arrowVersion"
     compile "io.arrow-kt:arrow-typeclasses:$arrowVersion"
     compile "io.arrow-kt:arrow-data:$arrowVersion"
-    compile "io.arrow-kt:arrow-instances:$arrowVersion"
-    compile "io.arrow-kt:arrow-syntax:$arrowVersion"
+    compile "io.arrow-kt:arrow-instances-core:$arrowVersion"
+    compile "io.arrow-kt:arrow-instances-data:$arrowVersion"
+
     kapt    "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
 
     compile "io.arrow-kt:arrow-free:$arrowVersion"

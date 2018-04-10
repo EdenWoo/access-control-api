@@ -1,12 +1,7 @@
 package com.github.leon.aci.web.api
 
-import arrow.core.Option
-import arrow.core.ev
-import arrow.core.getOrElse
-import arrow.core.monad
-import arrow.data.Try
+import arrow.core.*
 import arrow.syntax.collections.firstOption
-import arrow.syntax.option.toOption
 import arrow.typeclasses.binding
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
@@ -59,7 +54,7 @@ class CommonController(
                 else -> 409
             }
             ResponseEntity.status(status).body(field)
-        }.ev().getOrElse { ResponseEntity.status(200).body("") }
+        }.fix().getOrElse { ResponseEntity.status(200).body("") }
     }
 
     @GetMapping("/enum/{name}")

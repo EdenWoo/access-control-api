@@ -2,7 +2,7 @@ package com.github.leon.aci.service
 
 import arrow.core.None
 import arrow.core.Some
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.dao.RuleDao
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.domain.Permission

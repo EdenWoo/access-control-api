@@ -2,7 +2,7 @@ package com.github.leon.aci.security.handlers
 
 
 import arrow.core.getOrElse
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.security.TokenHelper
 import com.github.leon.aci.security.UserTokenState

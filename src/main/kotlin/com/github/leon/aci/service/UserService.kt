@@ -3,7 +3,7 @@ package com.github.leon.aci.service
 import arrow.core.None
 import arrow.core.Some
 import arrow.core.getOrElse
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.security.ApplicationProperties

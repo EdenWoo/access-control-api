@@ -1,12 +1,7 @@
 package com.github.leon.aci.config.json
 
-import arrow.core.Option
-import arrow.core.Some
-import arrow.core.getOrElse
-import arrow.data.Try
-import arrow.data.getOrElse
+import arrow.core.*
 import arrow.syntax.collections.firstOption
-import arrow.syntax.option.toOption
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.security.ApplicationProperties

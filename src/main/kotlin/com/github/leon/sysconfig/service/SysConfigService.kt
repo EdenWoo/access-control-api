@@ -1,7 +1,7 @@
 package com.github.leon.sysconfig.service
 
 import arrow.core.getOrElse
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.date.DateUtils

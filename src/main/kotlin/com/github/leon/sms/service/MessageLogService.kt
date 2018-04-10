@@ -4,7 +4,7 @@ import arrow.core.None
 import arrow.core.Some
 import arrow.core.getOrElse
 import arrow.syntax.collections.firstOption
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.email.dao.EmailLogDao

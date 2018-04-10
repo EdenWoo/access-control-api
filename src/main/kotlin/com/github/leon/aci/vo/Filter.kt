@@ -2,7 +2,7 @@ package com.github.leon.aci.vo
 
 import arrow.core.getOrElse
 import arrow.syntax.collections.firstOption
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.vo.Filter.Companion.FUNCTION_SUFFIX
 import com.github.leon.aci.vo.Filter.Companion.OPERATOR_BETWEEN
 import com.github.leon.aci.vo.Filter.Companion.OPERATOR_IN

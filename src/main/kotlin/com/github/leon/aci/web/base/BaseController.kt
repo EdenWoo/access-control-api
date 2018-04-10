@@ -1,8 +1,9 @@
 package com.github.leon.aci.web.base
 
 import arrow.core.Option
+import arrow.core.Try
 import arrow.core.getOrElse
-import arrow.syntax.option.toOption
+import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.service.UserService
@@ -107,7 +108,7 @@ abstract class BaseController<T,  ID : Serializable> {
     }
 
     protected fun getUser(baseEntity: BaseEntity): User {
-        val userTry = arrow.data.Try { Reflect.on(baseEntity).get<Any>("user") as User }
+        val userTry = Try { Reflect.on(baseEntity).get<Any>("user") as User }
         return if (userTry.isSuccess()) {
             userTry.get().toOption()
                     .map { user -> userService!!.findOne(user.id as Long) }

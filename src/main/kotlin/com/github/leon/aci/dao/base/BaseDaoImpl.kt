@@ -2,7 +2,7 @@ package com.github.leon.aci.dao.base
 
 
 import arrow.core.Option
-import arrow.data.Try
+import arrow.core.Try
 import arrow.syntax.collections.firstOption
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.vo.Condition
