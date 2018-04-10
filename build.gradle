@@ -136,7 +136,8 @@ dependencies {
     compile "io.arrow-kt:arrow-optics:$arrowVersion"
 
     compile 'com.github.b1412:java-toolbox:7b979e30b1'
-    compile 'com.github.b1412:kotlin-extensions:2bcf2d5639'
+
+    compile 'com.github.b1412:kotlin-extensions:9233b90ffb'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
