@@ -9,7 +9,7 @@ data class CodeField(
         val sortable: Boolean = false,
         val required: Boolean = false,
         val unique: Boolean = false,
-        val label: String,
+        val label: String = "",
         val hiddenInForm: Boolean = false,
         val hiddenInList: Boolean = false,
         val limit: Int? = null,
