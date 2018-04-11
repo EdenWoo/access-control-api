@@ -3,7 +3,6 @@ buildscript {
         kotlinVersion = '1.2.31'
         springBootVersion = '1.5.8.RELEASE'
         arrowVersion = '0.7.0'
-        //springBootVersion = '2.0.0.RC1'
 	}
 	repositories {
         mavenCentral()
