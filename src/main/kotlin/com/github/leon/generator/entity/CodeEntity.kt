@@ -139,7 +139,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                         richText = it.richText,
                                                         display = it.display.split(","),
                                                         weight = it.weight,
-                                                        range = it.range
+                                                        range = it.range,
+                                                        label = it.label
                                                 )
                                             }
                                             is Id -> codeField = codeField.copy(primaryKey = true)

@@ -14,6 +14,10 @@ annotation class FieldFeature(
         val selectMany: Boolean = false,
         val addDynamicMany: Boolean = false,
         /**
+         * 列表头
+         */
+        val label: String = "",
+        /**
          * 不在表单显示
          */
         val hiddenInForm: Boolean = false,
