@@ -13,7 +13,7 @@ import javax.persistence.Entity
 data class Setting(
         var name: String="",
         @Type(type = "yes_no")
-        var active: Boolean?,
-        var smsProviderType: SmsProviderType?
+        var active: Boolean? = null,
+        var smsProviderType: SmsProviderType? = null
 
 ) : BaseEntity()

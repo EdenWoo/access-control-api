@@ -34,7 +34,7 @@ class MessageLogService(
         val enableProvider: String
         val settingOpt = settingDao.findByActive(true).firstOption()
         when (settingOpt) {
-            is Some -> enableProvider = settingOpt.t.smsProviderType.name
+            is Some -> enableProvider = settingOpt.t.smsProviderType!!.name
             None -> throw  IllegalArgumentException("no setting")
         }
         val providerOpt = messageProviders.firstOption {
