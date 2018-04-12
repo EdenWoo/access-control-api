@@ -1,4 +1,4 @@
-package com.github.leon.aci.web.api
+package com.github.leon.email.controller
 
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.util.handleStatus
