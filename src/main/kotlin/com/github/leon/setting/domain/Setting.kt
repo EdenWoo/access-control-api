@@ -11,9 +11,9 @@ import javax.persistence.Entity
 @DynamicUpdate
 @DynamicInsert
 data class Setting(
-        val name: String,
+        var name: String="",
         @Type(type = "yes_no")
-        val active: Boolean,
-        val smsProviderType: SmsProviderType
+        var active: Boolean?,
+        var smsProviderType: SmsProviderType?
 
 ) : BaseEntity()

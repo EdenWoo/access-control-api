@@ -9,8 +9,8 @@ import javax.persistence.Entity
 @DynamicUpdate
 @DynamicInsert
 data class MessageTemplate(
-        val name: String,
-        val template: String,
-        val notes: String
+        var name: String="",
+        var template: String="",
+        var notes: String=""
 
 ) : BaseEntity()
