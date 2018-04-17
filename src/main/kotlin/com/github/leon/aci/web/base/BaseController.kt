@@ -16,16 +16,14 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import java.io.Serializable
 import java.lang.reflect.Field
 import javax.persistence.EntityManager
 import javax.servlet.http.HttpServletRequest
 
-abstract class BaseController<T,  ID : Serializable> {
+abstract class BaseController<T, ID : Serializable> {
 
     @Autowired
     private val entityManager: EntityManager? = null
@@ -40,7 +38,7 @@ abstract class BaseController<T,  ID : Serializable> {
 
 
     open fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<T>> {
-        val page = baseService.findByRequestParameters(request.parameterMap, pageable)
+        val page = baseService.findBySecurity(request.method, request.requestURI, request.parameterMap, pageable)
         return ResponseEntity.ok(page)
     }
 
