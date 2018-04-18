@@ -1,5 +1,7 @@
 package com.github.leon.aci.security
 
+import arrow.core.Success
+import arrow.core.Try
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
@@ -22,10 +24,15 @@ class AuthenticationRequestWrapper(request: HttpServletRequest) : HttpServletReq
         if (inputStream != null) {
             bufferedReader = BufferedReader(InputStreamReader(inputStream))
             val charBuffer = CharArray(128)
-            var bytesRead = bufferedReader.read(charBuffer)
-            while (bytesRead > 0) {
-                stringBuilder.append(charBuffer, 0, bytesRead)
-                bytesRead = bufferedReader.read(charBuffer)
+            var bytesReadTry = Try { bufferedReader.read(charBuffer) }
+            when (bytesReadTry) {
+                is Success -> {
+                    var bytesRead = bytesReadTry.value
+                    while (bytesRead > 0) {
+                        stringBuilder.append(charBuffer, 0, bytesRead)
+                        bytesRead = bufferedReader.read(charBuffer)
+                    }
+                }
             }
         } else {
             stringBuilder.append("")
