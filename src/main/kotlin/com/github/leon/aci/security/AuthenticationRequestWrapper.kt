@@ -22,19 +22,18 @@ class AuthenticationRequestWrapper(request: HttpServletRequest) : HttpServletReq
 
         val inputStream = request.inputStream
         if (inputStream != null) {
-            val bufferedReaderTry = Try { BufferedReader(InputStreamReader(inputStream)) }
-            when (bufferedReaderTry) {
+            bufferedReader = BufferedReader(InputStreamReader(inputStream))
+            val charBuffer = CharArray(128)
+            var bytesReadTry = Try { bufferedReader.read(charBuffer) }
+            when (bytesReadTry) {
                 is Success -> {
-                    bufferedReader = bufferedReaderTry.value
-                    val charBuffer = CharArray(128)
-                    var bytesRead = bufferedReader.read(charBuffer)
+                    var bytesRead = bytesReadTry.value
                     while (bytesRead > 0) {
                         stringBuilder.append(charBuffer, 0, bytesRead)
                         bytesRead = bufferedReader.read(charBuffer)
                     }
                 }
             }
-
         } else {
             stringBuilder.append("")
         }
