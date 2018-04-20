@@ -1,17 +1,18 @@
 package com.github.leon.aci.security
 
+import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("app")
 class ApplicationProperties {
 
 
-    var domain: String? = null
-
+    @NotEmpty
     var rateDataPath: String? = null
 
     var userClass: String? = null
 
+    @NotEmpty
     var userCookie: String? = null
 
 
@@ -43,10 +44,5 @@ class ApplicationProperties {
 
         var entityScanPackage: List<String> = listOf()
 
-        var dateType = "ZonedDateTime"
-
-        var displayTimeZone = "Pacific/Auckland"
-
-        var dbTimeZone = "UTC"
     }
 }
