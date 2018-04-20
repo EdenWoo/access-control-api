@@ -1,8 +1,8 @@
 package com.github.leon.email.domain
 
-import com.github.leon.aci.enums.TaskStatus
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.github.leon.aci.domain.BaseEntity
+import com.github.leon.aci.enums.TaskStatus
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import java.io.Serializable

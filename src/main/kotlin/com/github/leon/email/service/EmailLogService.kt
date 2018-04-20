@@ -4,25 +4,31 @@ import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
-import com.github.leon.email.CustomMailUtil
 import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
+import com.github.leon.email.domain.EmailServer
 import com.github.leon.freemarker.FreemarkerBuilderUtil
 import org.apache.commons.lang3.math.NumberUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
+import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.nio.charset.Charset
 
 @Service
 class EmailLogService(
+
         @Autowired
         val emailLogDao: EmailLogDao,
         @Autowired
         val freemarkerBuilderUtil: FreemarkerBuilderUtil,
         @Autowired
-        val customMailUtil: CustomMailUtil
+        val emailServerDao: EmailLogDao
 ) : BaseService<EmailLog, Long>() {
+
 
     val log = LoggerFactory.getLogger(EmailLogService::class.java)!!
     fun findForSend(customEmail: EmailLog): List<EmailLog> {
@@ -46,6 +52,41 @@ class EmailLogService(
         return findByFilter(filter)
     }
 
+    fun send(emailItemVO: EmailLog): Pair<String, Boolean> {
+        val emailServer = emailServerDao.findByActive(true)
+        val sender = createSender()
+        return try {
+            val mailMessage = sender.createMimeMessage()
+            val messageHelper = MimeMessageHelper(mailMessage, true, "UTF-8")
+            messageHelper.setFrom(emailServer.from, emailServer.from)
+            messageHelper.setTo(emailItemVO.sendTo!!)
+            messageHelper.setSubject(emailItemVO.subject!!)
+
+            messageHelper.setText(String(emailItemVO.content!!), true)
+            sender.send(mailMessage)
+
+            Pair("", true)
+        } catch (e: Exception) {
+            log.error("EmailLog Send Error:" + emailItemVO.sendTo!!, e)
+            Pair(e.message!!, false)
+        }
+
+    }
+
+    private fun createSender(): JavaMailSender {
+        val emailServer = emailServerDao.findByActive(true)
+        val sender = JavaMailSenderImpl()
+        sender.host = emailServer.host
+        sender.port = emailServer.port
+        sender.username = emailServer.username
+        sender.password = emailServer.password
+        sender.javaMailProperties.setProperty("mail.smtp.starttls.enable", "true")
+        sender.javaMailProperties.setProperty("mail.smtp.auth", "true")
+        sender.javaMailProperties.setProperty("mail.smtp.timeout", emailServer.timeout.toString())
+        sender.javaMailProperties.setProperty("mail.smtp.ssl.trust", emailServer.host)
+        sender.javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "false")
+        return sender
+    }
     fun sendSystem(subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
         try {
             val emailLog = EmailLog(
@@ -67,7 +108,6 @@ class EmailLogService(
 
 
     fun execute() {
-
         var email = EmailLog(status = TaskStatus.TODO)
         var list = findForSend(email)
 
@@ -77,7 +117,7 @@ class EmailLogService(
         )
         list += (findForSend(email))
         list.forEach { item ->
-            val resultVO = customMailUtil.send(item)
+            val resultVO = send(item)
             val result: EmailLog
             result = when {
                 resultVO.second -> item.copy(
