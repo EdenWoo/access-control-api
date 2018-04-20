@@ -55,7 +55,7 @@ abstract class BaseController<T, ID : Serializable> {
 
     open fun updateOne(@PathVariable id: ID, @Validated @RequestBody input: T, request: HttpServletRequest): ResponseEntity<*> {
         val persisted = baseService.findOne(id)
-        JpaBeanUtil.copyNonNullProperties(input, persisted)
+        JpaBeanUtil.copyNonNullProperties(input as Any, persisted as Any)
         baseService.saveBySecurity(persisted, request.method, request.requestURI)
         return ResponseEntity.ok(persisted)
     }
