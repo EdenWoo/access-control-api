@@ -4,7 +4,7 @@ import arrow.core.Either
 import com.github.leon.aci.domain.Attachment
 import com.github.leon.aci.enums.AttachmentType
 import com.github.leon.aci.service.base.BaseService
-import com.github.leon.ams.s3.UploadUtil
+import com.github.leon.aws.s3.UploadUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile

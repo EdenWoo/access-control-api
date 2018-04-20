@@ -4,10 +4,12 @@ package com.github.leon.aws.s3
 import java.io.Serializable
 
 
-class UploadData : Serializable {
+data class UploadData(
+        val name: String? = null,
+        val data: ByteArray? = null
 
-    private val name: String? = null
-    private val data: ByteArray? = null
+) : Serializable {
+
 
     companion object {
 

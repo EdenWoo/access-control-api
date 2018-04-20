@@ -14,7 +14,7 @@ class FreemarkerBuilderUtil(
 ) {
 
 
-    fun build(ftlPath: String, model: Map<String, Any>): String? {
+    fun build(ftlPath: String, model: Map<String, Any?>): String? {
 
         val writer = StringWriter()
         val template = freemarkerCfg.configuration.getTemplate(ftlPath)

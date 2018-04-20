@@ -7,8 +7,8 @@ import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
-import com.github.leon.ams.s3.AmazonService
-import com.github.leon.ams.s3.UploadUtil
+import com.github.leon.aws.s3.AmazonService
+import com.github.leon.aws.s3.UploadUtil
 import com.github.leon.extentions.execCmd
 import com.github.leon.extentions.remainLastIndexOf
 import org.joor.Reflect

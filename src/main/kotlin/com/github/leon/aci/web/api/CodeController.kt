@@ -1,7 +1,7 @@
 package com.github.leon.aci.web.api
 
 import com.github.leon.aci.service.PermissionService
-import com.github.leon.freemarker.FreemarkerBuilderUtil
+import com.github.leon.fm.FreemarkerBuilderUtil
 import org.joor.Reflect
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

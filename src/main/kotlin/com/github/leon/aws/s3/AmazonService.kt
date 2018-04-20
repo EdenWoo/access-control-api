@@ -5,8 +5,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.github.leon.ams.s3.AmazonProperties
-import com.github.leon.ams.s3.UploadData
+
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +32,7 @@ class AmazonService(
     fun upload(data: UploadData): String {
         val key = aws.key + data.name
         val metadata = ObjectMetadata()
-        metadata.contentLength = data.data.size.toLong()
+        metadata.contentLength = data.data!!.size.toLong()
         val result = s3Client.putObject(PutObjectRequest(aws.bucketName, key, ByteArrayInputStream(data.data), metadata))
         log.info("file uploaded result: {}", result)
         return aws.regionLink + key

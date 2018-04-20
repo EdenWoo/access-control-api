@@ -6,12 +6,10 @@ import com.github.leon.aci.vo.Condition
 import com.github.leon.aci.vo.Filter
 import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
-import com.github.leon.email.domain.EmailServer
-import com.github.leon.freemarker.FreemarkerBuilderUtil
+import com.github.leon.fm.FreemarkerBuilderUtil
 import org.apache.commons.lang3.math.NumberUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -87,6 +85,7 @@ class EmailLogService(
         sender.javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "false")
         return sender
     }
+
     fun sendSystem(subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
         try {
             val emailLog = EmailLog(

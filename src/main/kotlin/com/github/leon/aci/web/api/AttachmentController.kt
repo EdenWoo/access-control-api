@@ -3,7 +3,7 @@ package com.github.leon.aci.web.api
 import com.github.leon.aci.enums.AttachmentType
 import com.github.leon.aci.enums.AttachmentType.CUSTOMER_BANK_ACCOUNT_DOC
 import com.github.leon.aci.service.AttachmentService
-import com.github.leon.ams.s3.AmazonService
+import com.github.leon.aws.s3.AmazonService
 import com.github.leon.extentions.orElse
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired

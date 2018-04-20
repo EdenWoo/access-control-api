@@ -1,7 +1,6 @@
 package com.github.leon.aws.s3
 
-import com.github.leon.ams.s3.AmazonService
-import com.github.leon.ams.s3.UploadData
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
@@ -13,9 +12,10 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Component
-class UploadUtil {
-    @Autowired
-    private val amazonService: AmazonService? = null
+class UploadUtil(
+        @Autowired
+        val amazonService: AmazonService
+) {
 
     fun write(file: File, identification: String): String {
 
@@ -36,10 +36,9 @@ class UploadUtil {
 
     }
 
-    @Throws(Exception::class)
     private fun upload(data: ByteArray, fileName: String, identification: String): String {
         val newName = generateFilename(fileName, identification)
-        amazonService!!.upload(UploadData(newName, data))
+        amazonService.upload(UploadData(newName, data))
         return newName
     }
 

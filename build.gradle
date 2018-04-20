@@ -134,9 +134,8 @@ dependencies {
     compile "io.arrow-kt:arrow-effects-kotlinx-coroutines:$arrowVersion"
     compile "io.arrow-kt:arrow-optics:$arrowVersion"
 
-/*
-    compile 'com.github.b1412:java-toolbox:7b979e30b1'
-*/
+    compile 'com.github.b1412:java-toolbox:d9423a8753'
+
 
     compile 'com.github.b1412:kotlin-extensions:9233b90ffb'
 
