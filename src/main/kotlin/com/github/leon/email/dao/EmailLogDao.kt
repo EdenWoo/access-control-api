@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface EmailLogDao : BaseDao<EmailLog, Long> {
-    fun findByActive(active: Boolean):EmailServer
 }
 

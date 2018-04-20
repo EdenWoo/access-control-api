@@ -1,5 +1,6 @@
 package com.github.leon.email.service
 
+import arrow.syntax.collections.firstOption
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
@@ -7,6 +8,7 @@ import com.github.leon.aci.vo.Filter
 import com.github.leon.email.dao.EmailLogDao
 import com.github.leon.email.domain.EmailLog
 import com.github.leon.fm.FreemarkerBuilderUtil
+import com.github.leon.setting.dao.SettingDao
 import org.apache.commons.lang3.math.NumberUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +23,8 @@ class EmailLogService(
 
         @Autowired
         val emailLogDao: EmailLogDao,
+        @Autowired
+        val settingDao: SettingDao,
         @Autowired
         val freemarkerBuilderUtil: FreemarkerBuilderUtil,
         @Autowired
@@ -51,7 +55,7 @@ class EmailLogService(
     }
 
     fun send(emailItemVO: EmailLog): Pair<String, Boolean> {
-        val emailServer = emailServerDao.findByActive(true)
+        val emailServer = settingDao.findByActive(true).firstOption().get().emailServer
         val sender = createSender()
         return try {
             val mailMessage = sender.createMimeMessage()
@@ -72,7 +76,7 @@ class EmailLogService(
     }
 
     private fun createSender(): JavaMailSender {
-        val emailServer = emailServerDao.findByActive(true)
+        val emailServer = settingDao.findByActive(true).firstOption().get().emailServer
         val sender = JavaMailSenderImpl()
         sender.host = emailServer.host
         sender.port = emailServer.port
