@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SettingDao : BaseDao<Setting, Long> {
-    fun findByActive(active: Boolean): List<Setting>
+    fun findByActive(active: Boolean): Setting
 }

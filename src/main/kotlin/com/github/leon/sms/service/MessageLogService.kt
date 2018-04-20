@@ -24,19 +24,13 @@ class MessageLogService(
         @Autowired
         val emailLogDao: EmailLogDao,
         @Autowired
-        val sysConfigDao: SysConfigDao,
-        @Autowired
         val settingDao: SettingDao
 
 ) : BaseService<MessageLog, Long>() {
 
     fun send(message: MessageLog): Pair<String?, String> {
-        val enableProvider: String
-        val settingOpt = settingDao.findByActive(true).firstOption()
-        when (settingOpt) {
-            is Some -> enableProvider = settingOpt.t.smsProviderType!!.name
-            None -> throw  IllegalArgumentException("no setting")
-        }
+        val enableProvider = settingDao.findByActive(true).smsProviderType!!.name
+
         val providerOpt = messageProviders.firstOption {
             it.javaClass.simpleName.substringBefore(MessageProvider::class.java.simpleName).equals(enableProvider, ignoreCase = true)
         }

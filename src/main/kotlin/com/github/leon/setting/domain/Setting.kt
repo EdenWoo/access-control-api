@@ -14,7 +14,8 @@ import javax.persistence.ManyToOne
 @DynamicUpdate
 @DynamicInsert
 data class Setting(
-        var name: String="",
+        var name: String = "",
+        val serverDomain: String = "",
         @Type(type = "yes_no")
         var active: Boolean? = null,
         var smsProviderType: SmsProviderType? = null,

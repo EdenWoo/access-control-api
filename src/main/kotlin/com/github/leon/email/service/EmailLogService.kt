@@ -54,29 +54,29 @@ class EmailLogService(
         return findByFilter(filter)
     }
 
-    fun send(emailItemVO: EmailLog): Pair<String, Boolean> {
-        val emailServer = settingDao.findByActive(true).firstOption().get().emailServer
+    fun send(emailLog: EmailLog): Pair<String, Boolean> {
+        val emailServer = settingDao.findByActive(true).emailServer
         val sender = createSender()
         return try {
             val mailMessage = sender.createMimeMessage()
             val messageHelper = MimeMessageHelper(mailMessage, true, "UTF-8")
             messageHelper.setFrom(emailServer.from, emailServer.from)
-            messageHelper.setTo(emailItemVO.sendTo!!)
-            messageHelper.setSubject(emailItemVO.subject!!)
+            messageHelper.setTo(emailLog.sendTo!!)
+            messageHelper.setSubject(emailLog.subject!!)
 
-            messageHelper.setText(String(emailItemVO.content!!), true)
+            messageHelper.setText(String(emailLog.content!!), true)
             sender.send(mailMessage)
 
             Pair("", true)
         } catch (e: Exception) {
-            log.error("EmailLog Send Error:" + emailItemVO.sendTo!!, e)
+            log.error("EmailLog Send Error:" + emailLog.sendTo!!, e)
             Pair(e.message!!, false)
         }
 
     }
 
     private fun createSender(): JavaMailSender {
-        val emailServer = settingDao.findByActive(true).firstOption().get().emailServer
+        val emailServer = settingDao.findByActive(true).emailServer
         val sender = JavaMailSenderImpl()
         sender.host = emailServer.host
         sender.port = emailServer.port
