@@ -67,7 +67,10 @@ class RoleController : BaseController<Role, Long>() {
 
                 }
         CLEAN_ROLE.end()
-        return ResponseEntity.ok(role.copy(rolePermissions = list.toMutableList()))
+        val id = role.id
+        val copy = role.copy(rolePermissions = list.toMutableList())
+        copy.id = id
+        return ResponseEntity.ok(copy)
     }
 
     @PostMapping
