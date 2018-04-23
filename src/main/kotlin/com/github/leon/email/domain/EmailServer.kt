@@ -18,7 +18,7 @@ data class EmailServer(
         val timeout: Int = 25000,
         val port: Int = 587,
         val alias: String = "info.ccfx@collinsonfx.com",
-        val from: String = "info.ccfx@collinsonfx.com",
+        val fromAddress: String = "info.ccfx@collinsonfx.com",
         val username: String = "info.ccfx@collinsonfx.com",
         val password: String = "Kedo9140"
 ) : BaseEntity(), Serializable

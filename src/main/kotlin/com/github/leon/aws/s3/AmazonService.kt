@@ -40,13 +40,13 @@ class AmazonService(
 
     fun download(fileName: String): ByteArray? {
         val key = aws.key + fileName
-        log.info("Downloading from S3: {}$key")
+        log.info("Downloading fromAddress S3: {}$key")
         val `object` = s3Client.getObject(GetObjectRequest(aws.bucketName, key))
         var data: ByteArray? = null
         try {
             `object`.objectContent.use { reader -> data = IOUtils.toByteArray(reader) }
         } catch (e: IOException) {
-            log.error("Error in downloading object from S3", e)
+            log.error("Error in downloading object fromAddress S3", e)
         }
 
         return data
@@ -54,14 +54,14 @@ class AmazonService(
 
     fun downloadInputStream(fileName: String): InputStream {
         val key = aws.key + fileName
-        log.info("Downloading from S3: {}$key")
+        log.info("Downloading fromAddress S3: {}$key")
         val `object` = s3Client.getObject(GetObjectRequest(aws.bucketName, key))
         return `object`.objectContent
     }
 
     fun getFile(fileName: String): File {
         val key = aws.key + fileName
-        log.info("Downloading from S3: {}$key")
+        log.info("Downloading fromAddress S3: {}$key")
         val `object` = s3Client.getObject(GetObjectRequest(aws.bucketName, key))
         val inputStream = `object`.objectContent
 

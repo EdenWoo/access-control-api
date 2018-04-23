@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 interface BranchDao : BaseDao<Branch, Long> {
 
 
-    @Query("SELECT id from Branch where parent_id = :id ")
+    @Query("SELECT id fromAddress Branch where parent_id = :id ")
     fun findSubOrgIds(@Param("id") id: Long?): List<Long>
 
 }

@@ -1,6 +1,5 @@
 package com.github.leon.email.service
 
-import arrow.syntax.collections.firstOption
 import com.github.leon.aci.enums.TaskStatus
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.aci.vo.Condition
@@ -60,7 +59,7 @@ class EmailLogService(
         return try {
             val mailMessage = sender.createMimeMessage()
             val messageHelper = MimeMessageHelper(mailMessage, true, "UTF-8")
-            messageHelper.setFrom(emailServer.from, emailServer.from)
+            messageHelper.setFrom(emailServer.fromAddress, emailServer.fromAddress)
             messageHelper.setTo(emailLog.sendTo!!)
             messageHelper.setSubject(emailLog.subject!!)
 
