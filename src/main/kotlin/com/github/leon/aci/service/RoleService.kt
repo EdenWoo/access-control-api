@@ -11,9 +11,7 @@ class RoleService : BaseService<Role, Long>() {
 
     fun removeEmptyRules(role: Role): Role {
         val rolePermissions = role.rolePermissions
-        role.rolePermissions += rolePermissions.filter { (_, rules) ->
-            isEmpty(rules).not()
-        }
+        role.rolePermissions += rolePermissions.filter { isEmpty(it.rules).not() }
         return role
     }
 }
