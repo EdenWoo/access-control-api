@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class ApplicationProperties {
 
 
-    @NotEmpty
+    //@NotEmpty
     var rateDataPath: String? = null
 
     var userClass: String? = null
