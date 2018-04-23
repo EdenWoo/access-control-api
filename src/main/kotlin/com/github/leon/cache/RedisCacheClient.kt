@@ -27,12 +27,12 @@ class RedisCacheClient : CacheClient {
         return when (cache) {
             is Try.Success -> cache.value.toOption()
             is Try.Failure -> {
-                logger.error("Query key [{}] fromAddress cache failure", key, cache.exception.message)
+                logger.error("Query key [{}] from cache failure", key, cache.exception.message)
                 Option.empty()
             }
         }.getOrElse {
             val value =  supplier()
-            logger.debug("Query key [{}] fromAddress cache success, value [{}] ", key, value)
+            logger.debug("Query key [{}] from cache success, value [{}] ", key, value)
             template!!.opsForValue().set(key, value)
             value
         }

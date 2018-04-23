@@ -58,14 +58,14 @@ class TokenHelper(
 
     fun getToken(request: HttpServletRequest): String? {
         /**
-         * Getting the token fromAddress Cookie store
+         * Getting the token from Cookie store
          */
         val authCookie = getCookieValueByName(request, applicationProperties.jwt.cookie)
         if (authCookie != null) {
             return authCookie.value
         }
         /**
-         * Getting the token fromAddress Authentication header
+         * Getting the token from Authentication header
          * e.g Bearer your_token
          */
         val authHeader = request.getHeader(applicationProperties.jwt.header)
