@@ -20,18 +20,19 @@ class MessageTemplateController(
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<MessageTemplate>> {
         return super.page(pageable, request)
     }
+
     @GetMapping("{id}")
     override fun findOne(id: Long, request: HttpServletRequest): ResponseEntity<MessageTemplate> {
         return super.findOne(id, request)
     }
 
     @PostMapping
-    override fun saveOne(input: MessageTemplate): ResponseEntity<*> {
+    override fun saveOne(@RequestBody input: MessageTemplate): ResponseEntity<*> {
         return super.saveOne(input)
     }
 
     @PutMapping
-    override fun updateOne(id: Long, input: MessageTemplate, request: HttpServletRequest): ResponseEntity<*> {
+    override fun updateOne(id: Long, @RequestBody input: MessageTemplate, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 
