@@ -22,7 +22,7 @@ class MessageTemplateController(
     }
 
     @GetMapping("{id}")
-    override fun findOne(id: Long, request: HttpServletRequest): ResponseEntity<MessageTemplate> {
+    override fun findOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<MessageTemplate> {
         return super.findOne(id, request)
     }
 
@@ -31,13 +31,13 @@ class MessageTemplateController(
         return super.saveOne(input)
     }
 
-    @PutMapping
-    override fun updateOne(id: Long, @RequestBody input: MessageTemplate, request: HttpServletRequest): ResponseEntity<*> {
+    @PutMapping("{id}")
+    override fun updateOne(@PathVariable id: Long, @RequestBody input: MessageTemplate, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 
     @DeleteMapping("{id}")
-    override fun deleteOne(id: Long, request: HttpServletRequest): ResponseEntity<*> {
+    override fun deleteOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
         return super.deleteOne(id, request)
     }
 }

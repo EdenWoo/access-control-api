@@ -34,11 +34,11 @@ class EmailServerController(
     }
 
     @PutMapping("{id}")
-    override fun updateOne(@PathVariable  id: Long, @RequestBody input: EmailServer, request: HttpServletRequest): ResponseEntity<*> {
+    override fun updateOne(@PathVariable id: Long, @RequestBody input: EmailServer, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     override fun deleteOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
         return super.deleteOne(id, request)
     }
