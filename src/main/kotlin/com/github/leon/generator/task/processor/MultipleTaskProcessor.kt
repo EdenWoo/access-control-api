@@ -10,7 +10,7 @@ class MultipleTaskProcessor : ITaskProcessor {
         val paths = Lists.newArrayList<String>()
         for (codeEntity in codeProject.entities) {
             context["entity"] = codeEntity
-            codeProject.templateEngine.put("entity", codeEntity)
+            task.templateHelper.put("entity", codeEntity)
             paths.add(TaskService.processTemplate(codeProject, task, context))
         }
         return paths

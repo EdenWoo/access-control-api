@@ -16,14 +16,15 @@ object TaskService {
         val scope = Maps.newHashMap<String, Any>()
         scope["project"] = codeProject
         scope["entities"] = codeProject.entities
-        scope["enums"] = codeProject.templateEngine
+        scope["enums"] = codeProject.enums
         codeProject.utilClasses.forEach { util ->
             val wrapper = BeansWrapper.getDefaultInstance()
             val staticModels = wrapper.staticModels
             val fileStatics = staticModels.get(util.name) as TemplateHashModel
             scope[util.simpleName] = fileStatics
         }
-        codeProject.templateEngine.putAll(scope)
+        task.templateHelper = codeProject.templateEngine
+        task.templateHelper.putAll(scope)
         paths = task.run(codeProject, scope)
         return paths
     }

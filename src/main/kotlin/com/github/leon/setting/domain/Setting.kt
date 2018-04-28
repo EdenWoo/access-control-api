@@ -23,4 +23,5 @@ data class Setting(
         @ManyToOne
         val emailServer: EmailServer
 
+
 ) : BaseEntity()

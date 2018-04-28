@@ -1,6 +1,8 @@
 package com.github.leon.generator.entity
 
 
+import com.github.leon.generator.core.ScriptHelper
+import com.github.leon.generator.core.TemplateHelper
 import com.github.leon.generator.task.processor.ITaskProcessor
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
@@ -23,7 +25,11 @@ data class Task(
 
         var replaceFile: Boolean = true,
 
-        var active: Boolean = true
+        var active: Boolean = true,
+        
+        var scriptHelper:ScriptHelper,
+        
+        var templateHelper: TemplateHelper
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {

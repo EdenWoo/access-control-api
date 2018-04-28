@@ -27,6 +27,8 @@ data class Filter (
 
         const val OPERATOR_LIKE = "LIKE"
 
+        const val OPERATOR_NOT_LIKE = "NOT_LIKE"
+
         const val OPERATOR_EQ = "="
 
         const val OPERATOR_NOT_EQ = "<>"
