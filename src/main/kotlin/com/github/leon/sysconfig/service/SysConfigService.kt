@@ -5,6 +5,7 @@ import arrow.core.toOption
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.service.base.BaseService
 import com.github.leon.date.DateUtils
+import com.github.leon.setting.dao.SettingDao
 import com.github.leon.sysconfig.dao.SysConfigDao
 import com.github.leon.sysconfig.domain.SysConfig
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +16,9 @@ import java.time.LocalTime
 @Service
 class SysConfigService(
         @Autowired
-        val sysConfigDao: SysConfigDao
+        val sysConfigDao: SysConfigDao,
+        @Autowired
+        val settingDao: SettingDao
 ) : BaseService<SysConfig, Long>() {
     fun canTrade(user: User): Boolean {
         val canTradeConfig: Boolean? = sysConfigDao
@@ -24,24 +27,15 @@ class SysConfigService(
                 .map { it.confVal }
                 .map { it.toBoolean() }
                 .getOrElse { true }
-        return user.verify!! && canTradeConfig!! && DateUtils.isWeekday(LocalDate.now()) && isWorkingHour(LocalTime.now())
+
+        return user.verify!! && canTradeConfig!! && DateUtils.isWeekday(LocalDate.now()) &&
+                isWorkingHour(LocalTime.now())
     }
 
-    /* fun <T>findByKey(key: String, default: Boolean): T {
-         sysConfigDao.findByConfKey(key)
-                 .toOption()
-                 .map { it.confVal }
-                 .map { it.toBoolean() }
-                 .getOrElse { default }
 
-     }*/
-    companion object {
-
-        private const val OPEN = 8
-        private const val CLOSE = 22
-
-        private fun isWorkingHour(localTime: LocalTime): Boolean {
-            return localTime.hour in OPEN..(CLOSE - 1)
-        }
+    fun isWorkingHour(localTime: LocalTime): Boolean {
+        val setting = settingDao.findByActive(true)
+        return localTime.hour in setting.workHoursStart..(setting.workHoursEnd - 1)
     }
+
 }
