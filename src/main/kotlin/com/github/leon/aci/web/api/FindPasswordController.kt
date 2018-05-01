@@ -3,6 +3,8 @@ package com.cfgglobal.website.web.action
 import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.FindPwdSendLog
 import com.github.leon.aci.service.FindPwdLogService
+import com.github.leon.email.service.EmailLogService
+import com.github.leon.encrypt.DESUtil
 import com.github.leon.fm.FreemarkerBuilderUtil
 import com.github.leon.setting.dao.SettingDao
 import com.google.common.collect.Maps
@@ -32,7 +34,9 @@ class FindPasswordController(
         @Autowired
         val passwordEncoder: BCryptPasswordEncoder,
         @Autowired
-        val settingDao: SettingDao
+        val settingDao: SettingDao,
+        @Autowired
+        val emailLogService: EmailLogService
 
 ) {
 
@@ -58,14 +62,14 @@ class FindPasswordController(
         log.isUsed = 0
         // log.ip = IpUtil.getIpAddr(request)
         findPwdLogService.insert(log)
-        // val encryptId = DESUtil.encrypt(log.id!!.toString() + "", Constants.ENCRYPT_CODE)
+        val encryptId = DESUtil.encrypt(log.id!!.toString() + "", "aaasssdd")
 
         val model = Maps.newHashMap<String, Any>()
         model["domain"] = settingDao.findByActive(true).serverDomain
-        //model["id"] = encryptId
-        model["id"] = log.id
+        model["id"] = encryptId
+        //model["id"] = log.id
         val content = freemarkerBuilderUtil.build("/mail/findPwd.ftl", model)
-
+        //emailLogService.sendSystem()
         // webMailService!!.sendComplexMessage(user.merchantBase.email, "Reset password", content, true)
         return ResponseEntity.ok().build<Any>()
 
@@ -80,11 +84,10 @@ class FindPasswordController(
      * @throws IOException
      */
     @RequestMapping(value = ["/link-in-email"], method = [(RequestMethod.GET), (RequestMethod.POST)])
-    @Throws(Exception::class)
     fun emailUrl(id: String, model: ModelMap): String {
         var id = id
         //解密id，判断时间是否过期
-        //  id = DESUtil.decrypt(id, Constants.ENCRYPT_CODE)
+        id = DESUtil.decrypt(id, "aaasssdd")
         val log = findPwdLogService.getLogById(NumberUtils.createLong(id))
         val email = log.email
         val date = log.expireDate

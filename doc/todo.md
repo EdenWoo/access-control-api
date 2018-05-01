@@ -6,4 +6,4 @@
 
    student-permission.sql
    
-*    
+ 
