@@ -15,7 +15,7 @@ data class Task(
 
         var taskType: String,
 
-        var taskOfProject:TaskOfProject,
+        var taskOfProject: TaskOfProject,
 
         var folder: String,
 
@@ -26,10 +26,10 @@ data class Task(
         var replaceFile: Boolean = true,
 
         var active: Boolean = true,
-        
-        var scriptHelper:ScriptHelper,
-        
-        var templateHelper: TemplateHelper
+
+        var scriptHelper: ScriptHelper?,
+
+        var templateHelper: TemplateHelper?
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {
