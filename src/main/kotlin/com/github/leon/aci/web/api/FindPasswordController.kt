@@ -59,7 +59,7 @@ class FindPasswordController(
         }
         val log = FindPwdSendLog()
         log.email = user.email
-        log.isUsed = 0
+        log.used = false
         // log.ip = IpUtil.getIpAddr(request)
         findPwdLogService.insert(log)
         val encryptId = DESUtil.encrypt(log.id!!.toString() + "", "aaasssdd")
@@ -96,7 +96,7 @@ class FindPasswordController(
         val now = calendar.time
         val isExpired = if (now.after(expiredDate)) 1 else 0
         model.addAttribute("isExpired", isExpired)
-        model.addAttribute("isUsed", log.isUsed)
+        model.addAttribute("used", log.used)
         model.addAttribute("id", id)
         model.addAttribute("email", email)
         return "/findPassword/newPassword"
@@ -117,7 +117,7 @@ class FindPasswordController(
         } else {
             return ResponseEntity.badRequest().build<Any>()
         }
-        log.isUsed = 1
+        log.used = true
         findPwdLogService.update(log)
         return ResponseEntity.ok().build<Any>()
 
