@@ -43,7 +43,7 @@ data class Filter (
 
         const val OPERATOR_NULL = "NULL"
 
-        const val OPERATOR_NOT_NULL = "NOTNULL"
+        const val OPERATOR_NOT_NULL = "NOT_NULL"
 
         const val OPERATOR_BETWEEN = "BETWEEN"
 
