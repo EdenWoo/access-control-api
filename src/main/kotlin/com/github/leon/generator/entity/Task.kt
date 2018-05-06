@@ -27,9 +27,9 @@ data class Task(
 
         var active: Boolean = true,
 
-        var scriptHelper: ScriptHelper?,
+        var scriptHelper: ScriptHelper? = null,
 
-        var templateHelper: TemplateHelper?
+        var templateHelper: TemplateHelper? = null
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {
