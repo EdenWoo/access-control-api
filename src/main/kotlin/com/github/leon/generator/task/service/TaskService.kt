@@ -24,7 +24,7 @@ object TaskService {
             scope[util.simpleName] = fileStatics
         }
         task.templateHelper = codeProject.templateEngine
-        task.templateHelper.putAll(scope)
+        task.templateHelper!!.putAll(scope)
         paths = task.run(codeProject, scope)
         return paths
     }
