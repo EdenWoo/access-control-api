@@ -3,6 +3,7 @@ package com.github.leon.generator.metadata
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class EntityFeature(
+        val code: Int = 0,
         val generated: Boolean = true,
         val versionInList: Boolean = false,
         val createdAtInList: Boolean = false,
