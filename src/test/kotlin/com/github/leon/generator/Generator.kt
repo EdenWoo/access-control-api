@@ -24,10 +24,10 @@ fun main(args: Array<String>) {
 
     val templatePath = File(PathKit.getRootClassPath()).parent + "/resources/templates"
 
-    val apiTargetPath = "${System.getProperty("user.dir")}/ecommerce-generated"
-    val uiTargetPath = appProps.getProperty("uiTargetPath")
-    val testTargetPath = appProps.getProperty("testTargetPath")
-    val uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
+    val apiTargetPath = System.getProperty("user.dir")
+    val uiTargetPath = ""
+    val testTargetPath = ""
+    val uiTemplateTargetPath = ""
 
     val entities = scanForCodeEntities()
     entities.forEach {

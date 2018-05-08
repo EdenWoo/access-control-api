@@ -2,15 +2,30 @@ package com.github.leon.generator
 
 import com.github.leon.generator.entity.Task
 import com.github.leon.generator.entity.TaskOfProject
+import java.io.File
+import java.io.FileInputStream
+import java.util.*
 
 
 fun apiTasks(): List<Task> {
+
+    val rootPath = Thread.currentThread().contextClassLoader.getResource("")!!.path
+    val appConfigPath = "${File(rootPath).parent}/resources/generator/local.properties"
+
+    val appProps = Properties()
+    appProps.load(FileInputStream(appConfigPath))
+
+    val projectName = appProps.getProperty("projectName")
+
+    val generatedPath = "/"
+    val apiPath =  "/"
+    val srcPath = "/src/test/kotlin/"
 
 
     val baseDaoTask = Task(
             taskOfProject = TaskOfProject.API,
             name = "DAO",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"dao/base" """,
+            folder = """ "$generatedPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"dao/base" """,
             taskType = "multiple",
             filename = """ "Base"+entity.name+"Dao.kt" """,
             templatePath = """ "kotlin/baseDao.ftl" """
@@ -20,7 +35,7 @@ fun apiTasks(): List<Task> {
             replaceFile = false,
             taskOfProject = TaskOfProject.API,
             name = "DAO",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"dao" """,
+            folder = """ "$apiPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"dao" """,
             taskType = "multiple",
             filename = """ entity.name+"Dao.kt" """,
             templatePath = """ "kotlin/dao.ftl" """
@@ -29,7 +44,7 @@ fun apiTasks(): List<Task> {
     val baseServiceTask = Task(
             taskOfProject = TaskOfProject.API,
             name = "baseService",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"service/base" """,
+            folder = """ "$generatedPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"service/base" """,
             taskType = "multiple",
             filename = """ "Base"+entity.name+"Service.kt" """,
             templatePath = """ "kotlin/baseService.ftl" """
@@ -39,7 +54,7 @@ fun apiTasks(): List<Task> {
             replaceFile = false,
             taskOfProject = TaskOfProject.API,
             name = "baseService",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"service" """,
+            folder = """ "$apiPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"service" """,
             taskType = "multiple",
             filename = """ entity.name+"Service.kt" """,
             templatePath = """ "kotlin/service.ftl" """
@@ -49,7 +64,7 @@ fun apiTasks(): List<Task> {
     val baseControllerTask = Task(
             taskOfProject = TaskOfProject.API,
             name = "BaseController",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"controller/base" """,
+            folder = """ "$generatedPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"controller/base" """,
             taskType = "multiple",
             filename = """ "Base"+entity.name+"Controller.kt" """,
             templatePath = """ "kotlin/baseController.ftl" """
@@ -59,7 +74,7 @@ fun apiTasks(): List<Task> {
             replaceFile = false,
             taskOfProject = TaskOfProject.API,
             name = "BaseController",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"controller" """,
+            folder = """ "$apiPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"controller" """,
             taskType = "multiple",
             filename = """entity.name+"Controller.kt" """,
             templatePath = """ "kotlin/controller.ftl" """
@@ -69,7 +84,7 @@ fun apiTasks(): List<Task> {
             active = false,
             taskOfProject = TaskOfProject.API,
             name = "SERVICE",
-            folder = """ "/src/main/kotlin/"+project.packageName.replaceAll("\\.","/")+"/"+"excel" """,
+            folder = """ "$generatedPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"excel" """,
             taskType = "multiple",
             filename = """ entity.name+"ExcelParsingRule.kt" """,
             templatePath = """ "kotlin/excelParsingRule.ftl" """
@@ -80,7 +95,7 @@ fun apiTasks(): List<Task> {
             replaceFile = false,
             taskOfProject = TaskOfProject.API,
             name = "PERMISSION",
-            folder = """ "/"+"db" """,
+            folder = """ "$generatedPath"+"/"+"db" """,
             taskType = "multiple",
             filename = """ com.github.leon.generator.ext.Utils.lowerHyphen(entity.name)+"-permission.sql" """,
             templatePath = """ "kotlin/permission.ftl" """
