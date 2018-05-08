@@ -1,4 +1,4 @@
-package com.cfgglobal
+package com.github.leon
 
 import com.github.leon.aci.config.json.JsonConfig
 import com.github.leon.aci.util.Q
