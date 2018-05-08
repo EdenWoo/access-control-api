@@ -100,7 +100,7 @@ class JsonConfig {
                     .map { it.split(",").toList() }
                     .getOrElse { emptyList() }
                     .filter { StringUtils.isNotBlank(it) }
-                    .map { e -> e.split("\\.").toList() }
+                    .map { e -> e.split(".").toList() }
                     .filter { it.isNotEmpty() }
             val endpoint = JsonConfig.getRootEndpoint(uri)
 
