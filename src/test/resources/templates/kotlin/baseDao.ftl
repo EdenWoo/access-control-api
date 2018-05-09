@@ -6,3 +6,6 @@ import org.springframework.data.repository.NoRepositoryBean
 
 @NoRepositoryBean
 interface Base${entity.name}Dao : BaseDao<${entity.name}, Long>
+
+${project.projectExt}
+${entity.entityExt}

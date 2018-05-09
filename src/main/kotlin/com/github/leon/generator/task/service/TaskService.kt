@@ -8,6 +8,7 @@ import com.google.common.collect.Maps
 import freemarker.ext.beans.BeansWrapper
 import freemarker.template.TemplateHashModel
 import org.apache.commons.beanutils.BeanUtils
+import org.apache.commons.beanutils.PropertyUtils
 import java.io.File
 
 
@@ -16,7 +17,7 @@ object TaskService {
     fun processTask(codeProject: CodeProject, task: Task): List<String> {
         val paths: List<String>
         val scope = Maps.newHashMap<String, Any>()
-        val codeProjectMap = BeanUtils.describe(codeProject)
+        val codeProjectMap = PropertyUtils.describe(codeProject)
         task.projectExtProcessor.toOption().forEach {
             codeProjectMap.putAll(it.invoke(codeProject))
         }

@@ -1,5 +1,7 @@
 package com.github.leon.generator
 
+import com.github.leon.generator.entity.CodeEntity
+import com.github.leon.generator.entity.CodeProject
 import com.github.leon.generator.entity.Task
 import com.github.leon.generator.entity.TaskOfProject
 import java.io.File
@@ -17,9 +19,19 @@ fun apiTasks(): List<Task> {
 
 
     val generatedPath = "/"
-    val apiPath =  "/"
-    val srcPath = "/generated"
+    val apiPath = "/"
+    val srcPath = "/generated/"
 
+
+    val projectExtProcessor: (CodeProject) -> Map<String, String> = {
+        mapOf("projectExt" to it.apiTargetPath)
+    }
+
+    val entityExtProcessor: (CodeEntity) -> Map<String, String> = {
+        mapOf(
+                "entityExt" to it.code.inc().toString()
+        )
+    }
 
     val baseDaoTask = Task(
             taskOfProject = TaskOfProject.API,
@@ -27,7 +39,9 @@ fun apiTasks(): List<Task> {
             folder = """ "$generatedPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"dao/base" """,
             taskType = "multiple",
             filename = """ "Base"+entity.name+"Dao.kt" """,
-            templatePath = """ "kotlin/baseDao.ftl" """
+            templatePath = """ "kotlin/baseDao.ftl" """,
+            projectExtProcessor = projectExtProcessor,
+            entityExtProcessor = entityExtProcessor
     )
 
     val daoTask = Task(
@@ -38,8 +52,7 @@ fun apiTasks(): List<Task> {
             taskType = "multiple",
             filename = """ entity.name+"Dao.kt" """,
             templatePath = """ "kotlin/dao.ftl" """,
-            projectExtProcessor = { mapOf("projectExt" to it.apiTargetPath)},
-            entityExtProcessor = { mapOf("entityExt" to it.code.inc())}
+
     )
 
     val baseServiceTask = Task(

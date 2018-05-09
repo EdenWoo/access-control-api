@@ -6,20 +6,18 @@ import com.github.leon.generator.entity.CodeProject
 import com.github.leon.generator.entity.Task
 import com.github.leon.generator.task.service.TaskService
 import com.google.common.collect.Lists
-import org.apache.commons.beanutils.BeanUtils
+import org.apache.commons.beanutils.PropertyUtils
 
 class MultipleTaskProcessor : ITaskProcessor {
     override fun run(codeProject: CodeProject, task: Task, context: MutableMap<String, Any>): List<String> {
         val paths = Lists.newArrayList<String>()
         for (codeEntity in codeProject.entities) {
-            val codeEntityMap = BeanUtils.describe(codeEntity)
-            codeEntityMap.println()
+            val codeEntityMap = PropertyUtils.describe(codeEntity)
             task.entityExtProcessor.toOption().forEach {
                 codeEntityMap.putAll(it.invoke(codeEntity))
             }
-            codeEntityMap.println()
-            task.templateHelper!!.put("entity", codeEntity)
-            context["entity"] = codeEntity
+            task.templateHelper!!.put("entity", codeEntityMap)
+            context["entity"] = codeEntityMap
 
             paths.add(TaskService.processTemplate(codeProject, task, context))
         }
