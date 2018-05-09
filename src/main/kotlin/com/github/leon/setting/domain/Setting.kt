@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne
 data class Setting(
         var name: String = "",
         val serverDomain: String = "",
+        var customerLogo: String = "",
+        var adminLogo: String = "",
         @Range(min = 0, max = 24)
         val workHoursStart: Int,
         @Range(min = 0, max = 24)
