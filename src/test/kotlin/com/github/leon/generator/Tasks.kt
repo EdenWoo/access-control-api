@@ -51,8 +51,7 @@ fun apiTasks(): List<Task> {
             folder = """ "$apiPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"dao" """,
             taskType = "multiple",
             filename = """ entity.name+"Dao.kt" """,
-            templatePath = """ "kotlin/dao.ftl" """,
-
+            templatePath = """ "kotlin/dao.ftl" """
     )
 
     val baseServiceTask = Task(
