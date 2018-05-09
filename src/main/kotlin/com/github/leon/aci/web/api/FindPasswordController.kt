@@ -1,4 +1,4 @@
-package com.cfgglobal.website.web.action
+package com.github.leon.aci.web.api
 
 import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.FindPwdSendLog
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 import java.io.IOException
+import java.time.ZonedDateTime
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
@@ -60,7 +61,6 @@ class FindPasswordController(
         val log = FindPwdSendLog()
         log.email = user.email
         log.used = false
-        // log.ip = IpUtil.getIpAddr(request)
         findPwdLogService.insert(log)
         val encryptId = DESUtil.encrypt(log.id!!.toString() + "", "aaasssdd")
 
@@ -90,11 +90,7 @@ class FindPasswordController(
         id = DESUtil.decrypt(id, "aaasssdd")
         val log = findPwdLogService.getLogById(NumberUtils.createLong(id))
         val email = log.email
-        val date = log.expireDate
-        val expiredDate = Date(date!!)
-        val calendar = Calendar.getInstance()
-        val now = calendar.time
-        val isExpired = if (now.after(expiredDate)) 1 else 0
+        val isExpired = if (ZonedDateTime.now().isAfter(log.expireDate)) 1 else 0
         model.addAttribute("isExpired", isExpired)
         model.addAttribute("used", log.used)
         model.addAttribute("id", id)
@@ -103,7 +99,7 @@ class FindPasswordController(
     }
 
     /**
-     * 重置密码，不需要登录
+     * 修改密码，不需要登录
      */
     @RequestMapping(value = ["/reset"], method = [(RequestMethod.GET), (RequestMethod.POST)])
     @ResponseBody
