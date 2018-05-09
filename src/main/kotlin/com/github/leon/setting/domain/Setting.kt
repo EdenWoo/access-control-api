@@ -29,6 +29,4 @@ data class Setting(
         @FieldFeature(selectOne = true)
         @ManyToOne
         val emailServer: EmailServer
-
-
 ) : BaseEntity()
