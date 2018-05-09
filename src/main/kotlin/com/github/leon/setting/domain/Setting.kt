@@ -20,9 +20,9 @@ data class Setting(
         var customerLogo: String = "",
         var adminLogo: String = "",
         @Range(min = 0, max = 24)
-        val workHoursStart: Int,
+        val startWorkHour: Int,
         @Range(min = 0, max = 24)
-        val workHoursEnd: Int,
+        val endWorkHour: Int,
         @Type(type = "yes_no")
         var active: Boolean? = null,
         var smsProviderType: SmsProviderType? = null,
