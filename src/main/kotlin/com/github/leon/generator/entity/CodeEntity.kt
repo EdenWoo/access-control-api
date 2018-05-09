@@ -28,7 +28,7 @@ data class CodeEntity(
         var requiredFields: List<CodeField> = listOf(),
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
-
+        var code: Int,
         var name: String,
 
         var display: String? = null
@@ -48,11 +48,11 @@ fun scanForCodeEntities(): List<CodeEntity> {
 
     return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>()
             .filter {
-                it.getDeclaredAnnotation(EntityFeature::class.java)
-                        .toOption().map { it.generated }.getOrElse { true }
+                it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.generated }.getOrElse { true }
             }.map {
                 val codeEntity = CodeEntity(
-                        name = it.simpleName
+                        name = it.simpleName,
+                        code = it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.code }.getOrElse { 0 }
                 )
                 var ignoredFields = listOf("serialVersionUID", "Companion")
                 val entityFeature = it.getDeclaredAnnotation(EntityFeature::class.java).toOption()

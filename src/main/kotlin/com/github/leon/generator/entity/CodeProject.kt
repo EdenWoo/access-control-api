@@ -27,17 +27,22 @@ data class CodeProject(
 
         var uiTasks: List<Task> = listOf(),
 
+        var uiTemplateTargetPath: String,
+
+        var uiTemplateTasks: List<Task> = listOf(),
+
         var testTargetPath: String,
 
         var testTasks: List<Task> = listOf()
 
 ) {
     fun generate() {
-        (apiTasks + uiTasks + testTasks)
+        (apiTasks + uiTasks + testTasks + uiTemplateTasks)
                 .filter { it.active }
+             //   .parallelStream()
                 .forEach {
-            TaskService.processTask(this, it)
-        }
+                    TaskService.processTask(this, it)
+                }
 
     }
 }

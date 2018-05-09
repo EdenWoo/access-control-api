@@ -16,6 +16,10 @@ class FreeMarkerHelper(templatesBaseDir: String) : TemplateHelper() {
     init {
         val loader  = FileTemplateLoader(File(templatesBaseDir))
         freeMarkerEngine.templateLoader = loader
+      /*  freeMarkerEngine.setClassForTemplateLoading(
+                this::class.java,
+                templatesBaseDir
+        )*/
     }
 
     override fun put(key: String, value: Any?) {

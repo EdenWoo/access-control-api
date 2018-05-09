@@ -1,10 +1,15 @@
 package com.github.leon.generator.entity
 
 
+import com.github.leon.generator.core.ScriptHelper
+import com.github.leon.generator.core.TemplateHelper
 import com.github.leon.generator.task.processor.ITaskProcessor
 import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 
+typealias ProjectExtProcessor = (CodeProject) -> Map<String, Any?>
+
+typealias EntityExtProcessor = (CodeEntity) -> Map<String, Any?>
 
 data class Task(
         var id: Int? = null,
@@ -13,7 +18,7 @@ data class Task(
 
         var taskType: String,
 
-        var taskOfProject:TaskOfProject,
+        var taskOfProject: TaskOfProject,
 
         var folder: String,
 
@@ -23,7 +28,15 @@ data class Task(
 
         var replaceFile: Boolean = true,
 
-        var active: Boolean = true
+        var active: Boolean = true,
+
+        var scriptHelper: ScriptHelper? = null,
+
+        var templateHelper: TemplateHelper? = null,
+
+        var projectExtProcessor: ProjectExtProcessor? = null,
+        
+        var entityExtProcessor: EntityExtProcessor? = null
 ) {
 
     fun run(codeProject: CodeProject, root: MutableMap<String, Any>): List<String> {
@@ -31,9 +44,7 @@ data class Task(
     }
 
     private fun taskProcessor(taskType: String): ITaskProcessor {
-        return Reflect.on(ITaskProcessor::class.java.`package`.name + "."
-                + StringUtils.capitalize(taskType) +
-                "TaskProcessor").create().get()
+        return Reflect.on("${ITaskProcessor::class.java.`package`.name}.${taskType.capitalize()}TaskProcessor").create().get()
     }
 
 

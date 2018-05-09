@@ -1,11 +1,14 @@
 package com.github.leon.generator.task.service
 
+import arrow.core.toOption
 import com.github.leon.generator.entity.CodeProject
 import com.github.leon.generator.entity.Task
 import com.github.leon.generator.entity.TaskOfProject
 import com.google.common.collect.Maps
 import freemarker.ext.beans.BeansWrapper
 import freemarker.template.TemplateHashModel
+import org.apache.commons.beanutils.BeanUtils
+import org.apache.commons.beanutils.PropertyUtils
 import java.io.File
 
 
@@ -14,16 +17,21 @@ object TaskService {
     fun processTask(codeProject: CodeProject, task: Task): List<String> {
         val paths: List<String>
         val scope = Maps.newHashMap<String, Any>()
-        scope["project"] = codeProject
-        scope["entities"] = codeProject.entities
-        scope["enums"] = codeProject.templateEngine
-        codeProject.utilClasses.forEach { util ->
+        val codeProjectMap = PropertyUtils.describe(codeProject)
+        task.projectExtProcessor.toOption().forEach {
+            codeProjectMap.putAll(it.invoke(codeProject))
+        }
+        scope["project"] = codeProjectMap
+        scope["enums"] = codeProject.enums
+
+        codeProject.utilClasses.forEach {
             val wrapper = BeansWrapper.getDefaultInstance()
             val staticModels = wrapper.staticModels
-            val fileStatics = staticModels.get(util.name) as TemplateHashModel
-            scope[util.simpleName] = fileStatics
+            val fileStatics = staticModels.get(it.name) as TemplateHashModel
+            scope[it.simpleName] = fileStatics
         }
-        codeProject.templateEngine.putAll(scope)
+        task.templateHelper = codeProject.templateEngine
+        task.templateHelper!!.putAll(scope)
         paths = task.run(codeProject, scope)
         return paths
     }
@@ -41,6 +49,7 @@ object TaskService {
             TaskOfProject.API -> codeProject.apiTargetPath + File.separator + folder
             TaskOfProject.UI -> codeProject.uiTargetPath + File.separator + folder
             TaskOfProject.TEST -> codeProject.testTargetPath + File.separator + folder
+            TaskOfProject.UI_TEMPLATE -> codeProject.testTargetPath + File.separator + folder
         }
         val folderDir = File(folder)
         if (!folderDir.exists()) {
@@ -50,7 +59,7 @@ object TaskService {
         val outputFilename = folder + File.separator + filename
         val outputFile = File(outputFilename)
         if (task.replaceFile || !outputFile.exists()) {
-            codeProject.templateEngine.exec(templateFilename, outputFilename)
+            task.templateHelper!!.exec(templateFilename, outputFilename)
         }
         return outputFilename
 

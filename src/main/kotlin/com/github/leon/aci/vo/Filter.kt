@@ -27,6 +27,8 @@ data class Filter (
 
         const val OPERATOR_LIKE = "LIKE"
 
+        const val OPERATOR_NOT_LIKE = "NOT_LIKE"
+
         const val OPERATOR_EQ = "="
 
         const val OPERATOR_NOT_EQ = "<>"
@@ -41,7 +43,7 @@ data class Filter (
 
         const val OPERATOR_NULL = "NULL"
 
-        const val OPERATOR_NOT_NULL = "NOTNULL"
+        const val OPERATOR_NOT_NULL = "NOT_NULL"
 
         const val OPERATOR_BETWEEN = "BETWEEN"
 

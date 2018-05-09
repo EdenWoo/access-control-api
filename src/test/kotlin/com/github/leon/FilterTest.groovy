@@ -1,7 +1,8 @@
-package com.cfgglobal
+package com.github.leon
 
 import com.github.leon.aci.vo.Filter
 
+import Specification
 import spock.lang.Specification
 
 import static com.github.leon.aci.vo.FilterKt.createFilters

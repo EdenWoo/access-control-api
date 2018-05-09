@@ -17,7 +17,7 @@ interface CacheClient {
 
     fun deleteByPattern(pattern: String)
 
-    fun keys(key: String): Set<String>
+    fun keys(pattern: String): Set<String>
 
 
 }

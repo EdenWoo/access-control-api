@@ -67,6 +67,9 @@ All the fields are able to be searched with different operators.
 Supported operators:
 
  + LIKE
+ + NOT_LIKE
+ + NULL
+ + NOT_NUll
  + =
  + between
  + in
@@ -85,10 +88,13 @@ Example
   Endpoint /order
 | search url                                      | full search url                                              |                                             |
 | /order?f_name=xx                                | /order?f_name=xx&f_name_op=LIKE                              | 默认op为LIKE                                |
-| /order?f_name=xx&f_name==                       |                                                              |                                             |
+| /order?f_name=xx&f_name_op=NOT_LIKE             | /order?f_name=xx&f_name_op=LIKE                              | 默认op为LIKE                                |
+| /order?f_name=xx&f_name_op==                    |                                                              |                                             |
 | /order?f_date=2017-01-01&f_type=2017-02-01      | /order?f_type=2017-01-01&f_type=2017-02-01&f_type_op=between | 字段有2个，默认op为between,通常用于时间查询 |
 | /order?f_type=1&f_type=2&f_type=3               | /order?f_type=1&f_type=2&f_type=3&f_type_op=in               | 字段有3个的时候，默认op为in                 |
 | /order?f_username-email-phone=123               |                                                              | 多字段模糊查询                              |
+| /order?f_name=NUll&f_name_op=NULL             |                                                                | 查询字段为NULL                              |
+| /order?f_name=NOTNULL&f_name_op=NOT_NULL             |                                                          | 查询字段不为NULL                              |
 | /order?f_creator.name=admin&f_creator.name_op== |                                                              | embedded 实体查询                           |
 | /order?embedded=creator,wallet                  |                                                              | 查询嵌套实体，默认情况只会返回第一层字段    |
 

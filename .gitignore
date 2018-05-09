@@ -32,3 +32,4 @@ gradlew.bat
 /inf-api/.gradle/
 /fee-api/out/
 /logs/
+/src/test/kotlin/com/github/leon/test/
