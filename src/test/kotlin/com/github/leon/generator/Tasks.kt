@@ -15,11 +15,10 @@ fun apiTasks(): List<Task> {
     val appProps = Properties()
     appProps.load(FileInputStream(appConfigPath))
 
-    val projectName = appProps.getProperty("projectName")
 
     val generatedPath = "/"
     val apiPath =  "/"
-    val srcPath = "/src/test/kotlin/"
+    val srcPath = "/generated"
 
 
     val baseDaoTask = Task(
@@ -38,7 +37,9 @@ fun apiTasks(): List<Task> {
             folder = """ "$apiPath"+"$srcPath"+project.packageName.replaceAll("\\.","/")+"/"+"dao" """,
             taskType = "multiple",
             filename = """ entity.name+"Dao.kt" """,
-            templatePath = """ "kotlin/dao.ftl" """
+            templatePath = """ "kotlin/dao.ftl" """,
+            projectExtProcessor = { mapOf("projectExt" to it.apiTargetPath)},
+            entityExtProcessor = { mapOf("entityExt" to it.code.inc())}
     )
 
     val baseServiceTask = Task(
@@ -91,17 +92,7 @@ fun apiTasks(): List<Task> {
     )
 
 
-    val permissionTask = Task(
-            replaceFile = false,
-            taskOfProject = TaskOfProject.API,
-            name = "PERMISSION",
-            folder = """ "$generatedPath"+"/"+"db" """,
-            taskType = "multiple",
-            filename = """ com.github.leon.generator.ext.Utils.lowerHyphen(entity.name)+"-permission.sql" """,
-            templatePath = """ "kotlin/permission.ftl" """
-    )
 
-
-    return listOf(baseDaoTask, daoTask, baseServiceTask, serviceTask, baseControllerTask, controllerTask, excelExportTask, permissionTask)
+    return listOf(baseDaoTask, daoTask, baseServiceTask, serviceTask, baseControllerTask, controllerTask, excelExportTask)
 
 }

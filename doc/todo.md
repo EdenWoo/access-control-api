@@ -5,5 +5,6 @@
 ** Student.kt
 
    student-permission.sql
+* 自动化部署脚本生成   
    
  

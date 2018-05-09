@@ -5,3 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ${entity.name}Dao : Base${entity.name}Dao
+
+${project.projectExt}

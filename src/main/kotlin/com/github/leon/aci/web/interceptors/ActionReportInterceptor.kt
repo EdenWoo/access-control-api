@@ -35,7 +35,7 @@ class ActionReportInterceptor : HandlerInterceptor {
             controllerFile += File.separator + "main" + File.separator + "java"
         }
 
-        for (temp in clazz.name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
+        for (temp in clazz.name.split(".").dropLastWhile { it.isEmpty() }.toTypedArray()) {
             controllerFile = controllerFile + File.separator + temp
         }
         return controllerFile + ".java"

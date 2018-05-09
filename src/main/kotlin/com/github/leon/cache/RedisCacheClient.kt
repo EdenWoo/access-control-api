@@ -7,6 +7,7 @@ import arrow.core.toOption
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.ScanOptions
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
@@ -68,7 +69,12 @@ class RedisCacheClient : CacheClient {
     }
 
     override fun keys(pattern: String): Set<String> {
-        return template!!.keys(pattern)
+        val connection = template!!.connectionFactory.connection
+        val options = ScanOptions.scanOptions().match(pattern).count(Long.MAX_VALUE).build()
+        val cursor = connection.scan(options)
+        val keys = HashSet<String>()
+        cursor.forEachRemaining { keys.add(String(it)) }
+        return keys
     }
 
     companion object {

@@ -213,7 +213,7 @@ class JsonConfig {
         }
 
         fun getDto(aClass: Class<*>): Option<Class<*>> {
-            val name = "com.cfgglobal.ccfx.web.api.vo." + aClass.simpleName + "Dto"
+            val name = "com.github.leon.web.api.vo." + aClass.simpleName + "Dto"
             return Try { Reflect.on(name).get<Any>() as Class<*> }.toOption()
         }
 
@@ -237,7 +237,7 @@ class JsonConfig {
                     .map { it.toList() }
                     .getOrElse { emptyList() }
                     .map { e ->
-                        val results = e.split("\\.")
+                        val results = e.split(".")
                         when (results.size) {
                             1 -> {
                                 val field = results[0]
