@@ -30,7 +30,7 @@ open class User(
 
         var phone: String? = null,
 
-        val age: Int? = null,
+        var age: Int? = null,
 
         @ManyToOne
         @JoinColumn(name = "role_id")
