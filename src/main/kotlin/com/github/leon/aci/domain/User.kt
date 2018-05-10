@@ -56,7 +56,7 @@ open class User(
         var expiresIn: Long? = null,
 
         @Transient
-        var confirmPassword: String = ""
+        var confirmPassword: String? = null
 
 
 ) : BaseEntity(), UserDetails {
