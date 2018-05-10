@@ -1,7 +1,7 @@
 package com.github.leon.aci.domain
 
-import com.github.leon.aci.enums.UserType
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.github.leon.aci.enums.UserType
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
@@ -11,7 +11,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "aci_user",uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
+@Table(name = "aci_user", uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
 @DynamicUpdate
 @DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -27,6 +27,11 @@ open class User(
 
         @NotNull
         var email: String? = null,
+
+        var phone: String? = null,
+
+        val age: Int? = null,
+
         @ManyToOne
         @JoinColumn(name = "role_id")
         var role: Role? = null,
@@ -52,7 +57,11 @@ open class User(
         @Enumerated(value = EnumType.STRING)
         var userType: UserType? = null,
 
-        var expiresIn: Long? = null
+        var expiresIn: Long? = null,
+
+        @Transient
+        var confirmPassword: String
+
 
 ) : BaseEntity(), UserDetails {
 
