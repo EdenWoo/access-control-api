@@ -19,6 +19,7 @@ data class Setting(
         val serverDomain: String = "",
         var customerLogo: String = "",
         var adminLogo: String = "",
+        var copyright: String="",
         @Range(min = 0, max = 24)
         val startWorkHour: Int,
         @Range(min = 0, max = 24)
