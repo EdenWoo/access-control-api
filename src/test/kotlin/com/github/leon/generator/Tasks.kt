@@ -23,13 +23,14 @@ fun apiTasks(): List<Task> {
     val srcPath = "/generated/"
 
 
-    val projectExtProcessor: (CodeProject) -> Map<String, String> = {
+    val projectExtProcessor: (CodeProject) -> Map<String, Any?> = {
         mapOf("projectExt" to it.apiTargetPath)
     }
 
-    val entityExtProcessor: (CodeEntity) -> Map<String, String> = {
+    val entityExtProcessor: (CodeEntity) -> Map<String, Any?> = {
         mapOf(
-                "entityExt" to it.code.inc().toString()
+                "entityExt" to it.code.inc().toString(),
+                "entityExtList" to mutableListOf("1","2","3")
         )
     }
 

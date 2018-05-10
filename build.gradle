@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.31'
+        kotlinVersion = '1.2.40'
         springBootVersion = '1.5.8.RELEASE'
-        arrowVersion = '0.7.0'
+        arrowVersion = '0.7.1'
 	}
 	repositories {
         mavenCentral()
@@ -136,8 +136,7 @@ dependencies {
 
     compile 'com.github.b1412:java-toolbox:d9423a8753'
 
-
-    compile 'com.github.b1412:kotlin-extensions:9233b90ffb'
+    implementation 'com.github.b1412:kotlin-extensions:fdf15e9a8d'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
