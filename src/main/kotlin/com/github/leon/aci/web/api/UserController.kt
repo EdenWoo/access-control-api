@@ -12,22 +12,20 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
-@RestController
-@RequestMapping("/v1/user")
-class UserController(
-        @Value("\${spring.application.name}")
-        val application: String,
-        @Autowired
-        val userService: UserService,
-        @Autowired
-        val passwordEncoder: PasswordEncoder,
-        @Autowired
-        val cacheClient: CacheClient
+abstract class UserController(
 
 
 ) : BaseController<User, Long>() {
     val log = LoggerFactory.getLogger(UserController::class.java)!!
 
+    @Value("\${spring.application.name}")
+    lateinit var application: String
+    @Autowired
+    lateinit var userService: UserService
+    @Autowired
+    lateinit var passwordEncoder: PasswordEncoder
+    @Autowired
+    lateinit var cacheClient: CacheClient
 
     @GetMapping("profile")
     fun index(): ResponseEntity<User> {
