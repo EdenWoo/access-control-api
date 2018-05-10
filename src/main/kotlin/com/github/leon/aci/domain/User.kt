@@ -28,10 +28,6 @@ open class User(
         @NotNull
         var email: String? = null,
 
-        var phone: String? = null,
-
-        var age: Int? = null,
-
         @ManyToOne
         @JoinColumn(name = "role_id")
         var role: Role? = null,
