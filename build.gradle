@@ -129,7 +129,7 @@ dependencies {
 
     compile 'com.github.b1412:java-toolbox:d9423a8753'
 
-    implementation 'com.github.b1412:kotlin-extensions:fdf15e9a8d'
+    compile 'com.github.b1412:kotlin-extensions:fdf15e9a8d'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
