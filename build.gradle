@@ -61,10 +61,6 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url 'https://jitpack.io' }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url "https://repo.spring.io/libs-release" }
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
 }
 
 bootRepackage.enabled = false
@@ -115,7 +111,6 @@ dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.210'
     compile group: 'net.minidev', name: 'json-smart', version: '2.3'
     compile group: 'org.apache.commons', name: 'commons-csv', version: '1.4'
-
     compile 'org.codehaus.groovy:groovy-jsr223:2.4.3'
 
     compile "io.arrow-kt:arrow-core:$arrowVersion"
@@ -124,9 +119,7 @@ dependencies {
     compile "io.arrow-kt:arrow-data:$arrowVersion"
     compile "io.arrow-kt:arrow-instances-core:$arrowVersion"
     compile "io.arrow-kt:arrow-instances-data:$arrowVersion"
-
     kapt    "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
-
     compile "io.arrow-kt:arrow-free:$arrowVersion"
     compile "io.arrow-kt:arrow-mtl:$arrowVersion"
     compile "io.arrow-kt:arrow-effects:$arrowVersion"
