@@ -1,15 +1,12 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.40'
+        kotlinVersion = '1.2.41'
         springBootVersion = '1.5.8.RELEASE'
         arrowVersion = '0.7.1'
 	}
 	repositories {
+        jcenter()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url "https://repo.spring.io/libs-release" }
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -129,7 +126,7 @@ dependencies {
 
     compile 'com.github.b1412:java-toolbox:d9423a8753'
 
-    compile 'com.github.b1412:kotlin-extensions:fd86381645'
+    compile 'com.github.b1412:kotlin-extensions:8bd9332920'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
