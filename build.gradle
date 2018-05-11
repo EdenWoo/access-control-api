@@ -126,7 +126,7 @@ dependencies {
 
     compile 'com.github.b1412:java-toolbox:d9423a8753'
 
-    compile 'com.github.b1412:kotlin-extensions:8bd9332920'
+    compile 'com.github.b1412:kotlin-extensions:a3865f61f9'
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
