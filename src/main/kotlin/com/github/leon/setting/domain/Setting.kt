@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
 import org.hibernate.validator.constraints.Range
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.ManyToOne
 
 @Entity
@@ -26,6 +28,7 @@ data class Setting(
         val endWorkHour: Int,
         @Type(type = "yes_no")
         var active: Boolean? = null,
+        @Enumerated(EnumType.STRING)
         var smsProviderType: SmsProviderType? = null,
         @FieldFeature(selectOne = true)
         @ManyToOne
