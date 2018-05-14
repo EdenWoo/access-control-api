@@ -12,11 +12,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
-abstract class UserController(
+@RestController
+class BaseUserController(
 
 
 ) : BaseController<User, Long>() {
-    val log = LoggerFactory.getLogger(UserController::class.java)!!
+    val log = LoggerFactory.getLogger(BaseUserController::class.java)!!
 
     @Value("\${spring.application.name}")
     lateinit var application: String
