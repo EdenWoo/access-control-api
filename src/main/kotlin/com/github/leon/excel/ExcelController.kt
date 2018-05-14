@@ -16,13 +16,16 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.time.Instant
+import javax.persistence.EntityManager
 import javax.servlet.http.HttpServletResponse
 import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("/v1/excel")
 
-class ExcelController {
+class ExcelController(
+
+) {
 
     @Autowired
     var excelParsingRules: MutableList<ExcelParsingRule<*>> = mutableListOf()
@@ -39,7 +42,7 @@ class ExcelController {
 
     @GetMapping("template")
     fun findOne(rule: String, response: HttpServletResponse): ResponseEntity<*> {
-        val entity = ApplicationProperties.enumPackages.first()+".${rule.capitalize()}"
+        val entity = ApplicationProperties.entityScanPackage.first()+".${rule.capitalize()}"
         val clazz = Reflect.on(entity).get() as Class<out BaseEntity>
         val fields = clazz.declaredFields.filter { it.getDeclaredAnnotation(NotNull::class.java) != null }.map { it.name }
         PoiExporter.data(fields)
