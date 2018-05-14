@@ -8,6 +8,7 @@ import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.remainLastIndexOf
 import com.github.leon.generator.metadata.EntityFeature
+import com.github.leon.generator.metadata.ExcelFeature
 import com.github.leon.generator.metadata.FieldFeature
 import org.hibernate.validator.constraints.Range
 import org.joor.Reflect
@@ -142,6 +143,13 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                         range = it.range,
                                                         label = it.label
                                                 )
+                                            }
+                                            is ExcelFeature -> {
+                                                codeField = codeField.copy(
+                                                        exportable = it.exportable,
+                                                        importable = it.importable
+                                                )
+
                                             }
                                             is Id -> codeField = codeField.copy(primaryKey = true)
 

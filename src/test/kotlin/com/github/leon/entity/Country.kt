@@ -2,6 +2,7 @@ package com.github.leon.entity
 
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.generator.metadata.EntityFeature
+import com.github.leon.generator.metadata.ExcelFeature
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Column
@@ -24,6 +25,7 @@ data class Country(
         @field:NotNull
         var telephonePrefix: String? = null,
 
+        @ExcelFeature(importable = false, exportable = true)
         @field:NotNull
         val currency: String
 
