@@ -25,12 +25,12 @@ data class Setting(
         @Range(min = 0, max = 24)
         val startWorkHour: Int,
         @Range(min = 0, max = 24)
-        val endWorkHour: Int,
+        var endWorkHour: Int,
         @Type(type = "yes_no")
         var active: Boolean? = null,
         @Enumerated(EnumType.STRING)
         var smsProviderType: SmsProviderType? = null,
         @FieldFeature(selectOne = true)
         @ManyToOne
-        val emailServer: EmailServer
+        var emailServer: EmailServer? = null
 ) : BaseEntity()
