@@ -21,11 +21,11 @@ data class Setting(
         val serverDomain: String = "",
         var customerLogo: String = "",
         var adminLogo: String = "",
-        var copyright: String="",
+        var copyright: String = "",
         @Range(min = 0, max = 24)
-        val startWorkHour: Int,
+        val startWorkHour: Int = 0,
         @Range(min = 0, max = 24)
-        var endWorkHour: Int,
+        var endWorkHour: Int = 24,
         @Type(type = "yes_no")
         var active: Boolean? = null,
         @Enumerated(EnumType.STRING)
