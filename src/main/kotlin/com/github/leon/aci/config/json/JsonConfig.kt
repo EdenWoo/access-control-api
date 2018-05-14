@@ -213,7 +213,8 @@ class JsonConfig {
         }
 
         fun getDto(aClass: Class<*>): Option<Class<*>> {
-            val name = "com.github.leon.web.api.vo." + aClass.simpleName + "Dto"
+            //TODO DTO
+            val name = "com.cfgglobal.ccfx.web.api.vo." + aClass.simpleName + "Dto"
             return Try { Reflect.on(name).get<Any>() as Class<*> }.toOption()
         }
 
