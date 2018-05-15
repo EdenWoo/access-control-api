@@ -25,7 +25,7 @@ data class Country(
         @field:NotNull
         var telephonePrefix: String? = null,
 
-        @ExcelFeature(importable = false, exportable = true)
+        @ExcelFeature(importable = false, exportable = true, column = "CurrencyColumn")
         @field:NotNull
         val currency: String
 
