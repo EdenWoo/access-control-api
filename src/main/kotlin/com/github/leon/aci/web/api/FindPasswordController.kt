@@ -108,7 +108,7 @@ class FindPasswordController(
         val log = findPwdLogService.getLogById(id)
         //对新密码进行验证
         if (newPwd == confirmPassword) {
-            user.password = passwordEncoder.encode(newPwd)
+            user.setPassword(passwordEncoder.encode(newPwd))
             userDao.save(user)
         } else {
             return ResponseEntity.badRequest().build<Any>()

@@ -38,7 +38,7 @@ class BaseUserController(
         if (user.password != user.confirmPassword) {
             throw  IllegalArgumentException("password not equal")
         }
-        user.password = passwordEncoder.encode(user.password)
+        user.setPassword(passwordEncoder.encode(user.password))
         userService.save(user)
         return ResponseEntity.ok(user)
     }
@@ -52,7 +52,7 @@ class BaseUserController(
         if (newPassword != confirmPassword) {
             throw  IllegalArgumentException("new password not equal")
         } else {
-            user.password = passwordEncoder.encode(newPassword)
+            user.setPassword(passwordEncoder.encode(newPassword))
             userService.save(user)
             cacheClient.deleteByKey(application + "-" + user.username)
 
