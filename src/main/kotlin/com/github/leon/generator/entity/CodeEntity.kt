@@ -160,7 +160,7 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                     )
                                                 } else {
                                                     codeField.copy(
-                                                            header = field.name
+                                                            header = field.name.capitalize()
                                                     )
                                                 }
                                                 codeField = codeField.copy(
