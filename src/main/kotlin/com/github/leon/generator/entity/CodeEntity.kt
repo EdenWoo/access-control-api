@@ -79,19 +79,19 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 }
                 val fields = (it.superclass.declaredFields + it.declaredFields)
                         .filter { ignoredFields.all { ignoreField -> ignoreField != it.name } }
-                        .map {
+                        .map { field ->
                             var codeField = CodeField(
-                                    name = it.name,
+                                    name = field.name,
                                     type = when {
-                                        List::class.java.isAssignableFrom(it.type) ->
+                                        List::class.java.isAssignableFrom(field.type) ->
                                             FieldType(name = "List",
-                                                    element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
-                                        BaseEntity::class.java.isAssignableFrom(it.type) ->
-                                            FieldType(name = "Entity", element = it.type.simpleName)
-                                        else -> FieldType(name = it.type.simpleName)
+                                                    element = (field.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
+                                        BaseEntity::class.java.isAssignableFrom(field.type) ->
+                                            FieldType(name = "Entity", element = field.type.simpleName)
+                                        else -> FieldType(name = field.type.simpleName)
                                     }
                             )
-                            it.declaredAnnotations
+                            field.declaredAnnotations
                                     .forEach {
                                         when (it) {
                                             is NotNull -> {
@@ -145,9 +145,29 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                 )
                                             }
                                             is ExcelFeature -> {
+                                                codeField = if (it.column.isNotEmpty()) {
+                                                    codeField.copy(
+                                                            column = it.column
+                                                    )
+                                                } else {
+                                                    codeField.copy(
+                                                            column = field.name
+                                                    )
+                                                }
+                                                codeField = if (it.header.isNotEmpty()) {
+                                                    codeField.copy(
+                                                            header = it.header
+                                                    )
+                                                } else {
+                                                    codeField.copy(
+                                                            header = field.name
+                                                    )
+                                                }
                                                 codeField = codeField.copy(
                                                         exportable = it.exportable,
                                                         importable = it.importable
+
+
                                                 )
 
                                             }

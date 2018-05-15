@@ -32,7 +32,9 @@ data class CodeField(
         val order: Int = 0,
         val weight: Int = 6,
         val exportable: Boolean?  = false,
-        val importable: Boolean? = false
+        val importable: Boolean? = false,
+        val column: String? = null,
+        val header: String? = null
 
 
 )
