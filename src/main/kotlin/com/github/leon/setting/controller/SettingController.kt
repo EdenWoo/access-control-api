@@ -22,8 +22,8 @@ class SettingController : BaseController<Setting, Long>() {
     }
 
     @PostMapping
-    override fun saveOne(input: Setting): ResponseEntity<*> {
-        return super.saveOne(input)
+    override fun saveOne(input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+        return super.saveOne(input, request)
     }
 
     @PutMapping
