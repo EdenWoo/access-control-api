@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserDao : BaseDao<User, Long> {
 
-    fun findByUsername(name: String): User
+    fun findByUsername(name: String): User?
 
 }

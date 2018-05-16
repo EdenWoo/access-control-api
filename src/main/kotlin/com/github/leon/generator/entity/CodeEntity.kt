@@ -46,7 +46,6 @@ fun scanForCodeEnum(): List<CodeEnum> {
 }
 
 fun scanForCodeEntities(): List<CodeEntity> {
-
     return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>()
             .filter {
                 it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.generated }.getOrElse { true }
@@ -85,7 +84,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                     type = when {
                                         List::class.java.isAssignableFrom(field.type) ->
                                             FieldType(name = "List",
-                                                    element = (field.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
+                                                    element = (field.genericType as ParameterizedType).actualTypeArguments[0]
+                                                            .typeName.remainLastIndexOf("."))
                                         BaseEntity::class.java.isAssignableFrom(field.type) ->
                                             FieldType(name = "Entity", element = field.type.simpleName)
                                         else -> FieldType(name = field.type.simpleName)

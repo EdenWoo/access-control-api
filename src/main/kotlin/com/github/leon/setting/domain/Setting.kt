@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
 import org.hibernate.validator.constraints.Range
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.ManyToOne
 
 @Entity
@@ -19,15 +21,16 @@ data class Setting(
         val serverDomain: String = "",
         var customerLogo: String = "",
         var adminLogo: String = "",
-        var copyright: String="",
+        var copyright: String = "",
         @Range(min = 0, max = 24)
-        val startWorkHour: Int,
+        val startWorkHour: Int = 0,
         @Range(min = 0, max = 24)
-        val endWorkHour: Int,
+        var endWorkHour: Int = 24,
         @Type(type = "yes_no")
         var active: Boolean? = null,
+        @Enumerated(EnumType.STRING)
         var smsProviderType: SmsProviderType? = null,
         @FieldFeature(selectOne = true)
         @ManyToOne
-        val emailServer: EmailServer
+        var emailServer: EmailServer? = null
 ) : BaseEntity()

@@ -23,7 +23,7 @@ open class User(
 
         @NotNull
         @JsonIgnore
-        private var password: String = "",
+        private var password: String? = null,
 
         @NotNull
         var email: String? = null,
@@ -66,7 +66,7 @@ open class User(
         return username
     }
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return password
 
     }

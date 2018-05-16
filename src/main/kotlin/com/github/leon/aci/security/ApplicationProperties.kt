@@ -42,7 +42,9 @@ class ApplicationProperties {
 
         var enums: List<String> = listOf()
 
-        var entityScanPackage: List<String> = listOf()
+        var entityScanPackages: List<String> = listOf()
+
+        var dtoScanPackages: List<String> = listOf()
 
     }
 }

@@ -3,7 +3,6 @@ package com.github.leon.excel
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.excel.service.ExcelParsingRule
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.files.PoiExporter
 import com.github.leon.files.PoiImporter
 import org.joor.Reflect
@@ -22,7 +21,9 @@ import javax.validation.constraints.NotNull
 @RestController
 @RequestMapping("/v1/excel")
 
-class ExcelController {
+class ExcelController(
+
+) {
 
     @Autowired
     var excelParsingRules: MutableList<ExcelParsingRule<*>> = mutableListOf()
@@ -39,7 +40,7 @@ class ExcelController {
 
     @GetMapping("template")
     fun findOne(rule: String, response: HttpServletResponse): ResponseEntity<*> {
-        val entity = ApplicationProperties.enumPackages.first()+".${rule.capitalize()}"
+        val entity = ApplicationProperties.entityScanPackages.first()+".${rule.capitalize()}"
         val clazz = Reflect.on(entity).get() as Class<out BaseEntity>
         val fields = clazz.declaredFields.filter { it.getDeclaredAnnotation(NotNull::class.java) != null }.map { it.name }
         PoiExporter.data(fields)

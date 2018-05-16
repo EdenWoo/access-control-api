@@ -12,11 +12,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
-abstract class UserController(
+@RestController
+class BaseUserController(
 
 
 ) : BaseController<User, Long>() {
-    val log = LoggerFactory.getLogger(UserController::class.java)!!
+    val log = LoggerFactory.getLogger(BaseUserController::class.java)!!
 
     @Value("\${spring.application.name}")
     lateinit var application: String
@@ -37,7 +38,7 @@ abstract class UserController(
         if (user.password != user.confirmPassword) {
             throw  IllegalArgumentException("password not equal")
         }
-        user.password = passwordEncoder.encode(user.password)
+        user.setPassword(passwordEncoder.encode(user.password))
         userService.save(user)
         return ResponseEntity.ok(user)
     }
@@ -51,7 +52,7 @@ abstract class UserController(
         if (newPassword != confirmPassword) {
             throw  IllegalArgumentException("new password not equal")
         } else {
-            user.password = passwordEncoder.encode(newPassword)
+            user.setPassword(passwordEncoder.encode(newPassword))
             userService.save(user)
             cacheClient.deleteByKey(application + "-" + user.username)
 
@@ -80,7 +81,7 @@ abstract class UserController(
          JsonConfig.start()
                  .include(User::class.java, Q.user.id)
                  .end()
-         return ResponseEntity.ok(user)
+         return ResponseEntity.responseEntityOk(user)
      }*/
 
 
