@@ -52,7 +52,7 @@ class ApplicationProperties {
                 "com.github.leon.sysconfig.domain"
         )
 
-        var dtoScanPackages: List<String> = listOf()
+        var dtoScanPackages: List<String> = listOf("com.github.leon.aci.web.api.vo")
 
     }
 }
