@@ -1,7 +1,7 @@
 package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.BaseEntity
-import com.github.leon.aci.extenstions.ok
+import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.extenstions.orElse
 import com.github.leon.cache.CacheClient
 import org.slf4j.LoggerFactory
@@ -40,14 +40,14 @@ class CacheController(
                 }
             }
             mapOf(it to value)
-        }.ok()
+        }.responseEntityOk()
     }
 
     @DeleteMapping
     fun delete(key: String, pattern: String): ResponseEntity<*> {
         cacheClient.deleteByKey(key)
         cacheClient.deleteByPattern(pattern)
-        return key.ok()
+        return key.responseEntityOk()
     }
 
 }

@@ -16,7 +16,7 @@ fun <T> T?.orElse(default: T): T {
     return this.toOption().getOrElse { default }
 }
 
-fun <T> T?.ok():ResponseEntity<T> {
+fun <T> T?.responseEntityOk():ResponseEntity<T> {
     return  ResponseEntity.ok(this)
 }
 

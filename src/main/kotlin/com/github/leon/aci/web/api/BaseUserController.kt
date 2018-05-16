@@ -81,7 +81,7 @@ class BaseUserController(
          JsonConfig.start()
                  .include(User::class.java, Q.user.id)
                  .end()
-         return ResponseEntity.ok(user)
+         return ResponseEntity.responseEntityOk(user)
      }*/
 
 
