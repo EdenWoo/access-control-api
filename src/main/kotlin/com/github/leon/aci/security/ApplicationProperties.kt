@@ -44,5 +44,7 @@ class ApplicationProperties {
 
         var entityScanPackage: List<String> = listOf()
 
+        val dtoScanPackages: List<String> = listOf()
+
     }
 }

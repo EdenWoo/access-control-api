@@ -213,9 +213,8 @@ class JsonConfig {
         }
 
         fun getDto(aClass: Class<*>): Option<Class<*>> {
-            //TODO DTO
-            val name = "com.cfgglobal.ccfx.web.api.vo." + aClass.simpleName + "Dto"
-            return Try { Reflect.on(name).get<Any>() as Class<*> }.toOption()
+            val name = "${ApplicationProperties.dtoScanPackages.first()}.${aClass.simpleName}Dto"
+            return Try { Reflect.on(name).get() as Class<*> }.toOption()
         }
 
         fun getRootEndpoint(u: String): String {
