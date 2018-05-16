@@ -3,7 +3,6 @@ package com.github.leon.excel
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.excel.service.ExcelParsingRule
-import com.github.leon.aci.web.base.BaseController
 import com.github.leon.files.PoiExporter
 import com.github.leon.files.PoiImporter
 import org.joor.Reflect
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.time.Instant
-import javax.persistence.EntityManager
 import javax.servlet.http.HttpServletResponse
 import javax.validation.constraints.NotNull
 
@@ -42,7 +40,7 @@ class ExcelController(
 
     @GetMapping("template")
     fun findOne(rule: String, response: HttpServletResponse): ResponseEntity<*> {
-        val entity = ApplicationProperties.entityScanPackage.first()+".${rule.capitalize()}"
+        val entity = ApplicationProperties.entityScanPackages.first()+".${rule.capitalize()}"
         val clazz = Reflect.on(entity).get() as Class<out BaseEntity>
         val fields = clazz.declaredFields.filter { it.getDeclaredAnnotation(NotNull::class.java) != null }.map { it.name }
         PoiExporter.data(fields)

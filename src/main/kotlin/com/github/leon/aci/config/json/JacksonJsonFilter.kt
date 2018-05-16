@@ -69,7 +69,7 @@ class JacksonJsonFilter : FilterProvider() {
         var type = type
         val simpleName = type.simpleName
         if (simpleName.endsWith("Dto")) {
-            type = ApplicationProperties.entityScanPackage.toList()
+            type = ApplicationProperties.entityScanPackages.toList()
                     .map { p -> Try { Reflect.on(p + "." + StringUtils.substringBefore(simpleName, "Dto")).get<Any>() as Class<*> } }
                     .first { it.isSuccess() }
                     .get()

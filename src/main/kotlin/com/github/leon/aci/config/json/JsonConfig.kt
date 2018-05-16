@@ -57,7 +57,7 @@ class JsonConfig {
         }
 
         fun endpoints(endpoint: String): Option<Pair<Class<*>, EntityPathBase<*>>> {
-            val list = ApplicationProperties.entityScanPackage.toList()
+            val list = ApplicationProperties.entityScanPackages.toList()
                     .map {
                         val name = LOWER_HYPHEN.to(UPPER_CAMEL, endpoint)
                         val first = "$it.$name"
@@ -203,7 +203,7 @@ class JsonConfig {
         }
 
         fun toQ(clazz: Class<*>): Path<*> {
-            return ApplicationProperties.entityScanPackage.toList()
+            return ApplicationProperties.entityScanPackages.toList()
                     .map { packageName ->
                         val name = packageName + ".Q" + clazz.simpleName
                         Try { Reflect.on(name.replace("////".toRegex(), ".")).create(StringUtils.substringAfterLast(name, ".Q")).get<Any>() as EntityPathBase<*> }
