@@ -56,7 +56,11 @@ open class User(
         var expiresIn: Long? = null,
 
         @Transient
-        var confirmPassword: String? = null
+        var confirmPassword: String? = null,
+
+        var ipWhiteList: String? = null,
+
+        var ipBlackList: String? = null
 
 
 ) : BaseEntity(), UserDetails {

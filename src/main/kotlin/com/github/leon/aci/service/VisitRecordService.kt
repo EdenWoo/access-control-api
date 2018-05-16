@@ -16,17 +16,17 @@ class VisitRecordService(
 ) : BaseService<VisitRecord, Long>() {
     val log = LoggerFactory.getLogger(VisitRecordService::class.java)!!
 
-    fun hasTooManyRequest(user: Optional<User>, ip: String): Boolean {
+    fun hasTooManyRequest(user: Optional<User>, ip: String, requestThreshold: Int): Boolean {
         if (user.isPresent) {
             val userVisitRecords = visitRecordDao.findAllInLastMinute(user.get().id as Long)
             log.debug("user visit records size {}", userVisitRecords.size)
-            if (userVisitRecords.size > THRESHOLD) {
+            if (userVisitRecords.size > requestThreshold) {
                 return true
             }
         } else {
             val ipVisitRecords = visitRecordDao.findAllInLastMinute(ip)
             log.debug("ip visit records size {}", ipVisitRecords.size)
-            if (ipVisitRecords.size > THRESHOLD) {
+            if (ipVisitRecords.size > requestThreshold) {
                 return true
             }
         }
@@ -34,8 +34,4 @@ class VisitRecordService(
 
     }
 
-    companion object {
-
-        const val THRESHOLD: Long = 1000
-    }
 }

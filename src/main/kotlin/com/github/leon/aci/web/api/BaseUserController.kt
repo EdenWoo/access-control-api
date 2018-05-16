@@ -1,16 +1,21 @@
 package com.github.leon.aci.web.api
 
+import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.exceptions.ApiResp
 import com.github.leon.aci.service.UserService
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.cache.CacheClient
+import org.apache.commons.lang3.RandomStringUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class BaseUserController(
@@ -22,9 +27,12 @@ class BaseUserController(
     @Value("\${spring.application.name}")
     lateinit var application: String
     @Autowired
+    lateinit var userDao: UserDao
+    @Autowired
     lateinit var userService: UserService
     @Autowired
     lateinit var passwordEncoder: PasswordEncoder
+
     @Autowired
     lateinit var cacheClient: CacheClient
 
@@ -34,7 +42,7 @@ class BaseUserController(
     }
 
     @PostMapping("register")
-    fun regist(@RequestBody user:User): ResponseEntity<User> {
+    fun regist(@RequestBody user: User): ResponseEntity<User> {
         if (user.password != user.confirmPassword) {
             throw  IllegalArgumentException("password not equal")
         }
@@ -42,6 +50,24 @@ class BaseUserController(
         userService.save(user)
         return ResponseEntity.ok(user)
     }
+
+   /* @PostMapping("forgot-password")
+    fun forgotPassword(username: String, email: String): ResponseEntity<User> {
+        val user = userDao.findByUsername(username)
+                ?: throw IllegalArgumentException("Username $username doesn't exist ")
+        if (userService.getEmails(user).none { it == email }) {
+            throw IllegalArgumentException("Email $email doesn't match ")
+        }
+
+        if (user.password != user.confirmPassword) {
+            throw  IllegalArgumentException("password not equal")
+        }
+        val password = RandomStringUtils.randomAlphanumeric(8)
+        user.setPassword(passwordEncoder.encode(password))
+        userService.save(user)
+        return ResponseEntity.ok(user)
+    }*/
+
 
     @PostMapping("password")
     fun updatePassword(oldPassword: String, newPassword: String, confirmPassword: String): ResponseEntity<*> {

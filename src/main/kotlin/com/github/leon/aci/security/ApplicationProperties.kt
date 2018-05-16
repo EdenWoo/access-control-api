@@ -38,11 +38,19 @@ class ApplicationProperties {
 
         var myUserClass: String? = null
 
-        var enumPackages: List<String> = listOf()
+        var enumPackages: List<String> = listOf(
+                "com.github.leon.aci.enums"
+        )
 
         var enums: List<String> = listOf()
 
-        var entityScanPackages: List<String> = listOf()
+        var entityScanPackages: List<String> = listOf(
+                "com.github.leon.aci.domain",
+                "com.github.leon.email.domain",
+                "com.github.leon.setting.domain",
+                "com.github.leon.sms.domain",
+                "com.github.leon.sysconfig.domain"
+        )
 
         var dtoScanPackages: List<String> = listOf()
 

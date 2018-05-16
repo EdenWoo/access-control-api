@@ -7,8 +7,7 @@ import com.github.leon.aci.config.jpa.SecurityAuditor
 import com.github.leon.aci.domain.VisitRecord
 import com.github.leon.aci.exceptions.ApiResp
 import com.github.leon.aci.service.VisitRecordService
-import com.github.leon.aci.service.VisitRecordService.Companion.THRESHOLD
-
+import com.github.leon.setting.dao.SettingDao
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -38,13 +37,14 @@ class TokenAuthenticationFilter(
         val objectMapper: ObjectMapper,
         @Autowired
         val applicationProperties: ApplicationProperties,
-
         @Autowired
         val actionReportProperties: ActionReportProperties,
         @Autowired
         val userDetailsService: UserDetailsService,
         @Autowired
-        val visitRecordService: VisitRecordService
+        val visitRecordService: VisitRecordService,
+        @Autowired
+        val settingDao: SettingDao
 
 ) : OncePerRequestFilter() {
 
@@ -66,18 +66,7 @@ class TokenAuthenticationFilter(
                 JS_MATCHER,
                 IMG_MATCHER,
                 LOGIN_MATCHER,
-                LOGOUT_MATCHER,
-                "/v1/payment/*",
-                "/v1/code/*",
-                "/sys/*",
-                "/files/*",
-                "/images/mail/*",
-                "/v1/transaction/*/receipt", //for email
-                "/v1/payment/*",
-                "/less/*",
-                "/less/material/*",
-                "/images/payment/*"
-
+                LOGOUT_MATCHER
         )
 
         val authToken = tokenHelper.getToken(request)
@@ -102,10 +91,19 @@ class TokenAuthenticationFilter(
                 }
             }
         }
-        if (actionReportProperties.isFirewall) {
-            if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor.currentAuditor), getClientIp(request))) {
+        val clientIp = getClientIp(request)
+        if (actionReportProperties.isFirewall && ipIsNotInWhiteList(clientIp)) {
+            val setting = settingDao.findByActive(true)
+            if (ipIsInBlackList(clientIp)) {
                 val apiResp = ApiResp()
-                apiResp.error = THRESHOLD.toString() + " requests allowed per min, if you need more, please contact us."
+                apiResp.error = "$clientIp is in black list, please contact us."
+                val msg = objectMapper.writeValueAsString(apiResp)
+                response.status = 403
+                response.writer.write(msg)
+            }
+            if (visitRecordService.hasTooManyRequest(Optional.ofNullable(securityAuditor.currentAuditor), clientIp, setting.requestThreshold)) {
+                val apiResp = ApiResp()
+                apiResp.error = setting.requestThreshold.toString() + " requests allowed per min, if you need more, please contact us."
                 val msg = objectMapper.writeValueAsString(apiResp)
                 response.status = 429
                 response.writer.write(msg)
@@ -115,7 +113,7 @@ class TokenAuthenticationFilter(
         if (actionReportProperties.isVisitRecord) {
             val end = Instant.now().epochSecond
             val visitRecord = VisitRecord(
-                    ip = getClientIp(request),
+                    ip = clientIp,
                     method = request.method,
                     uri = request.requestURI,
                     requestBody = wrapRequest.payload,
@@ -126,6 +124,28 @@ class TokenAuthenticationFilter(
             }
         }
 
+    }
+
+    private fun ipIsInBlackList(clientIp: String): Boolean {
+        val setting = settingDao.findByActive(true)
+        return setting.ipBlackList.toOption()
+                .map { it.split(",") }
+                .getOrElse { emptyList() }
+                .any {
+                    it == clientIp
+                }
+    }
+
+    private fun ipIsNotInWhiteList(clientIp: String): Boolean {
+        val setting = settingDao.findByActive(true)
+        val ipWhiteList = setting.ipWhiteList.toOption()
+                .map { it.split(",") }
+                .getOrElse { emptyList() }
+        return if (ipWhiteList.isEmpty()) {
+            true
+        } else {
+            ipWhiteList.contains(clientIp)
+        }
     }
 
     private fun loginExpired(request: HttpServletRequest, response: HttpServletResponse, message: String) {
