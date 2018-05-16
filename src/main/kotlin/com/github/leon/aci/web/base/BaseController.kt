@@ -48,8 +48,8 @@ abstract class BaseController<T, ID : Serializable> {
     }
 
 
-    open fun saveOne(@Validated @RequestBody input: T): ResponseEntity<*> {
-        return ResponseEntity.ok(baseService.save(input))
+    open fun saveOne(@Validated @RequestBody input: T, request: HttpServletRequest): ResponseEntity<*> {
+        return ResponseEntity.ok(baseService.saveBySecurity(input, request.method, request.requestURI))
     }
 
 
