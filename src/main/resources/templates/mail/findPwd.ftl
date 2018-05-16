@@ -50,7 +50,7 @@
                                                                 <#--<a href="http://localhost:2222/find-pwd/link-in-email">Reset-->
                                                                     <#--Password</a>-->
 
-                                                                ${I.tr("You asked to reset your CFG Global website password. Click the button below to get started.")} <br>
+                                                                ${"You asked to reset your CFG Global website password. Click the button below to get started."} <br>
 
                                                                 <a href="${domain}/find-pwd-send-log/link-in-email?id=${id}">Reset Password</a>
 
@@ -64,9 +64,9 @@
                                                     <tr>
                                                         <td align="left" valign="top">
                                                             <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
-                                                                ${I.tr("If clicking the button above doesn't work, then copy the following URL into your browser bar.")}
+                                                                ${"If clicking the button above doesn't work, then copy the following URL into your browser bar."}
                                                                 <br>
-                                                                 ${domain}/find-pwd/link-in-email?id=${id}
+                                                                 ${domain}/find-pwd/link-in-email?id=${encryptId}
 
                                                             </div>
                                                             <br/>
@@ -77,9 +77,9 @@
                                                     <tr>
                                                         <td align="left" valign="top">
                                                             <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
-                                                                ${I.tr("If you didn’t ask to reset your password, just")}
+                                                                ${"If you didn’t ask to reset your password, just"}
 
-                                                                <a href="#">${I.tr("let us know")}</a>.
+                                                                <a href="#">${"let us know"}</a>.
 
                                                             </div>
                                                             <br/>
@@ -90,7 +90,7 @@
                                                     <tr>
                                                         <td align="left" valign="top">
                                                             <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
-                                                                ${I.tr("You can always reach us at service@cfg-global.com.")}
+                                                                ${"You can always reach us at service@cfg-global.com."}
                                                             </div>
                                                             <br/>
 
@@ -112,7 +112,7 @@
                                         <tr>
                                             <td colspan="2" align="center"
                                                 style="background-color: #1e1a37; color: #fff;font-family: Arial, sans-serif; font-size:13px; line-height:33px;margin-top: 20px;">
-                                                ${I.tr("All Content 2017 CFG Global Limited All Rights Reserved.")}
+                                                ${"All Content 2017 CFG Global Limited All Rights Reserved."}
                                             </td>
                                         </tr>
                                     </table>
