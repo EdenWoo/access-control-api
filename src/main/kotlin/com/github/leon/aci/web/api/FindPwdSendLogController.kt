@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest
 
 
 @Controller
-@RequestMapping("/find-pwd-send-log")
+@RequestMapping("/v1/find-pwd-send-log")
 class FindPwdSendLogController(
         @Autowired
         val findPwdLogService: FindPwdLogService,
@@ -43,7 +43,7 @@ class FindPwdSendLogController(
      */
     @GetMapping("/to-reset")
     @ResponseBody
-    fun toReset(username: String, request: HttpServletRequest): ResponseEntity<*> {
+    fun toReset(request: HttpServletRequest): ResponseEntity<FindPwdSendLog> {
         val user = SecurityContextHolder.getContext().authentication.principal as User
         val log = FindPwdSendLog()
         log.email = user.email
@@ -60,7 +60,7 @@ class FindPwdSendLogController(
                 .forEach {
                     emailLogService.sendSystem("Reset password", it, "/mail/findPwd.ftl", model)
                 }
-        return ResponseEntity.ok().build<Any>()
+        return log.responseEntityOk()
 
     }
 
@@ -85,7 +85,8 @@ class FindPwdSendLogController(
     @PostMapping("/reset")
     @ResponseBody
     fun resetPwd(id: String, username: String, newPwd: String, confirmPassword: String): ResponseEntity<*> {
-        val decryptedId = DESUtil.decrypt(id, "aaasssdd")
+        val key = "aaasssdd"
+        val decryptedId = DESUtil.decrypt(id, key)
         val user = SecurityContextHolder.getContext().authentication.principal as User
         val log = findPwdLogService.getLogById(decryptedId.toLong())
         if (newPwd != confirmPassword) {
