@@ -3,6 +3,7 @@ package com.github.leon.aci.web.api
 import com.github.leon.aci.extenstions.ok
 import com.github.leon.aci.extenstions.orElse
 import com.github.leon.cache.CacheClient
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -19,11 +20,14 @@ class CacheController(
         val cacheClient: CacheClient
 
 ) {
-
+    val log = LoggerFactory.getLogger(CacheController::class.java)!!
     @GetMapping
-    fun get(key: String): ResponseEntity<List<Any?>> {
+    fun get(key: String?): ResponseEntity<List<Map<String?,Any?>>> {
+
         return cacheClient.keys(key.orElse("*")).map {
-            cacheClient.get<Any>(it)
+            val value = cacheClient.get<Any>(it)
+            log.debug("key $key , value $value")
+            mapOf(key to value)
         }.ok()
     }
 
