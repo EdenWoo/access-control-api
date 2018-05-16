@@ -1,10 +1,10 @@
 package com.github.leon.aci.web.api
 
+import com.github.leon.aci.dao.FindPwdSendLogDao
 import com.github.leon.aci.dao.UserDao
 import com.github.leon.aci.domain.FindPwdSendLog
 import com.github.leon.aci.domain.User
 import com.github.leon.aci.extenstions.responseEntityOk
-import com.github.leon.aci.service.FindPwdLogService
 import com.github.leon.aci.service.UserService
 import com.github.leon.email.service.EmailLogService
 import com.github.leon.encrypt.DESUtil
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/v1/find-pwd-send-log")
 class FindPwdSendLogController(
         @Autowired
-        val findPwdLogService: FindPwdLogService,
+        val findPwdSendLogDao: FindPwdSendLogDao,
         @Autowired
         val userDao: UserDao,
         @Autowired
@@ -47,9 +47,10 @@ class FindPwdSendLogController(
         val log = FindPwdSendLog()
         log.email = user.email
         log.used = false
+        findPwdSendLogDao.save(log)
         val encryptId = DESUtil.encrypt(log.id!!.toString() + "", "aaasssdd")
         log.encryptId = encryptId
-        findPwdLogService.insert(log)
+        findPwdSendLogDao.save(log)
         val model = mapOf(
                 "encryptId" to encryptId,
                 "domain" to settingDao.findByActive(true).serverDomain
@@ -69,7 +70,7 @@ class FindPwdSendLogController(
     @GetMapping("{encryptId}")
     fun emailUrl(@PathVariable encryptId: String): ResponseEntity<Map<String, Any?>> {
         val decryptedId = DESUtil.decrypt(encryptId, "aaasssdd")
-        val log = findPwdLogService.getLogById(decryptedId.toLong())
+        val log = findPwdSendLogDao.findOne(decryptedId.toLong())
         val isExpired = ZonedDateTime.now().isAfter(log.expireDate)
         val map = mapOf(
                 "isExpired" to isExpired,
@@ -87,14 +88,14 @@ class FindPwdSendLogController(
         val key = "aaasssdd"
         val decryptedId = DESUtil.decrypt(encryptId, key)
         val user = SecurityContextHolder.getContext().authentication.principal as User
-        val log = findPwdLogService.getLogById(decryptedId.toLong())
+        val log = findPwdSendLogDao.findOne(decryptedId.toLong())
         if (newPwd != confirmPassword) {
             throw IllegalArgumentException("new password not equal")
         }
         user.setPassword(passwordEncoder.encode(newPwd))
         userDao.save(user)
         log.used = true
-        findPwdLogService.update(log)
+        findPwdSendLogDao.save(log)
         return "success".responseEntityOk()
 
     }
