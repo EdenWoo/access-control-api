@@ -8,7 +8,6 @@ import com.github.leon.aci.service.FindPwdLogService
 import com.github.leon.aci.service.UserService
 import com.github.leon.email.service.EmailLogService
 import com.github.leon.encrypt.DESUtil
-import com.github.leon.fm.FreemarkerBuilderUtil
 import com.github.leon.setting.dao.SettingDao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -48,11 +47,11 @@ class FindPwdSendLogController(
         val log = FindPwdSendLog()
         log.email = user.email
         log.used = false
-        findPwdLogService.insert(log)
         val encryptId = DESUtil.encrypt(log.id!!.toString() + "", "aaasssdd")
-
+        log.encryptId = encryptId
+        findPwdLogService.insert(log)
         val model = mapOf(
-                "id" to encryptId,
+                "encryptId" to encryptId,
                 "domain" to settingDao.findByActive(true).serverDomain
         )
 
@@ -67,15 +66,15 @@ class FindPwdSendLogController(
     /**
      * 处理邮箱地址链接，跳到修改密码的页面
      */
-    @GetMapping("{id}")
-    fun emailUrl(@PathVariable id: String): ResponseEntity<Map<String, Any?>> {
-        val decryptedId = DESUtil.decrypt(id, "aaasssdd")
+    @GetMapping("{encryptId}")
+    fun emailUrl(@PathVariable encryptId: String): ResponseEntity<Map<String, Any?>> {
+        val decryptedId = DESUtil.decrypt(encryptId, "aaasssdd")
         val log = findPwdLogService.getLogById(decryptedId.toLong())
         val isExpired = ZonedDateTime.now().isAfter(log.expireDate)
         val map = mapOf(
                 "isExpired" to isExpired,
                 "used" to log.used,
-                "id" to id)
+                "encryptId" to encryptId)
         return map.responseEntityOk()
     }
 
@@ -84,9 +83,9 @@ class FindPwdSendLogController(
      */
     @PostMapping("/reset")
     @ResponseBody
-    fun resetPwd(id: String, username: String, newPwd: String, confirmPassword: String): ResponseEntity<*> {
+    fun resetPwd(encryptId: String, username: String, newPwd: String, confirmPassword: String): ResponseEntity<*> {
         val key = "aaasssdd"
-        val decryptedId = DESUtil.decrypt(id, key)
+        val decryptedId = DESUtil.decrypt(encryptId, key)
         val user = SecurityContextHolder.getContext().authentication.principal as User
         val log = findPwdLogService.getLogById(decryptedId.toLong())
         if (newPwd != confirmPassword) {
