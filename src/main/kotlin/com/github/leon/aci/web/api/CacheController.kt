@@ -1,5 +1,6 @@
 package com.github.leon.aci.web.api
 
+import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.extenstions.ok
 import com.github.leon.aci.extenstions.orElse
 import com.github.leon.cache.CacheClient
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
 
@@ -22,18 +22,31 @@ class CacheController(
 ) {
     val log = LoggerFactory.getLogger(CacheController::class.java)!!
     @GetMapping
-    fun get(key: String?): ResponseEntity<List<Map<String?,Any?>>> {
-
-        return cacheClient.keys(key.orElse("*")).map {
-            val value = cacheClient.get<Any>(it)
-            log.debug("key $key , value $value")
-            mapOf(key to value)
+    fun get(key: String?): ResponseEntity<List<Map<String, Any?>>> {
+        val k = if (key == null) {
+            "*"
+        } else {
+            "*$key*"
+        }
+        return cacheClient.keys(k.orElse("*")).map {
+            var value = cacheClient.get<Any>(it)
+            log.debug("key $it , value $value")
+            when (value) {
+                is BaseEntity -> {
+                    value = "BaseEntity(Details omitted)"
+                }
+                is List<*> -> {
+                    value = "List(Details omitted)"
+                }
+            }
+            mapOf(it to value)
         }.ok()
     }
 
-    @DeleteMapping("{key}")
-    fun delete(@PathVariable key: String): ResponseEntity<*> {
+    @DeleteMapping
+    fun delete(key: String, pattern: String): ResponseEntity<*> {
         cacheClient.deleteByKey(key)
+        cacheClient.deleteByPattern(pattern)
         return key.ok()
     }
 
