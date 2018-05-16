@@ -2,8 +2,6 @@ package com.github.leon.email.controller
 
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.email.domain.EmailServer
-import com.github.leon.email.service.EmailLogService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -29,8 +27,8 @@ class EmailServerController(
     }
 
     @PostMapping
-    override fun saveOne(@RequestBody input: EmailServer): ResponseEntity<*> {
-        return super.saveOne(input)
+    override fun saveOne(@RequestBody input: EmailServer, request: HttpServletRequest): ResponseEntity<*> {
+        return super.saveOne(input, request)
     }
 
     @PutMapping("{id}")

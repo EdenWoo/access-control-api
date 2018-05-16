@@ -24,8 +24,8 @@ class VisitRecordController : BaseController<VisitRecord, Long>() {
     }
 
     @PostMapping
-    override fun saveOne(input: VisitRecord): ResponseEntity<*> {
-        return super.saveOne(input)
+    override fun saveOne(input: VisitRecord, request: HttpServletRequest): ResponseEntity<*> {
+        return super.saveOne(input, request)
     }
 
     @PutMapping
