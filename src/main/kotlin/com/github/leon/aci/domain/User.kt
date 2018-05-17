@@ -22,7 +22,6 @@ open class User(
         private var username: String = "",
 
         @NotNull
-        @JsonIgnore
         private var password: String? = null,
 
         @NotNull
