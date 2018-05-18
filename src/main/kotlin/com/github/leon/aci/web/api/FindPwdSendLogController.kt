@@ -53,7 +53,7 @@ class FindPwdSendLogController(
         findPwdSendLogDao.save(log)
         val model = mapOf(
                 "encryptId" to encryptId,
-                "domain" to settingDao.findByActive(true).serverDomain
+                "domain" to settingDao.findByActive(true)!!.serverDomain
         )
 
         userService.getEmails(user)
