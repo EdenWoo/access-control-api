@@ -92,8 +92,23 @@ class TokenAuthenticationFilter(
             }
         }
         val clientIp = getClientIp(request)
+
+        if (actionReportProperties.isVisitRecord) {
+            val end = Instant.now().epochSecond
+            val visitRecord = VisitRecord(
+                    ip = clientIp,
+                    method = request.method,
+                    uri = request.requestURI,
+                    requestBody = wrapRequest.payload,
+                    queryString = request.queryString,
+                    executionTime = (end - start))
+            Try { visitRecordService.save(visitRecord) }.onFailure {
+                log.error("Visit record saving fail!", it)
+            }
+        }
+
         if (actionReportProperties.isFirewall && ipIsNotInWhiteList(clientIp)) {
-            val setting = settingDao.findByActive(true)
+            val setting = settingDao.findByActive(true)!!
             if (ipIsInBlackList(clientIp)) {
                 val apiResp = ApiResp()
                 apiResp.error = "$clientIp is in black list, please contact us."
@@ -110,24 +125,12 @@ class TokenAuthenticationFilter(
             }
         }
 
-        if (actionReportProperties.isVisitRecord) {
-            val end = Instant.now().epochSecond
-            val visitRecord = VisitRecord(
-                    ip = clientIp,
-                    method = request.method,
-                    uri = request.requestURI,
-                    requestBody = wrapRequest.payload,
-                    queryString = request.queryString,
-                    executionTime = (end - start))
-            Try { visitRecordService.save(visitRecord) }.onFailure {
-                log.error("Visit record saving fail!", it)
-            }
-        }
+
 
     }
 
     private fun ipIsInBlackList(clientIp: String): Boolean {
-        val setting = settingDao.findByActive(true)
+        val setting = settingDao.findByActive(true)!!
         return setting.ipBlackList.toOption()
                 .map { it.split(",") }
                 .getOrElse { emptyList() }
@@ -138,11 +141,12 @@ class TokenAuthenticationFilter(
 
     private fun ipIsNotInWhiteList(clientIp: String): Boolean {
         val setting = settingDao.findByActive(true)
-        val ipWhiteList = setting.ipWhiteList.toOption()
+        if(setting == null) false
+        val ipWhiteList = setting!!.ipWhiteList.toOption()
                 .map { it.split(",") }
                 .getOrElse { emptyList() }
         return if (ipWhiteList.isEmpty()) {
-            true
+            false
         } else {
             ipWhiteList.contains(clientIp)
         }
