@@ -8,10 +8,7 @@ import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
 import org.hibernate.validator.constraints.Range
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 @DynamicUpdate
@@ -19,7 +16,9 @@ import javax.persistence.ManyToOne
 data class Setting(
         var name: String = "",
         val serverDomain: String = "",
+        @Column(columnDefinition = "TEXT")
         var customerLogo: String = "",
+        @Column(columnDefinition = "TEXT")
         var adminLogo: String = "",
         var copyright: String = "",
         @Range(min = 0, max = 24)
