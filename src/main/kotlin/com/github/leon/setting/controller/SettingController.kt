@@ -16,23 +16,24 @@ class SettingController : BaseController<Setting, Long>() {
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<Setting>> {
         return super.page(pageable, request)
     }
+
     @GetMapping("{id}")
-    override fun findOne(id: Long, request: HttpServletRequest): ResponseEntity<Setting> {
+    override fun findOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Setting> {
         return super.findOne(id, request)
     }
 
     @PostMapping
-    override fun saveOne(input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+    override fun saveOne(@RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
         return super.saveOne(input, request)
     }
 
     @PutMapping
-    override fun updateOne(id: Long, input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+    override fun updateOne(@PathVariable id: Long, @RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 
     @DeleteMapping("{id}")
-    override fun deleteOne(id: Long, request: HttpServletRequest): ResponseEntity<*> {
+    override fun deleteOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
         return super.deleteOne(id, request)
     }
 }

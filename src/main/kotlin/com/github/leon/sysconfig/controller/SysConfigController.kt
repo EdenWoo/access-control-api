@@ -52,3 +52,4 @@ class SysConfigController(
         return super.deleteOne(id, request)
     }
 }
+
