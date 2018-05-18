@@ -15,7 +15,7 @@ data class VisitRecord(
         val method: String = "",
         @Column(length = 1024)
         val queryString: String? = null,
-        @Column(length = 65535)
+        @Column(length = 21845)
         val requestBody: String? = null,
         val executionTime: Long = -1
 ) : BaseEntity()
