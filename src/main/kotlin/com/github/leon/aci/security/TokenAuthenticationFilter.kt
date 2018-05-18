@@ -140,9 +140,8 @@ class TokenAuthenticationFilter(
     }
 
     private fun ipIsNotInWhiteList(clientIp: String): Boolean {
-        val setting = settingDao.findByActive(true)
-        if(setting == null) false
-        val ipWhiteList = setting!!.ipWhiteList.toOption()
+        val setting = settingDao.findByActive(true) ?: return false
+        val ipWhiteList = setting.ipWhiteList.toOption()
                 .map { it.split(",") }
                 .getOrElse { emptyList() }
         return if (ipWhiteList.isEmpty()) {
