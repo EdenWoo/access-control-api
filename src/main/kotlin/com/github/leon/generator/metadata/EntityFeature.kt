@@ -13,5 +13,3 @@ annotation class EntityFeature(
         val version: Boolean = false,
         val security: Boolean = true
 )
-
-

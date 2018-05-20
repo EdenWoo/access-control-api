@@ -9,8 +9,6 @@ import java.util.regex.Pattern
 
 fun main(args: Array<String>) {
     val pattern = Pattern.compile("\\{[a-z]*}")
-
-
     val entities: List<Class<out Any>> = ClassSearcher.of(Any::class.java).search()
     val controllers = entities.filter {
         it.isAnnotationPresent(RestController::class.java)
