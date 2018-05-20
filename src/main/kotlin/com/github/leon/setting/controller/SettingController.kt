@@ -44,8 +44,8 @@ class SettingController : BaseController<Setting, Long>() {
     @GetMapping("active")
     fun active(): ResponseEntity<Setting> {
         val params = mutableMapOf<String,Array<String>>()
-        params["f_leaf"] = arrayOf("true")
-        params["f_leaf_op"] = arrayOf("=")
+        params["f_active"] = arrayOf("true")
+        params["f_active_op"] = arrayOf("=")
         return baseService.findByRequestParameters(params).first().responseEntityOk()
     }
 
