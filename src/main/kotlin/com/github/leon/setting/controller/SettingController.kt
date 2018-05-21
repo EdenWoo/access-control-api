@@ -3,7 +3,6 @@ package com.github.leon.setting.controller
 import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.setting.domain.Setting
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/v1/setting")
 class SettingController : BaseController<Setting, Long>() {
-
 
 
     @GetMapping
@@ -42,11 +40,27 @@ class SettingController : BaseController<Setting, Long>() {
     }
 
     @GetMapping("active")
-    fun active(): ResponseEntity<Setting> {
-        val params = mutableMapOf<String,Array<String>>()
+    fun findActive(): ResponseEntity<Setting> {
+        val params = mutableMapOf<String, Array<String>>()
         params["f_active"] = arrayOf("true")
         params["f_active_op"] = arrayOf("=")
         return baseService.findByRequestParameters(params).first().responseEntityOk()
+    }
+
+    @PutMapping("active")
+    fun active(id: Long): ResponseEntity<Setting> {
+        val list = baseService.findAll()
+        val (enableSetting, disabledSettings) = list.partition { it.id == id }
+        enableSetting.forEach {
+            it.active = true
+            baseService.save(it)
+        }
+        disabledSettings.forEach {
+            it.active = false
+            baseService.save(it)
+        }
+        return enableSetting.first().responseEntityOk()
+
     }
 
 
