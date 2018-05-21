@@ -34,5 +34,7 @@ data class Setting(
         var emailServer: EmailServer? = null,
         var requestThreshold:Int = 500,
         var ipBlackList: String? = null,
-        var ipWhiteList: String? = null
+        var ipWhiteList: String? = null,
+        var companyEmail:String? = "",
+        var companyMobile:String? = ""
 ) : BaseEntity()
