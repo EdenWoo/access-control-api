@@ -32,9 +32,10 @@ data class Setting(
         @FieldFeature(selectOne = true)
         @ManyToOne
         var emailServer: EmailServer? = null,
-        var requestThreshold:Int = 500,
+        var requestThreshold: Int = 500,
         var ipBlackList: String? = null,
         var ipWhiteList: String? = null,
-        var companyEmail:String? = "",
-        var companyMobile:String? = ""
+        var companyEmail: String? = "",
+        var companyMobile: String? = "",
+        var companyPhone: String? = ""
 ) : BaseEntity()
