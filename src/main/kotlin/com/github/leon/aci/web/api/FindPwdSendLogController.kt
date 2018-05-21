@@ -58,7 +58,11 @@ class FindPwdSendLogController(
 
         userService.getEmails(user)
                 .forEach {
-                    emailLogService.sendSystem("Reset password", it, "/mail/findPwd.ftl", model)
+                    emailLogService.sendSystem(
+                            subject = "Reset password",
+                            sendTo = it,
+                            ftl = "/mail/findPwd.ftl",
+                            model = model)
                 }
         return log.responseEntityOk()
 
