@@ -37,5 +37,6 @@ data class Setting(
         var ipWhiteList: String? = null,
         var companyEmail: String? = "",
         var companyMobile: String? = "",
-        var companyPhone: String? = ""
+        var companyPhone: String? = "",
+        var emailHeadImage: String? = ""
 ) : BaseEntity()
