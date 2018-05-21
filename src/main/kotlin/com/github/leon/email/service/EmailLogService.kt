@@ -88,13 +88,16 @@ class EmailLogService(
     }
 
     fun sendSystem(orderId: String = "", subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
+        val setting = settingDao.findByActive(true)
+        val m = model.toMutableMap()
+        m["setting"] = setting
         try {
             val emailLog = EmailLog(
                     orderId = orderId,
                     times = 0,
                     sendTo = sendTo,
                     subject = subject,
-                    content = freemarkerBuilderUtil.build(ftl, model)!!.toByteArray(Charset.forName("UTF-8")),
+                    content = freemarkerBuilderUtil.build(ftl, m)!!.toByteArray(Charset.forName("UTF-8")),
                     status = TaskStatus.TODO)
             emailLogDao.save(emailLog)
         } catch (e: Exception) {
