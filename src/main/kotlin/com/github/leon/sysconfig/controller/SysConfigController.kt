@@ -43,7 +43,7 @@ class SysConfigController(
         return super.saveOne(input, request)
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     override fun updateOne(@PathVariable id: Long, @RequestBody input: SysConfig, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
