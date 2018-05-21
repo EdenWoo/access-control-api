@@ -54,6 +54,7 @@ class MessageLogService(
             } else {
                 smsMessage.status = TaskStatus.FAILURE
                 val emailLog = EmailLog(
+                        status = TaskStatus.TODO,
                         sendTo = "lei.zhou@cfgglobal.co.nz",
                         content = "Sms no credit".toByteArray()
                 )
