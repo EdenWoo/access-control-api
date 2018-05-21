@@ -87,9 +87,10 @@ class EmailLogService(
         return sender
     }
 
-    fun sendSystem(subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
+    fun sendSystem(orderId: String = "", subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
         try {
             val emailLog = EmailLog(
+                    orderId = orderId,
                     times = 0,
                     sendTo = sendTo,
                     subject = subject,
