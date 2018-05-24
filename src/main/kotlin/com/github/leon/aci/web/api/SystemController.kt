@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/meta")
+@RequestMapping("/v1/metadata")
 class SystemController(
         @Autowired
         val userService: GeneratorService,

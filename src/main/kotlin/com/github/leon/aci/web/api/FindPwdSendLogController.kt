@@ -42,6 +42,7 @@ class FindPwdSendLogController(
     @PostMapping("apply")
     @ResponseBody
     fun apply(username: String): ResponseEntity<FindPwdSendLog> {
+        val setting = settingDao.findByActive(true)!!
         val user = userDao.findByUsername(username)
                 ?: throw IllegalArgumentException("username ($username) doesn't exist.")
         val log = FindPwdSendLog(
@@ -56,7 +57,7 @@ class FindPwdSendLogController(
         findPwdSendLogDao.save(log)
         val model = mapOf(
                 "encryptId" to encryptId,
-                "domain" to settingDao.findByActive(true)!!.serverDomain
+                "setting" to setting
         )
 
         userService.getEmails(user)

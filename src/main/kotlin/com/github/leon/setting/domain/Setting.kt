@@ -39,5 +39,6 @@ data class Setting(
         var companyEmail: String? = "",
         var companyMobile: String? = "",
         var companyPhone: String? = "",
+        @Column(columnDefinition = "TEXT")
         var emailHeadImage: String? = ""
 ) : BaseEntity()
