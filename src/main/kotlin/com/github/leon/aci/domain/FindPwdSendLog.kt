@@ -7,6 +7,7 @@ import javax.persistence.Entity
 
 @Entity
 data class FindPwdSendLog(
+        var username: String? = null,
         var email: String? = null,
         var expireDate: ZonedDateTime? = null,
         @Type(type = "yes_no")

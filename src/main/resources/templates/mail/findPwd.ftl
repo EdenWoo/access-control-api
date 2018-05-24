@@ -44,17 +44,8 @@
                                                             </div>
                                                             <br/>
                                                             <div style="font-family: Arial, sans-serif; color:#2D3E51; font-size:12px; line-height:21px;">
-
-                                                                <#--You asked to reset your CFG Global website password.-->
-                                                                <#--Click the button below to get started. <br>-->
-                                                                <#--<a href="http://localhost:2222/find-pwd/link-in-email">Reset-->
-                                                                    <#--Password</a>-->
-
                                                                 You asked to reset your CFG Global website password. Click the button below to get started. <br>
-
-                                                                <a href="${domain}/find-pwd-send-log/link-in-email?id=${id}">Reset Password</a>
-
-
+                                                                <a href="${domain}/find-pwd-send-log/getOne/${id}">Reset Password</a>
                                                             </div>
                                                             <br/>
                                                         </td>
