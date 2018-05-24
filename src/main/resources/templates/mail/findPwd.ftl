@@ -44,8 +44,8 @@
                                                             </div>
                                                             <br/>
                                                             <div style="font-family: Arial, sans-serif; color:#2D3E51; font-size:12px; line-height:21px;">
-                                                                You asked to reset your CFG Global website password. Click the button below to get started. <br>
-                                                                <a href="${domain}/find-pwd-send-log/getOne/${id}">Reset Password</a>
+                                                                You asked to reset your  password. Click the button below to get started. <br>
+                                                                <a href="http://localhost:4200/reset?encryptId=${encryptId}">Reset Password</a>
                                                             </div>
                                                             <br/>
                                                         </td>
@@ -57,7 +57,7 @@
                                                             <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
                                                                 If clicking the button above doesn't work, then copy the following URL into your browser bar.
                                                                 <br>
-                                                                 ${domain}/find-pwd/link-in-email?id=${encryptId}
+                                                                http://localhost:4200/reset?encryptId=${encryptId}
 
                                                             </div>
                                                             <br/>
