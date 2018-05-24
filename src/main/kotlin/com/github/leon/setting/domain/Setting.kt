@@ -16,6 +16,7 @@ import javax.persistence.*
 data class Setting(
         var name: String = "",
         val serverDomain: String = "",
+        val customerSiteDomain: String = "",
         @Column(columnDefinition = "TEXT")
         var customerLogo: String = "",
         @Column(columnDefinition = "TEXT")

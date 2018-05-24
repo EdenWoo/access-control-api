@@ -40,7 +40,7 @@ class FindPwdSendLogController(
     /**
      * 输入邮箱获取修改密码链接,发送邮件并且返回页面
      */
-    @GetMapping("/to-reset")
+    @GetMapping("/apply")
     @ResponseBody
     fun toReset(request: HttpServletRequest): ResponseEntity<FindPwdSendLog> {
         val user = SecurityContextHolder.getContext().authentication.principal as User
