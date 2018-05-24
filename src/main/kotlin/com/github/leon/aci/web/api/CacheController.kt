@@ -22,15 +22,15 @@ class CacheController(
 ) {
     val log = LoggerFactory.getLogger(CacheController::class.java)!!
     @GetMapping
-    fun get(key: String?): ResponseEntity<List<Map<String, Any?>>> {
-        val k = if (key == null) {
+    fun get(pattern: String?): ResponseEntity<List<Map<String, Any?>>> {
+        val k = if (pattern == null) {
             "*"
         } else {
-            "*$key*"
+            "*$pattern*"
         }
         return cacheClient.keys(k.orElse("*")).map {
             var value = cacheClient.get<Any>(it)
-            log.debug("key $it , value $value")
+            log.debug("pattern $it , value $value")
             when (value) {
                 is BaseEntity -> {
                     value = "BaseEntity(Details omitted)"
