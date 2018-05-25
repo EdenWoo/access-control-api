@@ -14,11 +14,11 @@ import javax.persistence.Enumerated
 @DynamicInsert
 
 data class EmailServer(
-        val host: String = "owa.onenet.co.nz",
-        val timeout: Int = 25000,
-        val port: Int = 587,
-        val alias: String = "info.ccfx@collinsonfx.com",
-        val fromAddress: String = "info.ccfx@collinsonfx.com",
-        val username: String = "info.ccfx@collinsonfx.com",
-        val password: String = "Kedo9140"
+        var host: String = "owa.onenet.co.nz",
+        var timeout: Int = 25000,
+        var port: Int = 587,
+        var alias: String = "info.ccfx@collinsonfx.com",
+        var fromAddress: String = "info.ccfx@collinsonfx.com",
+        var username: String = "info.ccfx@collinsonfx.com",
+        var password: String = "Kedo9140"
 ) : BaseEntity(), Serializable
