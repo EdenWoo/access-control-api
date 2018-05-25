@@ -41,26 +41,11 @@
                          <tr>
                              <td align="left" valign="top">
                                  <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
-                                     If you didn’t ask to reset your password, just
-
-                                     <a href="#">${"let us know"}</a>.
-
+                                     If you didn’t ask to reset your password, just let us know.
                                  </div>
                                  <br/>
-
                              </td>
                          </tr>
-
-                         <tr>
-                             <td align="left" valign="top">
-                                 <div style="color:#2D3E51; font-family: Arial, sans-serif; font-size:12px; line-height:21px; width: 480px; margin: 0 auto;">
-                                     You can always reach us at service@cfg-global.com.
-                                 </div>
-                                 <br/>
-
-                             </td>
-                         </tr>
-
 
                      </table>
 
