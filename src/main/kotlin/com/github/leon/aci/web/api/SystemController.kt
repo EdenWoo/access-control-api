@@ -38,7 +38,6 @@ class SystemController(
         val permissionDao: PermissionDao,
         @Autowired
         val roleDao: RoleDao
-
 ) {
 
     fun findClasses(target: Class<*>, pattern: String): List<Class<*>> {

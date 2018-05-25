@@ -103,4 +103,8 @@ open class User(
     override fun isAccountNonLocked(): Boolean {
         return true
     }
+    companion object {
+
+        private const val serialVersionUID = 1L
+    }
 }

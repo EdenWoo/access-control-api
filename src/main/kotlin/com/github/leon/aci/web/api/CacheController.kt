@@ -1,8 +1,8 @@
 package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.BaseEntity
-import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.extenstions.orElse
+import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.cache.CacheClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +39,7 @@ class CacheController(
                     value = "List(Details omitted)"
                 }
             }
-            mapOf(it to value)
+            mapOf("key" to it, "value" to value)
         }.responseEntityOk()
     }
 
