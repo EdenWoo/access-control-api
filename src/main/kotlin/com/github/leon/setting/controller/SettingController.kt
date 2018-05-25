@@ -31,6 +31,7 @@ class SettingController : BaseController<Setting, Long>() {
 
     @PutMapping("{id}")
     override fun updateOne(@PathVariable id: Long, @RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+        syncFromDb(input)
         return super.updateOne(id, input, request)
     }
 
