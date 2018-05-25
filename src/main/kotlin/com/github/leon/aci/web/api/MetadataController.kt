@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/sys")
-class SystemController(
+@RequestMapping("/v1/metadata")
+class MetadataController(
         @Autowired
         val userService: GeneratorService,
         @Autowired
@@ -62,49 +62,4 @@ class SystemController(
 
     }
 
-    @RequestMapping(value = ["/permission"], method = [(RequestMethod.GET), (RequestMethod.POST)])
-    @Transactional
-    fun init(entityName: String?): ResponseEntity<List<Permission>> {
-        val permissions = mutableListOf<Permission>()
-        val entityToPermission = { entity: BaseEntity ->
-            val name = entity.javaClass.simpleName
-
-            permissionDao.delete(permissionDao.findByEntity(name))
-            permissions.addAll(userService.genPermission(entity))
-            permissionService.save(permissions)
-
-        }
-        if (entityName != null) {
-            val name = BaseEntity::class.java.`package`.name + "." + entityName
-            println("entity:  " + name)
-            val reflect = Reflect.on(name)
-            entityToPermission(reflect.create().get<BaseEntity>())
-        } else {
-            ClassSearcher.of(BaseEntity::class.java).search<BaseEntity>()
-                    .map { e ->
-                        val reflect = Reflect.on(e.name)
-                        reflect.create().get<BaseEntity>()
-                    }
-                    .forEach { entityToPermission }
-
-        }
-        return ResponseEntity.ok(permissions.toList())
-    }
-
-    @GetMapping("/assign")
-    @Transactional
-    fun assign(roleName: String, rule: String): ResponseEntity<Role> {
-        val permissions = permissionService.findAll()
-        val roleOpt = roleDao.findByName(roleName).toOption()
-        val role = when (roleOpt) {
-            is Some -> roleOpt.t
-            None -> throw  IllegalArgumentException(roleName)
-        }
-        role.rolePermissions.clear()
-        role.rolePermissions.addAll(userService.assignPermission(permissions, rule))
-        roleService.save(role)
-        //TODO
-        //SharedConfig.CLEAN_ROLE.end();
-        return ResponseEntity.ok(role)
-    }
 }
