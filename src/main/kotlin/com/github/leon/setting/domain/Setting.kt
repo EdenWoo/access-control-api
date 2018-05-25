@@ -15,15 +15,15 @@ import javax.persistence.*
 @DynamicInsert
 data class Setting(
         var name: String = "",
-        val serverDomain: String = "",
-        val customerSiteDomain: String = "",
+        var serverDomain: String = "",
+        var customerSiteDomain: String = "",
         @Column(columnDefinition = "TEXT")
         var customerLogo: String = "",
         @Column(columnDefinition = "TEXT")
         var adminLogo: String = "",
         var copyright: String = "",
         @Range(min = 0, max = 24)
-        val startWorkHour: Int = 0,
+        var startWorkHour: Int = 0,
         @Range(min = 0, max = 24)
         var endWorkHour: Int = 24,
         @Type(type = "yes_no")
