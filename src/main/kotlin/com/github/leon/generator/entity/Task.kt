@@ -11,7 +11,7 @@ typealias ProjectExtProcessor = (CodeProject) -> Map<String, Any?>
 
 typealias EntityExtProcessor = (CodeEntity) -> Map<String, Any?>
 
-data class Task(
+open class Task(
         var id: Int? = null,
 
         var name: String,
