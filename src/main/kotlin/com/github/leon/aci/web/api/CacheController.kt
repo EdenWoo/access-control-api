@@ -49,7 +49,7 @@ class CacheController(
             cacheClient.deleteByKey(key)
         }
         if(pattern!=null) {
-            cacheClient.deleteByPattern(pattern)
+            cacheClient.deleteByPattern("*$pattern*")
         }
         return key.responseEntityOk()
     }
