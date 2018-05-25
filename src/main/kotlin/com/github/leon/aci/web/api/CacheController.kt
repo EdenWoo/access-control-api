@@ -44,9 +44,13 @@ class CacheController(
     }
 
     @DeleteMapping
-    fun delete(key: String, pattern: String): ResponseEntity<*> {
-        cacheClient.deleteByKey(key)
-        cacheClient.deleteByPattern(pattern)
+    fun delete(key: String?, pattern: String?): ResponseEntity<*> {
+        if(key!=null) {
+            cacheClient.deleteByKey(key)
+        }
+        if(pattern!=null) {
+            cacheClient.deleteByPattern(pattern)
+        }
         return key.responseEntityOk()
     }
 
