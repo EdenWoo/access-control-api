@@ -11,5 +11,6 @@ annotation class EntityFeature(
         val creatorInList: Boolean = false,
         val modifierInList: Boolean = false,
         val version: Boolean = false,
-        val security: Boolean = true
+        val security: Boolean = true,
+        val tree: Boolean = false
 )
