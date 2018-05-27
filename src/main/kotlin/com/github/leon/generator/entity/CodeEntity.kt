@@ -33,7 +33,8 @@ data class CodeEntity(
         var name: String,
 
         var display: String? = null,
-        var security: Boolean = true
+        var security: Boolean = true,
+        var tree: Boolean = false
 
 )
 
@@ -78,7 +79,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                             }
                             codeEntity = codeEntity.copy(
                                     code = it.code,
-                                    security = it.security
+                                    security = it.security,
+                                    tree = it.tree
                             )
                         }
                     }
