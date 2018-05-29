@@ -5,7 +5,6 @@ import arrow.core.getOrElse
 import arrow.syntax.collections.tail
 import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
-import com.github.leon.aci.extenstions.orElse
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.orElse
 import com.github.leon.extentions.remainLastIndexOf
