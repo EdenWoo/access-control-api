@@ -1,11 +1,14 @@
 package com.github.leon.aci.web.api
 
 import com.github.leon.aci.domain.BaseEntity
+import com.github.leon.aci.extenstions.pseudoPagination
 import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.cache.CacheClient
 import com.github.leon.extentions.orElse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,7 +25,7 @@ class CacheController(
 ) {
     val log = LoggerFactory.getLogger(CacheController::class.java)!!
     @GetMapping
-    fun get(pattern: String?): ResponseEntity<List<Map<String, Any?>>> {
+    fun get(pageable: Pageable, pattern: String?): ResponseEntity<Page<Map<String, Any?>>> {
         val k = if (pattern == null) {
             "*"
         } else {
@@ -40,7 +43,7 @@ class CacheController(
                 }
             }
             mapOf("key" to it, "value" to value)
-        }.responseEntityOk()
+        }.pseudoPagination(pageable).responseEntityOk()
     }
 
     @DeleteMapping

@@ -13,6 +13,8 @@ data class CodeProject(
 
         var templateEngine: TemplateHelper,
 
+        var env: CodeEnv? = null,
+
         var entities: List<CodeEntity> = listOf(),
 
         val enums: List<CodeEnum> = listOf(),
@@ -37,9 +39,14 @@ data class CodeProject(
 
 ) {
     fun generate() {
-        (apiTasks + uiTasks + testTasks + uiTemplateTasks)
-                .filter { it.active }
-             //   .parallelStream()
+
+        var taskes = apiTasks + uiTasks + testTasks + uiTemplateTasks
+        if (env != null) {
+            taskes = env!!.taskes
+            entities = env!!.entities
+        }
+        taskes.filter { it.active }
+                //   .parallelStream()
                 .forEach {
                     TaskService.processTask(this, it)
                 }

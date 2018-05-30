@@ -4,6 +4,7 @@ import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.aci.extenstions.pseudoPagination
 import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.security.ApplicationProperties
+import com.github.leon.generator.entity.CodeEnv
 import com.github.leon.generator.entity.Task
 import org.joor.Reflect
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.util.ClassUtils
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -34,10 +36,8 @@ class MetadataController {
 
     @GetMapping("/entity")
     fun entity(pageable: Pageable): ResponseEntity<Page<MutableMap<String, String>>> {
-        val allContent = ApplicationProperties.entityScanPackages.map { it.replace(".", "/") + "/*.class" }
-                .flatMap {
-                    findClasses(BaseEntity::class.java, it)
-                }.map { mutableMapOf("name" to it.name) }
+        val allContent = allEntities()
+
         return allContent.pseudoPagination(pageable).responseEntityOk()
 
     }
@@ -45,17 +45,37 @@ class MetadataController {
 
     @GetMapping("/task")
     fun task(pageable: Pageable): ResponseEntity<Page<Task>> {
-        //TaskConstants.init()
-        val fqn = "com.rapiddev.generator.TaskConstants"
-        val clz: Class<*> = Class.forName(fqn)
+        val list = allTaskes()
+        return list.pseudoPagination(pageable).responseEntityOk()
+
+    }
+
+    @PostMapping("/generate")
+    fun generate(env: CodeEnv): ResponseEntity<String> {
+        val selectedEntity = allEntities().filter { env.entities.any { e -> e.name == it["name"] } }
+        println(selectedEntity)
+        val selectedTask = allTaskes().filter { env.taskes.any { e -> e.name == it.name } }
+        println(selectedEntity)
+        return "entity ${selectedEntity.size} task ${selectedTask.size}".responseEntityOk()
+
+    }
+
+    private fun allTaskes(): List<Task> {
+        val clz: Class<*> = Class.forName("com.rapiddev.generator.TaskConstants")
         val instance = clz.kotlin.objectInstance
         Reflect.on(instance).call("init")
         val list = findClasses(Task::class.java, "classpath*:com/rapiddev/generator/task/*/*.class")
                 .map {
                     (it.newInstance() as Task)
                 }
-        return list.pseudoPagination(pageable).responseEntityOk()
+        return list
+    }
 
+    private fun allEntities(): List<MutableMap<String, String>> {
+        return ApplicationProperties.entityScanPackages.map { it.replace(".", "/") + "/*.class" }
+                .flatMap {
+                    findClasses(BaseEntity::class.java, it)
+                }.map { mutableMapOf("name" to it.name) }
     }
 
 }

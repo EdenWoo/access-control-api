@@ -24,7 +24,7 @@ data class Rule(
         val type: String? = null,
 
         @Type(type = "yes_no")
-        @NotNull
+        @field:NotNull
         val enable: Boolean = true
 
 ) : BaseEntity()
