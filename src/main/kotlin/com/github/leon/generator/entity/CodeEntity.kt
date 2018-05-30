@@ -8,6 +8,7 @@ import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.orElse
 import com.github.leon.extentions.remainLastIndexOf
+import com.github.leon.generator.findClasses
 import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.ExcelFeature
 import com.github.leon.generator.metadata.FieldFeature
@@ -47,8 +48,8 @@ fun scanForCodeEnum(): List<CodeEnum> {
     }
 }
 
-fun scanForCodeEntities(): List<CodeEntity> {
-    val entities: List<Class<out BaseEntity>> = ClassSearcher.of(BaseEntity::class.java).search()
+fun scanForCodeEntities(path:String): List<CodeEntity> {
+    val entities  = findClasses(BaseEntity::class.java, path)
     return entities
             .filter {
                 it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.generated }.getOrElse { true }
