@@ -42,6 +42,7 @@ data class Setting(
         var companyPhone: String? = "",
         @Column(columnDefinition = "TEXT")
         var emailHeadImage: String? = "",
+        @OneToMany(orphanRemoval = true)
         var userGuides: MutableList<Attachment>
 
 ) : BaseEntity()
