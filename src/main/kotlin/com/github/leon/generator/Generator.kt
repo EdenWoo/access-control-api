@@ -19,12 +19,13 @@ fun generate() {
     val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
 
     val packageName = appProps.getProperty("packageName")
+    val entityPackageName = appProps.getProperty("entityPackageName")
     val apiTargetPath = System.getProperty("user.dir")
     val uiTargetPath = appProps.getProperty("uiTargetPath")
     val testTargetPath = appProps.getProperty("testTargetPath")
     val uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
 
-    val classpathName = "${packageName.replace(".", "/")}/domain/*.class"
+    val classpathName = "${packageName.replace(".", "/")}/$entityPackageName/*.class"
     val entities = scanForCodeEntities("classpath*:$classpathName")
     entities.forEach {
         println(it.name)
