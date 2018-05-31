@@ -1,5 +1,6 @@
 package com.github.leon.setting.domain
 
+import com.github.leon.aci.domain.Attachment
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.email.domain.EmailServer
 import com.github.leon.generator.metadata.FieldFeature
@@ -40,5 +41,7 @@ data class Setting(
         var companyMobile: String? = "",
         var companyPhone: String? = "",
         @Column(columnDefinition = "TEXT")
-        var emailHeadImage: String? = ""
+        var emailHeadImage: String? = "",
+        var userGuides: MutableList<Attachment>
+
 ) : BaseEntity()

@@ -9,19 +9,12 @@ import com.github.leon.generator.script.DefaultScriptHelper
 import com.github.leon.generator.template.FreeMarkerHelper
 import com.github.leon.template.apiTasks
 import com.github.leon.template.uiTasks
-
-import java.io.File
-import java.io.FileInputStream
 import java.util.*
 
 
 fun generate() {
-
-    val rootPath = Thread.currentThread().contextClassLoader.getResource("")!!.path
-    val appConfigPath = "${File(rootPath).parent}/resources/generator/local.properties"
-
     val appProps = Properties()
-    appProps.load(FileInputStream(appConfigPath))
+    appProps.load(Thread.currentThread().contextClassLoader.getResourceAsStream("generator/local.properties"))
 
     val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
 
@@ -32,7 +25,6 @@ fun generate() {
     val uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
 
     val classpathName = "${packageName.replace(".", "/")}/domain/*.class"
-    println(classpathName)
     val entities = scanForCodeEntities("classpath*:$classpathName")
     entities.forEach {
         println(it.name)
