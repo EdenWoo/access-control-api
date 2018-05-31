@@ -61,14 +61,13 @@ class MetadataController {
     }
 
     private fun allTaskes(): List<Task> {
-        val clz: Class<*> = Class.forName("com.rapiddev.generator.TaskConstants")
+        val clz: Class<*> = Class.forName("com.github.leon.template.TaskConstants")
         val instance = clz.kotlin.objectInstance
         Reflect.on(instance).call("init")
-        val list = findClasses(Task::class.java, "classpath*:com/rapiddev/generator/task/*/*.class")
+        return findClasses(Task::class.java, "classpath*:com/github/leon/template/task/*/*.class")
                 .map {
                     (it.newInstance() as Task)
                 }
-        return list
     }
 
     private fun allEntities(): List<MutableMap<String, String>> {
