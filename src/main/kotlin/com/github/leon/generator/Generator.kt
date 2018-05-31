@@ -15,7 +15,7 @@ import java.io.FileInputStream
 import java.util.*
 
 
-fun main(args: Array<String>) {
+fun generate() {
 
     val rootPath = Thread.currentThread().contextClassLoader.getResource("")!!.path
     val appConfigPath = "${File(rootPath).parent}/resources/generator/local.properties"
@@ -25,12 +25,15 @@ fun main(args: Array<String>) {
 
     val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
 
+    val packageName = appProps.getProperty("packageName")
     val apiTargetPath = System.getProperty("user.dir")
     val uiTargetPath = appProps.getProperty("uiTargetPath")
     val testTargetPath = appProps.getProperty("testTargetPath")
     val uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
 
-    val entities = scanForCodeEntities("classpath*:com/rapiddev/ac/entity/*.class")
+    val classpathName = "${packageName.replace(".", "/")}/domain/*.class"
+    println(classpathName)
+    val entities = scanForCodeEntities("classpath*:$classpathName")
     entities.forEach {
         println(it.name)
         println(it.fields.map { it.name }.toList())
@@ -40,7 +43,7 @@ fun main(args: Array<String>) {
             entities = entities,
             enums = enums,
             utilClasses = listOf(Utils::class.java),
-            packageName = "com.rapiddev.ac",
+            packageName = packageName,
             templatePath = templatePath,
             uiTemplateTargetPath = uiTemplateTargetPath,
             testTasks = listOf(),
