@@ -1,5 +1,5 @@
 package com.cfgglobal.ccfx.domain
-import com.cfgglobal.test.domain.BaseEntity
+import com.github.leon.aci.domain.BaseEntity
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 

@@ -1,7 +1,6 @@
 package com.github.leon.aci.domain
 
 
-import com.cfgglobal.generator.metadata.FieldFeature
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.validator.constraints.Length
