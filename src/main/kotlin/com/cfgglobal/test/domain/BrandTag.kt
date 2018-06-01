@@ -1,15 +1,14 @@
 package com.cfgglobal.ccfx.domain
-import com.cfgglobal.generator.metadata.FieldFeature
-import com.cfgglobal.test.domain.BaseEntity
+
+
+import com.github.leon.aci.domain.BaseEntity
+import com.github.leon.generator.metadata.FieldFeature
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
-
-
-import javax.persistence.*
-import java.sql.Date
-import java.sql.Timestamp
 import java.time.ZonedDateTime
-import java.util.Objects
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.ManyToMany
 
 @Entity
 @DynamicUpdate
