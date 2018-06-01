@@ -8,6 +8,6 @@ class SharedModuleTsService : Task(
         name = "shared-module.component.ts",
         folder = """ "shared-module"""",
         taskType = "single",
-        filename = """"shared.module.ts"""",
-        templatePath = """"angular/shared-module/shared_module_ts.ftl""""
+        filename = """"shared.generated-components.ts"""",
+        templatePath = """"angular/shared-module/shared_generated-components_ts.ftl""""
 )
