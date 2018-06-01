@@ -9,5 +9,5 @@ class SharedModuleTsService : Task(
         folder = """ "shared-module"""",
         taskType = "single",
         filename = """"shared.module.ts"""",
-        templatePath = """"angular/shared-module/shared.module.ts""""
+        templatePath = """"angular/shared-module/shared_module_ts.ftl""""
 )
