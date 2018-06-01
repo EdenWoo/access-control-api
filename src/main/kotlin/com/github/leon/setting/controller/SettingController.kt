@@ -1,5 +1,6 @@
 package com.github.leon.setting.controller
 
+import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.setting.domain.Setting
 import org.springframework.data.domain.Page
@@ -12,27 +13,55 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/v1/setting")
 class SettingController : BaseController<Setting, Long>() {
 
+
     @GetMapping
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<Setting>> {
         return super.page(pageable, request)
     }
+
     @GetMapping("{id}")
-    override fun findOne(id: Long, request: HttpServletRequest): ResponseEntity<Setting> {
+    override fun findOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Setting> {
         return super.findOne(id, request)
     }
 
     @PostMapping
-    override fun saveOne(input: Setting): ResponseEntity<*> {
-        return super.saveOne(input)
+    override fun saveOne(@RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+        return super.saveOne(input, request)
     }
 
-    @PutMapping
-    override fun updateOne(id: Long, input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+    @PutMapping("{id}")
+    override fun updateOne(@PathVariable id: Long, @RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 
     @DeleteMapping("{id}")
-    override fun deleteOne(id: Long, request: HttpServletRequest): ResponseEntity<*> {
+    override fun deleteOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
         return super.deleteOne(id, request)
     }
+
+    @GetMapping("active")
+    fun findActive(): ResponseEntity<Setting> {
+        val params = mutableMapOf<String, Array<String>>()
+        params["f_active"] = arrayOf("true")
+        params["f_active_op"] = arrayOf("=")
+        return baseService.findByRequestParameters(params).first().responseEntityOk()
+    }
+
+    @PutMapping("active")
+    fun active(id: Long): ResponseEntity<Setting> {
+        val list = baseService.findAll()
+        val (enableSetting, disabledSettings) = list.partition { it.id == id }
+        enableSetting.forEach {
+            it.active = true
+            baseService.save(it)
+        }
+        disabledSettings.forEach {
+            it.active = false
+            baseService.save(it)
+        }
+        return enableSetting.first().responseEntityOk()
+
+    }
+
+
 }

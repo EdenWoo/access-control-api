@@ -5,9 +5,12 @@ import arrow.core.getOrElse
 import arrow.syntax.collections.tail
 import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
+import com.github.leon.aci.extenstions.orElse
 import com.github.leon.classpath.ClassSearcher
+import com.github.leon.extentions.orElse
 import com.github.leon.extentions.remainLastIndexOf
 import com.github.leon.generator.metadata.EntityFeature
+import com.github.leon.generator.metadata.ExcelFeature
 import com.github.leon.generator.metadata.FieldFeature
 import org.hibernate.validator.constraints.Range
 import org.joor.Reflect
@@ -20,18 +23,18 @@ import kotlin.coroutines.experimental.buildSequence
 data class CodeEntity(
         var groupedFields: List<List<CodeField>> = listOf(),
         var formHiddenFields: List<CodeField> = listOf(),
-
         var listFields: List<CodeField> = listOf(),
-        /**
-         * EXCEL 导入导出临时使用
-         */
         var requiredFields: List<CodeField> = listOf(),
+
+
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
-        var code: Int,
+        var code: Int = 0,
         var name: String,
 
-        var display: String? = null
+        var display: String? = null,
+        var security: Boolean = true
+
 )
 
 fun scanForCodeEnum(): List<CodeEnum> {
@@ -45,52 +48,57 @@ fun scanForCodeEnum(): List<CodeEnum> {
 }
 
 fun scanForCodeEntities(): List<CodeEntity> {
-
-    return ClassSearcher.of(BaseEntity::class.java).search<BaseEntity?>()
+    val entities: List<Class<out BaseEntity>> = ClassSearcher.of(BaseEntity::class.java).search()
+    return entities
             .filter {
                 it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.generated }.getOrElse { true }
             }.map {
-                val codeEntity = CodeEntity(
-                        name = it.simpleName,
-                        code = it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.code }.getOrElse { 0 }
+                var codeEntity = CodeEntity(
+                        name = it.simpleName
                 )
                 var ignoredFields = listOf("serialVersionUID", "Companion")
-                val entityFeature = it.getDeclaredAnnotation(EntityFeature::class.java).toOption()
-                when (entityFeature) {
-                    is Some -> {
-                        val en = entityFeature.t
-                        if (!en.createdAtInList) {
-                            ignoredFields += "createdAt"
-                        }
-                        if (!en.creatorInList) {
-                            ignoredFields += "creator"
-                        }
-                        if (!en.updatedAtInList) {
-                            ignoredFields += "updatedAt"
-                        }
-                        if (!en.modifierInList) {
-                            ignoredFields += "modifier"
-                        }
-                        if (!en.versionInList) {
-                            ignoredFields += "version"
+
+                it.declaredAnnotations.forEach {
+                    when (it) {
+                        is EntityFeature -> {
+                            if (!it.createdAtInList) {
+                                ignoredFields += "createdAt"
+                            }
+                            if (!it.creatorInList) {
+                                ignoredFields += "creator"
+                            }
+                            if (!it.updatedAtInList) {
+                                ignoredFields += "updatedAt"
+                            }
+                            if (!it.modifierInList) {
+                                ignoredFields += "modifier"
+                            }
+                            if (!it.versionInList) {
+                                ignoredFields += "version"
+                            }
+                            codeEntity = codeEntity.copy(
+                                    code = it.code,
+                                    security = it.security
+                            )
                         }
                     }
                 }
                 val fields = (it.superclass.declaredFields + it.declaredFields)
                         .filter { ignoredFields.all { ignoreField -> ignoreField != it.name } }
-                        .map {
+                        .map { field ->
                             var codeField = CodeField(
-                                    name = it.name,
+                                    name = field.name,
                                     type = when {
-                                        List::class.java.isAssignableFrom(it.type) ->
+                                        List::class.java.isAssignableFrom(field.type) ->
                                             FieldType(name = "List",
-                                                    element = (it.genericType as ParameterizedType).actualTypeArguments[0].typeName.remainLastIndexOf("."))
-                                        BaseEntity::class.java.isAssignableFrom(it.type) ->
-                                            FieldType(name = "Entity", element = it.type.simpleName)
-                                        else -> FieldType(name = it.type.simpleName)
+                                                    element = (field.genericType as ParameterizedType).actualTypeArguments[0]
+                                                            .typeName.remainLastIndexOf("."))
+                                        BaseEntity::class.java.isAssignableFrom(field.type) ->
+                                            FieldType(name = "Entity", element = field.type.simpleName)
+                                        else -> FieldType(name = field.type.simpleName)
                                     }
                             )
-                            it.declaredAnnotations
+                            field.declaredAnnotations
                                     .forEach {
                                         when (it) {
                                             is NotNull -> {
@@ -114,7 +122,6 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                             is Future -> {
                                                 codeField = codeField.copy(future = true)
                                             }
-
                                             is Past -> {
                                                 codeField = codeField.copy(past = true)
                                             }
@@ -123,6 +130,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                         unique = it.unique
                                                 )
                                             }
+                                            is Id -> codeField = codeField.copy(primaryKey = true)
+
                                             is FieldFeature -> {
                                                 codeField = codeField.copy(
                                                         searchable = it.searchable,
@@ -143,7 +152,22 @@ fun scanForCodeEntities(): List<CodeEntity> {
                                                         label = it.label
                                                 )
                                             }
-                                            is Id -> codeField = codeField.copy(primaryKey = true)
+                                            is ExcelFeature -> {
+                                                codeField = codeField.copy(
+                                                        column = if (it.column.isNotBlank()) {
+                                                            it.column
+                                                        } else {
+                                                            field.name
+                                                        },
+                                                        header = if (it.header.isNotBlank()) {
+                                                            it.header
+                                                        } else {
+                                                            field.name
+                                                        },
+                                                        exportable = it.exportable,
+                                                        importable = it.importable
+                                                )
+                                            }
 
                                         }
                                     }
@@ -153,8 +177,6 @@ fun scanForCodeEntities(): List<CodeEntity> {
                 val (formHiddenFields, otherFields) = fields.partition { it.hiddenInForm || it.primaryKey }
                 codeEntity.formHiddenFields = formHiddenFields
                 codeEntity.groupedFields = groupFields(otherFields).takeWhile { it.isNotEmpty() }.toList()
-
-
                 val (_, listFields) = fields.partition { it.hiddenInList || it.primaryKey }
                 codeEntity.listFields = listFields
                 codeEntity.requiredFields = fields.filter { it.required }

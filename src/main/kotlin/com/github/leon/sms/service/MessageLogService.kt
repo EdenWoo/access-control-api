@@ -29,7 +29,7 @@ class MessageLogService(
 ) : BaseService<MessageLog, Long>() {
 
     fun send(message: MessageLog): Pair<String?, String> {
-        val enableProvider = settingDao.findByActive(true).smsProviderType!!.name
+        val enableProvider = settingDao.findByActive(true)!!.smsProviderType!!.name
 
         val providerOpt = messageProviders.firstOption {
             it.javaClass.simpleName.substringBefore(MessageProvider::class.java.simpleName).equals(enableProvider, ignoreCase = true)
@@ -54,6 +54,7 @@ class MessageLogService(
             } else {
                 smsMessage.status = TaskStatus.FAILURE
                 val emailLog = EmailLog(
+                        status = TaskStatus.TODO,
                         sendTo = "lei.zhou@cfgglobal.co.nz",
                         content = "Sms no credit".toByteArray()
                 )

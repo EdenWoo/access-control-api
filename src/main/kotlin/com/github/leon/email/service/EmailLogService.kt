@@ -54,7 +54,7 @@ class EmailLogService(
     }
 
     fun send(emailLog: EmailLog): Pair<String, Boolean> {
-        val emailServer = settingDao.findByActive(true).emailServer
+        val emailServer = settingDao.findByActive(true)!!.emailServer!!
         val sender = createSender()
         return try {
             val mailMessage = sender.createMimeMessage()
@@ -62,10 +62,8 @@ class EmailLogService(
             messageHelper.setFrom(emailServer.fromAddress, emailServer.fromAddress)
             messageHelper.setTo(emailLog.sendTo!!)
             messageHelper.setSubject(emailLog.subject!!)
-
             messageHelper.setText(String(emailLog.content!!), true)
             sender.send(mailMessage)
-
             Pair("", true)
         } catch (e: Exception) {
             log.error("EmailLog Send Error:" + emailLog.sendTo!!, e)
@@ -75,7 +73,7 @@ class EmailLogService(
     }
 
     private fun createSender(): JavaMailSender {
-        val emailServer = settingDao.findByActive(true).emailServer
+        val emailServer = settingDao.findByActive(true)!!.emailServer!!
         val sender = JavaMailSenderImpl()
         sender.host = emailServer.host
         sender.port = emailServer.port
@@ -89,13 +87,17 @@ class EmailLogService(
         return sender
     }
 
-    fun sendSystem(subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
+    fun sendSystem(orderId: String = "", subject: String, sendTo: String, ftl: String, model: Map<String, Any?>) {
+        val setting = settingDao.findByActive(true)
+        val m = model.toMutableMap()
+        m["setting"] = setting
         try {
             val emailLog = EmailLog(
+                    orderId = orderId,
                     times = 0,
                     sendTo = sendTo,
                     subject = subject,
-                    content = freemarkerBuilderUtil.build(ftl, model)!!.toByteArray(Charset.forName("UTF-8")),
+                    content = freemarkerBuilderUtil.build(ftl, m)!!.toByteArray(Charset.forName("UTF-8")),
                     status = TaskStatus.TODO)
             emailLogDao.save(emailLog)
         } catch (e: Exception) {

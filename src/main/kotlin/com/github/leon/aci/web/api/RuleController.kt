@@ -22,7 +22,7 @@ class RuleController {
     @GetMapping
     fun index(pageable: Pageable): ResponseEntity<Page<Rule>> {
         return ResponseEntity.ok(ruleService!!.findAll(pageable))
-        //return ResponseEntity.ok(ruleService.findBySecurity(request.getMethod(), request.getRequestURI(), HashMap.ofAll(request.getParameterMap()), pageable));
+        //return ResponseEntity.responseEntityOk(ruleService.findBySecurity(request.getMethod(), request.getRequestURI(), HashMap.ofAll(request.getParameterMap()), pageable));
 
     }
 

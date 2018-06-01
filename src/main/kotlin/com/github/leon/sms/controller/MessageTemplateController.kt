@@ -27,8 +27,8 @@ class MessageTemplateController(
     }
 
     @PostMapping
-    override fun saveOne(@RequestBody input: MessageTemplate): ResponseEntity<*> {
-        return super.saveOne(input)
+    override fun saveOne(@RequestBody input: MessageTemplate, request: HttpServletRequest): ResponseEntity<*> {
+        return super.saveOne(input, request)
     }
 
     @PutMapping("{id}")

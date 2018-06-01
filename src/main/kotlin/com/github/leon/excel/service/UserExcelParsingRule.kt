@@ -32,7 +32,7 @@ class UserExcelParsingRule(
 
     override fun process(data: List<User>) {
         data.forEach {
-            it.password = passwordEncoder.encode(it.password)
+            it.setPassword(passwordEncoder.encode(it.password))
             userDao.save(it)
         }
     }

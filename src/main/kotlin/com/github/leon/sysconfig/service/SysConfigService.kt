@@ -36,7 +36,7 @@ class SysConfigService(
 
 
     fun isWorkingHour(localTime: LocalTime): Boolean {
-        val setting = settingDao.findByActive(true)
+        val setting = settingDao.findByActive(true)!!
         return localTime.hour in setting.startWorkHour..(setting.endWorkHour.dec())
     }
 

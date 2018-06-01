@@ -5,7 +5,7 @@ import com.github.leon.aci.dao.FindPwdSendLogDao
 import com.github.leon.aci.domain.FindPwdSendLog
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.time.ZonedDateTime
 
 
 @Repository
@@ -15,10 +15,7 @@ class  FindPwdLogService(
 
 ) {
     fun insert(log: FindPwdSendLog) {
-        val calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 24);      //24小时
-        val date =  calendar.time
-        log.expireDate= date.time
+        log.expireDate= ZonedDateTime.now().plusDays(1)
         findPwdSendLogDao.save(log)
     }
 

@@ -69,12 +69,13 @@ class RedisCacheClient : CacheClient {
     }
 
     override fun keys(pattern: String): Set<String> {
-        val connection = template!!.connectionFactory.connection
+        /*val connection = template!!.connectionFactory.connection
         val options = ScanOptions.scanOptions().match(pattern).count(Long.MAX_VALUE).build()
         val cursor = connection.scan(options)
         val keys = HashSet<String>()
-        cursor.forEachRemaining { keys.add(String(it)) }
-        return keys
+        cursor.forEachRemaining { keys.add(String(it)) }*/
+        return template!!.keys(pattern)
+        //return keys
     }
 
     companion object {

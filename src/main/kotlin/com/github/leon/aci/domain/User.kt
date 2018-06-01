@@ -1,7 +1,7 @@
 package com.github.leon.aci.domain
 
-import com.github.leon.aci.enums.UserType
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.github.leon.aci.enums.UserType
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import org.hibernate.annotations.Type
@@ -11,7 +11,7 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "aci_user",uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
+@Table(name = "aci_user", uniqueConstraints = [(UniqueConstraint(name = "unique_username", columnNames = arrayOf("username")))])
 @DynamicUpdate
 @DynamicInsert
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,11 +22,11 @@ open class User(
         private var username: String = "",
 
         @NotNull
-        @JsonIgnore
-        private var password: String = "",
+        private var password: String? = null,
 
         @NotNull
         var email: String? = null,
+
         @ManyToOne
         @JoinColumn(name = "role_id")
         var role: Role? = null,
@@ -52,7 +52,15 @@ open class User(
         @Enumerated(value = EnumType.STRING)
         var userType: UserType? = null,
 
-        var expiresIn: Long? = null
+        var expiresIn: Long? = null,
+
+        @Transient
+        var confirmPassword: String? = null,
+
+        var ipWhiteList: String? = null,
+
+        var ipBlackList: String? = null
+
 
 ) : BaseEntity(), UserDetails {
 
@@ -61,7 +69,7 @@ open class User(
         return username
     }
 
-    override fun getPassword(): String {
+    override fun getPassword(): String? {
         return password
 
     }
