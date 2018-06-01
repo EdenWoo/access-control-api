@@ -5,10 +5,10 @@ import arrow.core.getOrElse
 import arrow.syntax.collections.tail
 import arrow.core.toOption
 import com.github.leon.aci.domain.BaseEntity
-import com.github.leon.aci.extenstions.orElse
 import com.github.leon.classpath.ClassSearcher
 import com.github.leon.extentions.orElse
 import com.github.leon.extentions.remainLastIndexOf
+import com.github.leon.generator.findClasses
 import com.github.leon.generator.metadata.EntityFeature
 import com.github.leon.generator.metadata.ExcelFeature
 import com.github.leon.generator.metadata.FieldFeature
@@ -33,7 +33,8 @@ data class CodeEntity(
         var name: String,
 
         var display: String? = null,
-        var security: Boolean = true
+        var security: Boolean = true,
+        var tree: Boolean = false
 
 )
 
@@ -47,8 +48,8 @@ fun scanForCodeEnum(): List<CodeEnum> {
     }
 }
 
-fun scanForCodeEntities(): List<CodeEntity> {
-    val entities: List<Class<out BaseEntity>> = ClassSearcher.of(BaseEntity::class.java).search()
+fun scanForCodeEntities(path:String): List<CodeEntity> {
+    val entities  = findClasses(BaseEntity::class.java, path)
     return entities
             .filter {
                 it.getDeclaredAnnotation(EntityFeature::class.java).toOption().map { it.generated }.getOrElse { true }
@@ -78,7 +79,8 @@ fun scanForCodeEntities(): List<CodeEntity> {
                             }
                             codeEntity = codeEntity.copy(
                                     code = it.code,
-                                    security = it.security
+                                    security = it.security,
+                                    tree = it.tree
                             )
                         }
                     }

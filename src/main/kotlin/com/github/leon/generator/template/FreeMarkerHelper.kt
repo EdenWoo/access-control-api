@@ -3,19 +3,19 @@ package com.github.leon.generator.template
 
 import com.github.leon.generator.core.TemplateHelper
 import freemarker.cache.FileTemplateLoader
-import freemarker.cache.TemplateLoader
 import freemarker.template.Configuration
 import freemarker.template.SimpleHash
 import java.io.*
 
 
 class FreeMarkerHelper(templatesBaseDir: String) : TemplateHelper() {
-    protected var freeMarkerEngine: Configuration = Configuration(Configuration.VERSION_2_3_21)
+    protected var configuration: Configuration = Configuration(Configuration.VERSION_2_3_21)
     protected var context: SimpleHash = SimpleHash()
 
     init {
-        val loader  = FileTemplateLoader(File(templatesBaseDir))
-        freeMarkerEngine.templateLoader = loader
+        configuration.setClassForTemplateLoading(FreeMarkerHelper::class.java,"/generator")
+      //  val loader  = FileTemplateLoader(File(templatesBaseDir))
+       // configuration.templateLoader = loader
     }
 
     override fun put(key: String, value: Any?) {
@@ -36,7 +36,7 @@ class FreeMarkerHelper(templatesBaseDir: String) : TemplateHelper() {
         var out: Writer? = null
         try {
             out = BufferedWriter(OutputStreamWriter(FileOutputStream(targetFilename), "UTF-8"))
-            val template = freeMarkerEngine.getTemplate(templateFilename, "UTF-8")
+            val template = configuration.getTemplate(templateFilename, "UTF-8")
             template.process(context, out)
         } catch (e: Exception) {
             throw RuntimeException("parse template file [$templateFilename] error", e)

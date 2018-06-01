@@ -43,6 +43,6 @@ abstract class BaseEntity(
 
 ) : Serializable {
     companion object {
-            protected const val serialVersionUID: Long = 1
+        protected const val serialVersionUID: Long = 1
     }
 }

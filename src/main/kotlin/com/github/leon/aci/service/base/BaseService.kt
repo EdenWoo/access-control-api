@@ -80,7 +80,7 @@ abstract class BaseService<T, ID : Serializable> {
     }
 
     fun deleteBySecurity(id: ID, method: String, requestURI: String) {
-        val securityFilters = securityFilter!!.query(method, requestURI)
+        val securityFilters = securityFilter.query(method, requestURI)
         val list = baseDao.findByFilter(securityFilters)
         val entity = baseDao.findOne(id)
         if (list.contains(entity)) {
@@ -92,7 +92,7 @@ abstract class BaseService<T, ID : Serializable> {
 
     fun <S : T> saveBySecurity(entity: S, method: String, requestURI: String): S {
         val id = Reflect.on(entity).get<Any>("id")
-        if (id == null || baseDao.findByFilter(securityFilter!!.query(method, requestURI)).contains(entity)) {
+        if (id == null || baseDao.findByFilter(securityFilter.query(method, requestURI)).contains(entity)) {
             return save(entity)
         }
         throw AccessDeniedException(requestURI)

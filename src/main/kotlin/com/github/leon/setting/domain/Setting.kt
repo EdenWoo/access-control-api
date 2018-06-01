@@ -1,5 +1,6 @@
 package com.github.leon.setting.domain
 
+import com.github.leon.aci.domain.Attachment
 import com.github.leon.aci.domain.BaseEntity
 import com.github.leon.email.domain.EmailServer
 import com.github.leon.generator.metadata.FieldFeature
@@ -15,14 +16,15 @@ import javax.persistence.*
 @DynamicInsert
 data class Setting(
         var name: String = "",
-        val serverDomain: String = "",
+        var serverDomain: String = "",
+        var customerSiteDomain: String = "",
         @Column(columnDefinition = "TEXT")
         var customerLogo: String = "",
         @Column(columnDefinition = "TEXT")
         var adminLogo: String = "",
         var copyright: String = "",
         @Range(min = 0, max = 24)
-        val startWorkHour: Int = 0,
+        var startWorkHour: Int = 0,
         @Range(min = 0, max = 24)
         var endWorkHour: Int = 24,
         @Type(type = "yes_no")
@@ -38,5 +40,9 @@ data class Setting(
         var companyEmail: String? = "",
         var companyMobile: String? = "",
         var companyPhone: String? = "",
-        var emailHeadImage: String? = ""
+        @Column(columnDefinition = "TEXT")
+        var emailHeadImage: String? = "",
+        @OneToMany(orphanRemoval = true)
+        var userGuides: MutableList<Attachment>
+
 ) : BaseEntity()

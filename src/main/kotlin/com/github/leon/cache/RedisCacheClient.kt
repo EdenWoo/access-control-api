@@ -20,7 +20,11 @@ class RedisCacheClient : CacheClient {
 
 
     override fun <T> get(key: String): T? {
-        return template!!.opsForValue().get(key) as T?
+        val cache = Try { template!!.opsForValue().get(key) as T? }
+        return when(cache){
+            is Try.Success -> cache.value
+            is Try.Failure ->null
+        }
     }
 
     override fun <T> get(key: String, supplier: () -> T): T? {

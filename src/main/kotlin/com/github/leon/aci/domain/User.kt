@@ -1,6 +1,5 @@
 package com.github.leon.aci.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.github.leon.aci.enums.UserType
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
@@ -102,5 +101,10 @@ open class User(
 
     override fun isAccountNonLocked(): Boolean {
         return true
+    }
+
+    companion object {
+
+        private const val serialVersionUID = 1L
     }
 }

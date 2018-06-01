@@ -93,7 +93,8 @@ dependencies {
 
     compile 'org.hibernate:hibernate-core:5.2.6.Final'
     compile 'io.jsonwebtoken:jjwt:0.7.0'
-    compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
+    compile 'com.alibaba:druid:1.1.9'
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.9'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'org.jooq', name: 'joor', version: '0.9.6'
 
@@ -128,11 +129,13 @@ dependencies {
 
     compile 'com.github.b1412:kotlin-extensions:a3865f61f9'
 
+    compile 'de.codecentric:spring-boot-admin-starter-client:1.5.7'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
     }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 }
 
