@@ -9,5 +9,5 @@ class AppComponentTs : Task(
         folder = """"/"""",
         taskType = "single",
         filename = """"app.component.ts"""",
-        templatePath = """"angular/app.component.ts""""
+        templatePath = """"angular/app_component_ts.ftl""""
 )

@@ -9,5 +9,5 @@ class NavigationHtml : Task(
         folder = """"shared/layout/navigation"""",
         taskType = "single",
         filename = """"navigation.component.html"""",
-        templatePath = """"angular/navigation.component.html.ftl""""
+        templatePath = """"angular/navigation_component_html.ftl""""
 )
