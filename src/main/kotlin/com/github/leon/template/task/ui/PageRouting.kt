@@ -8,6 +8,6 @@ class PageRouting : Task(
         name = "pagesoutings",
         folder = """"pages/"""",
         taskType = "multiple",
-        filename = """"pages.routing.ts"""",
-        templatePath = """"angular/pages_routing_ts.ftl""""
+        filename = """"pages.generated-routing.ts"""",
+        templatePath = """"angular/pages_generated-routing_ts.ftl""""
 )
