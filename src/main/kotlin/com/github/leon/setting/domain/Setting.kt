@@ -43,6 +43,6 @@ data class Setting(
         @Column(columnDefinition = "TEXT")
         var emailHeadImage: String? = "",
         @OneToMany(orphanRemoval = true)
-        var userGuides: MutableList<Attachment>
+        var userGuides: MutableList<Attachment>  = mutableListOf()
 
 ) : BaseEntity()
