@@ -29,6 +29,7 @@ class AttachmentController(
     @GetMapping("/download")
     fun download(@RequestParam filename: String, response: HttpServletResponse) {
         response.setHeader("Content-Disposition", "inline; filename=$filename")
+        response.contentType  = "application/octet-stream"
         val file = amazonService.getFile(filename)
         IOUtils.copy(FileInputStream(file), response.outputStream)
         response.flushBuffer()
