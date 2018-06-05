@@ -9,5 +9,5 @@ class subformComponentTsService : Task(
         folder = """ "shared-module/subform-components/" + com.github.leon.generator.ext.Utils.lowerHyphen(entity.name) + "/" """,
         taskType = "multiple",
         filename = """ com.github.leon.generator.ext.Utils.lowerHyphen(entity.name) + "-subform.component.ts" """,
-        templatePath = """"angular/shared-module/subform-component/subform.component_ts.ftl""""
+        templatePath = """"angular/shared-module/subform-component/subform_component_ts.ftl""""
 )
