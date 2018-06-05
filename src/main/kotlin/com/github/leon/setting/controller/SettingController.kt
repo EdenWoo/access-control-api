@@ -31,6 +31,7 @@ class SettingController(
 
     @PostMapping
     override fun saveOne(@RequestBody input: Setting, request: HttpServletRequest): ResponseEntity<*> {
+
         return super.saveOne(input, request)
     }
 
