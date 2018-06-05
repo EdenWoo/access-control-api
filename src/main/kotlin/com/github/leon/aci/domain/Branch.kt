@@ -13,12 +13,7 @@ import javax.validation.constraints.NotNull
 @DynamicInsert
 data class Branch(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var pk: Long? = null,
-
         @NotNull
-        @Column(length = 10)
         val name: String? = null,
 
         @ManyToOne(cascade = [(CascadeType.REFRESH), (CascadeType.REMOVE)], optional = true)
