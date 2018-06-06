@@ -8,7 +8,7 @@ export class ${Utils.upperCamel(entity.name)}Service extends BaseService impleme
         super('${Utils.lowerHyphen(entity.name)}', http);
 <#assign embededStr = "">
     <#list entity.fields as f>
-        <#if (f.addDynamicMany || f.type.name == "Entity" || f.type.name == "List") && !f.hiddenInList>
+        <#if (f.addDynamicMany || f.attachment || f.type.name == "Entity" || f.type.name == "List") && !f.hiddenInList>
             <#assign embededStr += '${Utils.lowerHyphen(f.name)},'>
         </#if>
 
