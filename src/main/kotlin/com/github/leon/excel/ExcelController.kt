@@ -47,7 +47,7 @@ class ExcelController(
 
     @GetMapping("template")
     fun findOne(rule: String, response: HttpServletResponse) {
-        val entity = ApplicationProperties.entityScanPackages.first()+".${rule.capitalize()}"
+        val entity = ApplicationProperties.entityScanPackages.last()+".${rule.capitalize()}"
         val clazz = Reflect.on(entity).get() as Class<out BaseEntity>
         val fields = clazz.declaredFields.filter { it.getDeclaredAnnotation(NotNull::class.java) != null }
 
