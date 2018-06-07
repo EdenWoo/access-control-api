@@ -23,8 +23,8 @@ class ${entity.name}ExcelParsingRule(
 <#list entity.requiredFields as f>
     <#if f.type.name == "Entity">
         fileParser.addCell(2, "category", EntityConvertor().apply {
-                this.name = "${entity.name?capitalize}"
-                this.entityManager = entityManager
+                name = "${f.name?capitalize}"
+                em = entityManager
         })
     <#elseif f.type.name == "Int" >
     fileParser.addCell(${f?index + 1}, "${f.name}", IntConvertor())
