@@ -37,7 +37,7 @@ data class CodeProject(
         var testTasks: List<Task> = listOf()
 
 ) {
-    fun generate(env: CodeEnv?) {
+    fun generate(env: CodeEnv? = null) {
         var taskes = apiTasks + uiTasks + testTasks + uiTemplateTasks
         if (env != null) {
             taskes = env.taskes

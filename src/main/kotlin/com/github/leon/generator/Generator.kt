@@ -11,7 +11,7 @@ import com.github.leon.template.apiTasks
 import com.github.leon.template.uiTasks
 import java.util.*
 
-fun generate(codeEnv: CodeEnv?) {
+fun generate(codeEnv: CodeEnv? = null) {
     val appProps = Properties()
     appProps.load(Thread.currentThread().contextClassLoader.getResourceAsStream("generator/local.properties"))
     val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
