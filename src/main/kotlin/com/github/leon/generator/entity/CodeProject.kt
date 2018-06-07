@@ -13,7 +13,6 @@ data class CodeProject(
 
         var templateEngine: TemplateHelper,
 
-        var env: CodeEnv? = null,
 
         var entities: List<CodeEntity> = listOf(),
 
@@ -38,12 +37,11 @@ data class CodeProject(
         var testTasks: List<Task> = listOf()
 
 ) {
-    fun generate() {
-
+    fun generate(env: CodeEnv?) {
         var taskes = apiTasks + uiTasks + testTasks + uiTemplateTasks
         if (env != null) {
-            taskes = env!!.taskes
-            entities = env!!.entities
+            taskes = env.taskes
+            entities = env.entities
         }
         taskes.filter { it.active }
                 //   .parallelStream()

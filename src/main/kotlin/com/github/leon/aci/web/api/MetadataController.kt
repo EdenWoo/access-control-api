@@ -6,6 +6,8 @@ import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.security.ApplicationProperties
 import com.github.leon.generator.entity.CodeEnv
 import com.github.leon.generator.entity.Task
+import com.github.leon.generator.entity.entityClass2CodeEntity
+import com.github.leon.generator.generate
 import org.joor.Reflect
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory
@@ -36,7 +38,7 @@ class MetadataController {
 
     @GetMapping("/entity")
     fun entity(pageable: Pageable): ResponseEntity<Page<MutableMap<String, String>>> {
-        val allContent = allEntities()
+        val allContent = allEntities().map { mutableMapOf("name" to it.name) }
 
         return allContent.pseudoPagination(pageable).responseEntityOk()
 
@@ -51,14 +53,18 @@ class MetadataController {
     }
 
     @PostMapping("/generate")
-    fun generate(env: CodeEnv): ResponseEntity<String> {
-        val selectedEntity = allEntities().filter { env.entities.any { e -> e.name == it["name"] } }
-        println(selectedEntity)
-        val selectedTask = allTaskes().filter { env.taskes.any { e -> e.name == it.name } }
-        com.github.leon.generator.generate()
-        println(selectedTask)
-        return "entity ${selectedEntity.size} task ${selectedTask.size}".responseEntityOk()
+    fun codeGenerate(env: CodeEnv): ResponseEntity<CodeEnv> {
+        val selectedEntity = allEntities()
+                .filter { env.entities.any { e -> e.name == it.name } }
+                .map(entityClass2CodeEntity())
 
+        val selectedTask = allTaskes().filter { env.taskes.any { e -> e.name == it.name } }
+        env.entities = selectedEntity
+        env.taskes = selectedTask
+        println(selectedEntity)
+        println(selectedTask)
+       // generate(env)
+        return env.responseEntityOk()
     }
 
     private fun allTaskes(): List<Task> {
@@ -71,11 +77,11 @@ class MetadataController {
                 }
     }
 
-    private fun allEntities(): List<MutableMap<String, String>> {
+    private fun allEntities(): List<Class<*>> {
         return ApplicationProperties.entityScanPackages.map { it.replace(".", "/") + "/*.class" }
                 .flatMap {
                     findClasses(BaseEntity::class.java, it)
-                }.map { mutableMapOf("name" to it.name) }
+                }
     }
 
 }
