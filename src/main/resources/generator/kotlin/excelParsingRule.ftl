@@ -3,7 +3,7 @@ package ${project.packageName}.excel
 import ${project.packageName}.entity.${entity.name}
 import com.github.leon.excel.service.ExcelParsingRule
 import com.github.leon.files.parser.FileParser
-import com.rapiddev.ecommerce.excel.convertor.EntityConvertor
+import com.github.leon.excel.convertor.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.persistence.EntityManager
