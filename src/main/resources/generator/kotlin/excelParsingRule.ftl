@@ -3,6 +3,7 @@ package ${project.packageName}.excel
 import ${project.packageName}.entity.${entity.name}
 import com.github.leon.excel.service.ExcelParsingRule
 import com.github.leon.files.parser.FileParser
+import com.rapiddev.ecommerce.excel.convertor.EntityConvertor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.persistence.EntityManager
@@ -19,9 +20,22 @@ class ${entity.name}ExcelParsingRule(
     get() {
         val fileParser = FileParser()
         fileParser.start = 1
-        <#list entity.requiredFields as f>
-        fileParser.addCell(${f?index + 1}, "${f.name}")
-        </#list>
+<#list entity.requiredFields as f>
+    <#if f.type.name == "Entity">
+        fileParser.addCell(2, "category", EntityConvertor().apply {
+                this.name = "${entity.name?capitalize}"
+                this.entityManager = entityManager
+        })
+    <#elseif f.type.name == "Int" >
+    fileParser.addCell(${f?index + 1}, "${f.name}", IntConvertor())
+    <#elseif f.type.name == "Long" >
+    fileParser.addCell(${f?index + 1}, "${f.name}", LongConvertor())
+    <#elseif f.type.name == "Double">
+    fileParser.addCell(${f?index + 1}, "${f.name}", DoubleConvertor())
+    <#else>
+    fileParser.addCell(${f?index + 1}, "${f.name}")
+    </#if>
+</#list>
         return fileParser
     }
 
