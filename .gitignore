@@ -33,3 +33,4 @@ gradlew.bat
 /fee-api/out/
 /logs/
 /src/test/kotlin/com/github/leon/test/
+/src/main/resources/generator/dev.properties

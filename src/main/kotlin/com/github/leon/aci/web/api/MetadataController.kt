@@ -55,7 +55,8 @@ class MetadataController {
         val selectedEntity = allEntities().filter { env.entities.any { e -> e.name == it["name"] } }
         println(selectedEntity)
         val selectedTask = allTaskes().filter { env.taskes.any { e -> e.name == it.name } }
-        println(selectedEntity)
+        com.github.leon.generator.generate()
+        println(selectedTask)
         return "entity ${selectedEntity.size} task ${selectedTask.size}".responseEntityOk()
 
     }
