@@ -63,7 +63,12 @@ class MetadataController {
         env.taskes = selectedTask
         println(selectedEntity)
         println(selectedTask)
-       // generate(env)
+        try {
+            generate(env)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         return env.responseEntityOk()
     }
 
