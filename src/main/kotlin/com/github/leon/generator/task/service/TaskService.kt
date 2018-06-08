@@ -14,7 +14,7 @@ import java.io.File
 
 object TaskService {
 
-    fun processTask(codeProject: CodeProject, task: Task): List<String> {
+    fun processTask(codeProject: CodeProject, task: Task): Pair<Task,List<String>> {
         val paths: List<String>
         val scope = Maps.newHashMap<String, Any>()
         val codeProjectMap = PropertyUtils.describe(codeProject)
@@ -33,7 +33,7 @@ object TaskService {
         task.templateHelper = codeProject.templateEngine
         task.templateHelper!!.putAll(scope)
         paths = task.run(codeProject, scope)
-        return paths
+        return Pair(task,paths)
     }
 
     fun processTemplate(codeProject: CodeProject, task: Task, root: Map<String, Any>): String {

@@ -28,7 +28,7 @@ data class CodeEntity(
         var fields: List<CodeField> = listOf(),
         var id: Int? = null,
         var code: Int = 0,
-        var name: String,
+        var name: String = "",
 
         var display: String? = null,
         var security: Boolean = true,

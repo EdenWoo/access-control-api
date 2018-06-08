@@ -4,7 +4,6 @@ package com.github.leon.generator.entity
 import com.github.leon.generator.core.ScriptHelper
 import com.github.leon.generator.core.TemplateHelper
 import com.github.leon.generator.task.processor.ITaskProcessor
-import org.apache.commons.lang3.StringUtils
 import org.joor.Reflect
 
 typealias ProjectExtProcessor = (CodeProject) -> Map<String, Any?>
@@ -14,17 +13,17 @@ typealias EntityExtProcessor = (CodeEntity) -> Map<String, Any?>
 open class Task(
         var id: Int? = null,
 
-        var name: String,
+        var name: String = "",
 
-        var taskType: String,
+        var taskType: String = "",
 
         var taskOfProject: TaskOfProject,
 
-        var folder: String,
+        var folder: String = "",
 
-        var filename: String,
+        var filename: String = "",
 
-        var templatePath: String,
+        var templatePath: String = "",
 
         var replaceFile: Boolean = true,
 
@@ -35,7 +34,7 @@ open class Task(
         var templateHelper: TemplateHelper? = null,
 
         var projectExtProcessor: ProjectExtProcessor? = null,
-        
+
         var entityExtProcessor: EntityExtProcessor? = null
 ) {
 

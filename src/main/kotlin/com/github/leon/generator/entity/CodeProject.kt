@@ -37,15 +37,15 @@ data class CodeProject(
         var testTasks: List<Task> = listOf()
 
 ) {
-    fun generate(env: CodeEnv? = null) {
+    fun generate(env: CodeEnv? = null): List<Pair<Task, List<String>>> {
         var taskes = apiTasks + uiTasks + testTasks + uiTemplateTasks
         if (env != null) {
             taskes = env.taskes
             entities = env.entities
         }
-        taskes.filter { it.active }
+        return taskes.filter { it.active }
                 //   .parallelStream()
-                .forEach {
+                .map {
                     TaskService.processTask(this, it)
                 }
 

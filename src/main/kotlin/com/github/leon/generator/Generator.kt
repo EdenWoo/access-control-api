@@ -1,9 +1,6 @@
 package com.github.leon.generator
 
-import com.github.leon.generator.entity.CodeEnv
-import com.github.leon.generator.entity.CodeProject
-import com.github.leon.generator.entity.scanForCodeEntities
-import com.github.leon.generator.entity.scanForCodeEnum
+import com.github.leon.generator.entity.*
 import com.github.leon.generator.ext.Utils
 import com.github.leon.generator.script.DefaultScriptHelper
 import com.github.leon.generator.template.FreeMarkerHelper
@@ -11,7 +8,7 @@ import com.github.leon.template.apiTasks
 import com.github.leon.template.uiTasks
 import java.util.*
 
-fun generate(codeEnv: CodeEnv? = null) {
+fun generate(codeEnv: CodeEnv? = null): List<Pair<Task, List<String>>> {
     val appProps = Properties()
     appProps.load(Thread.currentThread().contextClassLoader.getResourceAsStream("generator/local.properties"))
     val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
@@ -27,7 +24,7 @@ fun generate(codeEnv: CodeEnv? = null) {
         println(it.fields.map { it.name }.toList())
     }
     val enums = scanForCodeEnum()
-    CodeProject(
+    return CodeProject(
             entities = entities,
             enums = enums,
             utilClasses = listOf(Utils::class.java),

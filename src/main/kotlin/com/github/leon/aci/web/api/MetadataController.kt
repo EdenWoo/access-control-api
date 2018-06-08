@@ -39,11 +39,8 @@ class MetadataController {
     @GetMapping("/entity")
     fun entity(pageable: Pageable): ResponseEntity<Page<MutableMap<String, String>>> {
         val allContent = allEntities().map { mutableMapOf("name" to it.name) }
-
         return allContent.pseudoPagination(pageable).responseEntityOk()
-
     }
-
 
     @GetMapping("/task")
     fun task(pageable: Pageable): ResponseEntity<Page<Task>> {
