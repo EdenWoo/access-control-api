@@ -40,7 +40,7 @@ data class CodeProject(
     fun generate(env: CodeEnv? = null): List<Pair<Task, List<String>>> {
         var taskes = apiTasks + uiTasks + testTasks + uiTemplateTasks
         if (env != null) {
-            taskes = env.taskes
+            taskes = env.tasks
             entities = env.entities
         }
         return taskes.filter { it.active }

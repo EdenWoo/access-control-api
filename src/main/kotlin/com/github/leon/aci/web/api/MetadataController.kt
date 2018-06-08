@@ -55,9 +55,9 @@ class MetadataController {
                 .filter { env.entities.any { e -> e.name == it.name } }
                 .map(entityClass2CodeEntity())
 
-        val selectedTask = allTaskes().filter { env.taskes.any { e -> e.name == it.name } }
+        val selectedTask = allTaskes().filter { env.tasks.any { e -> e.name == it.name } }
         env.entities = selectedEntity
-        env.taskes = selectedTask
+        env.tasks = selectedTask
         println(selectedEntity)
         println(selectedTask)
         try {
