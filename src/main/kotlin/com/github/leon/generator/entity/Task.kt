@@ -17,7 +17,7 @@ open class Task(
 
         var taskType: String = "",
 
-        var taskOfProject: TaskOfProject,
+        var taskOfProject: TaskOfProject = TaskOfProject.API,
 
         var folder: String = "",
 
