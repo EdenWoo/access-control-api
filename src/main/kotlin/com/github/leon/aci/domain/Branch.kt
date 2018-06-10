@@ -3,7 +3,6 @@ package com.github.leon.aci.domain
 
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
-import org.hibernate.validator.constraints.Length
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 

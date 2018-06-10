@@ -43,7 +43,7 @@ class PermissionController(
         return ResponseEntity.ok(permissionService.saveBySecurity(oldPermission, request.method, request.requestURI))
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<*> {
         permissionService.deleteBySecurity(id, request.method, request.requestURI)
         return ResponseEntity.noContent().build<Any>()

@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
+import javax.persistence.*
 
 @Entity
 @Table(name = "aci_permission")
@@ -23,6 +24,10 @@ data class Permission(
         var httpMethod: String = "",
 
         @NotNull
-        var authUris: String = ""
+        var authUris: String = "",
+
+        @OneToMany(cascade = [(CascadeType.REMOVE)], fetch = FetchType.LAZY, mappedBy = "parent")
+        var rolePermission: MutableList<RolePermission> = mutableListOf()
+
 
 ) : BaseEntity()
