@@ -19,7 +19,7 @@ data class Role(
         var users: MutableList<User> = mutableListOf(),
 
 
-        @OneToMany(cascade = [(CascadeType.PERSIST), (CascadeType.REFRESH), (CascadeType.MERGE)], fetch = FetchType.LAZY, orphanRemoval = true)
+        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
         @JoinColumn(name = "role_id")
         val rolePermissions: MutableList<RolePermission> = mutableListOf()
 
