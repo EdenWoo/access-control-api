@@ -26,7 +26,7 @@ data class Permission(
         @NotNull
         var authUris: String = "",
 
-        @OneToMany(cascade = [(CascadeType.REMOVE)], fetch = FetchType.LAZY, mappedBy = "parent")
+        @OneToMany(cascade = [(CascadeType.REMOVE)], mappedBy = "permission")
         var rolePermission: MutableList<RolePermission> = mutableListOf()
 
 

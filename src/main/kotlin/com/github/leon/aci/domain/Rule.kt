@@ -14,13 +14,12 @@ import javax.validation.constraints.NotNull
 @Table(name = "aci_rule")
 data class Rule(
 
-        @NotNull
+        @field:NotNull
         val name: String = "",
 
-        @NotNull
         val params: String? = null,
 
-        @NotNull
+        @field:NotNull
         val type: String? = null,
 
         @Type(type = "yes_no")
