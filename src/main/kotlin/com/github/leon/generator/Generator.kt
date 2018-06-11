@@ -11,13 +11,27 @@ import java.util.*
 fun generate(codeEnv: CodeEnv? = null): List<Pair<Task, List<String>>> {
     val appProps = Properties()
     appProps.load(Thread.currentThread().contextClassLoader.getResourceAsStream("generator/local.properties"))
-    val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
+    //FIXME 弃用，FM 中读取的classpath
+   // val templatePath = System.getProperty("user.dir") + "/task/src/main/resources/templates"
+
     val packageName = appProps.getProperty("packageName")
     val entityPackageName = appProps.getProperty("entityLocationPattern")
     val apiTargetPath = System.getProperty("user.dir")
-    val uiTargetPath = appProps.getProperty("uiTargetPath")
-    val testTargetPath = appProps.getProperty("testTargetPath")
-    val uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
+
+    val uiTargetPath: String
+    val testTargetPath: String
+    val uiTemplateTargetPath: String
+
+    if (codeEnv == null) {
+        uiTargetPath = appProps.getProperty("uiTargetPath")
+        testTargetPath = appProps.getProperty("testTargetPath")
+        uiTemplateTargetPath = appProps.getProperty("uiTemplateTargetPath")
+    } else {
+        uiTargetPath = codeEnv.uiTargetPath
+        testTargetPath = codeEnv.testTargetPath
+        uiTemplateTargetPath = codeEnv.uiTemplateTargetPath
+    }
+
     val entities = scanForCodeEntities(entityPackageName)
     entities.forEach {
         println(it.name)
@@ -29,7 +43,6 @@ fun generate(codeEnv: CodeEnv? = null): List<Pair<Task, List<String>>> {
             enums = enums,
             utilClasses = listOf(Utils::class.java),
             packageName = packageName,
-            templatePath = templatePath,
             uiTemplateTargetPath = uiTemplateTargetPath,
             testTasks = listOf(),
             uiTasks = uiTasks(),
@@ -38,7 +51,7 @@ fun generate(codeEnv: CodeEnv? = null): List<Pair<Task, List<String>>> {
             apiTargetPath = apiTargetPath,
             testTargetPath = testTargetPath,
             scriptHelper = DefaultScriptHelper("groovy"),
-            templateEngine = FreeMarkerHelper(templatePath)
+            templateEngine = FreeMarkerHelper()
     ).generate(codeEnv)
 }
 

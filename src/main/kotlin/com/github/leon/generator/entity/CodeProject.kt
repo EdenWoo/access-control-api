@@ -7,8 +7,6 @@ import com.github.leon.generator.task.service.TaskService
 data class CodeProject(
         var packageName: String,
 
-        var templatePath: String,
-
         var scriptHelper: ScriptHelper,
 
         var templateEngine: TemplateHelper,

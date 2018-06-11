@@ -8,14 +8,17 @@ import freemarker.template.SimpleHash
 import java.io.*
 
 
-class FreeMarkerHelper(templatesBaseDir: String) : TemplateHelper() {
+class FreeMarkerHelper(templatesBaseDir: String? = null) : TemplateHelper() {
     protected var configuration: Configuration = Configuration(Configuration.VERSION_2_3_21)
     protected var context: SimpleHash = SimpleHash()
 
     init {
-        configuration.setClassForTemplateLoading(FreeMarkerHelper::class.java,"/generator")
-      //  val loader  = FileTemplateLoader(File(templatesBaseDir))
-       // configuration.templateLoader = loader
+        if (templatesBaseDir != null) {
+            val loader = FileTemplateLoader(File(templatesBaseDir))
+            configuration.templateLoader = loader
+        } else {
+            configuration.setClassForTemplateLoading(FreeMarkerHelper::class.java, "/generator")
+        }
     }
 
     override fun put(key: String, value: Any?) {
