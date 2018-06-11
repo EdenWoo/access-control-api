@@ -50,7 +50,7 @@ class MetadataController {
     }
 
     @PostMapping("/generate")
-    fun codeGenerate(@RequestBody env: CodeEnv): ResponseEntity<CodeEnv> {
+    fun codeGenerate(@RequestBody env: CodeEnv): ResponseEntity<*> {
         val selectedEntity = allEntities()
                 .filter { env.entities.any { e -> e.name == it.name } }
                 .map(entityClass2CodeEntity())
@@ -58,15 +58,10 @@ class MetadataController {
         val selectedTask = allTaskes().filter { env.tasks.any { e -> e.name == it.name } }
         env.entities = selectedEntity
         env.tasks = selectedTask
-        println(selectedEntity)
-        println(selectedTask)
-        try {
-           generate(env)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        val result = generate(env).map {
+            mapOf("task" to it.first.name, "files" to it.second)
         }
-
-        return env.responseEntityOk()
+        return result.responseEntityOk()
     }
 
     private fun allTaskes(): List<Task> {
