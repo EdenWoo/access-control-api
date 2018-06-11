@@ -6,7 +6,7 @@ import com.github.leon.generator.entity.TaskOfProject
 class PermissionConstantModel : Task(
         taskOfProject = TaskOfProject.UI,
         name = "permission-constant-model",
-        folder = """"models/bases""",
+        folder = """"models/bases"""",
         taskType = "single",
         filename = """"permission-constant.model.ts"""",
         templatePath = """"angular/permission/permission-constant_model_ts.ftl""""
