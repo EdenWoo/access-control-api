@@ -2,7 +2,7 @@ buildscript {
     ext {
         kotlinVersion = '1.2.41'
         springBootVersion = '1.5.8.RELEASE'
-        arrowVersion = '0.7.1'
+        arrowVersion = '0.7.2'
 	}
 	repositories {
         jcenter()
