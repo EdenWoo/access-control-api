@@ -16,7 +16,7 @@ data class DbSnapshort(
         @FieldFeature(textarea = true)
         var notes: String = "",
         @OneToOne
-        @FieldFeature(hiddenInList = true,hiddenInForm = true)
+        @FieldFeature(hiddenInList = true, hiddenInForm = true)
         var attachment: Attachment
 
 
