@@ -49,6 +49,7 @@ class ApplicationProperties {
                 "com.github.leon.email.domain",
                 "com.github.leon.setting.domain",
                 "com.github.leon.sms.domain",
+                "com.github.leon.backup.domain",
                 "com.github.leon.sysconfig.domain"
         )
 

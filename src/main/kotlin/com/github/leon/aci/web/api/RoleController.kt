@@ -3,10 +3,7 @@ package com.github.leon.aci.web.api
 import arrow.core.getOrElse
 import arrow.syntax.collections.firstOption
 import com.github.leon.aci.config.json.JsonConfig
-import com.github.leon.aci.domain.Permission
-import com.github.leon.aci.domain.Role
-import com.github.leon.aci.domain.RolePermission
-import com.github.leon.aci.domain.Rule
+import com.github.leon.aci.domain.*
 import com.github.leon.aci.service.PermissionService
 import com.github.leon.aci.service.RoleService
 import com.github.leon.aci.util.Q
@@ -43,7 +40,7 @@ class RoleController : BaseController<Role, Long>() {
 
     private val CLEAN_ROLE = JsonConfig.start().exclude(Role::class.java, *IGNORE_AUDITOR.toTypedArray(), Q.role.users)
             .exclude(RolePermission::class.java, *IGNORE_AUDITOR.toTypedArray())
-            .exclude(Permission::class.java, *IGNORE_AUDITOR.toTypedArray())
+            .exclude(Permission::class.java, *IGNORE_AUDITOR.toTypedArray(),QRolePermission.rolePermission)
             .exclude(Rule::class.java, *IGNORE_AUDITOR.toTypedArray())
 
     @GetMapping
