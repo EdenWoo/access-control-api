@@ -9,7 +9,5 @@ class PermissionConstants : Task(
         folder = """"constants"""",
         taskType = "single",
         filename = """"permission.constant.ts"""",
-        templatePath = """"angular/permission/permission-constant_model_ts.ftl""""
+        templatePath = """"angular/permission/permission.ftl""""
 )
-
-//src/app/constants/permission.constant.ts
