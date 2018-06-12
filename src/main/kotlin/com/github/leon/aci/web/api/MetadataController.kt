@@ -76,9 +76,9 @@ class MetadataController {
 
     private fun allEntities(): List<Class<*>> {
         return ApplicationProperties.entityScanPackages.map { it.replace(".", "/") + "/*.class" }
-                .flatMap {
+                .map {
                     findClasses(BaseEntity::class.java, it)
-                }
+                }.last()
     }
 
 }
