@@ -5,7 +5,7 @@ import com.github.leon.aci.service.AttachmentService
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.aws.s3.AmazonService
 import com.github.leon.aws.s3.UploadUtil
-import com.github.leon.backup.domain.DbSnapshort
+import com.github.leon.backup.domain.DbSnapshot
 import com.github.leon.extentions.execCmd
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/v1/db-snapshot")
-class DbSnapshortController(
+class DbSnapshotController(
 
         @Value("\${spring.datasource.url}")
         val jdbcUrl: String,
@@ -40,21 +40,21 @@ class DbSnapshortController(
         @Autowired
         val attachmentService: AttachmentService
 
-) : BaseController<DbSnapshort, Long>() {
-    val log = LoggerFactory.getLogger(DbSnapshortController::class.java)!!
+) : BaseController<DbSnapshot, Long>() {
+    val log = LoggerFactory.getLogger(DbSnapshotController::class.java)!!
 
     @GetMapping
-    override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<DbSnapshort>> {
+    override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<DbSnapshot>> {
         return baseService.findByRequestParameters(request.parameterMap,pageable).responseEntityOk()
     }
 
     @GetMapping("{id}")
-    override fun findOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<DbSnapshort> {
+    override fun findOne(@PathVariable id: Long, request: HttpServletRequest): ResponseEntity<DbSnapshot> {
         return super.findOne(id, request)
     }
 
     @PostMapping
-    override fun saveOne(@RequestBody input: DbSnapshort, request: HttpServletRequest): ResponseEntity<*> {
+    override fun saveOne(@RequestBody input: DbSnapshot, request: HttpServletRequest): ResponseEntity<*> {
         val (host, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
         val name = "/tmp/${Instant.now().epochSecond}.sql"
         val command = "mysqldump -h$host -u$username -p$password $db  "
@@ -74,7 +74,7 @@ class DbSnapshortController(
     }
 
     @PutMapping("{id}")
-    override fun updateOne(@PathVariable id: Long, @RequestBody input: DbSnapshort, request: HttpServletRequest): ResponseEntity<*> {
+    override fun updateOne(@PathVariable id: Long, @RequestBody input: DbSnapshot, request: HttpServletRequest): ResponseEntity<*> {
         return super.updateOne(id, input, request)
     }
 

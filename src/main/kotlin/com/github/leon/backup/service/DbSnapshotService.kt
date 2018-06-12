@@ -1,9 +1,9 @@
 package com.github.leon.backup.service
 
 import com.github.leon.aci.service.base.BaseService
-import com.github.leon.backup.domain.DbSnapshort
+import com.github.leon.backup.domain.DbSnapshot
 import org.springframework.stereotype.Service
 
 
 @Service
-class DbSnapshortService : BaseService<DbSnapshort, Long>()
+class DbSnapshotService : BaseService<DbSnapshot, Long>()

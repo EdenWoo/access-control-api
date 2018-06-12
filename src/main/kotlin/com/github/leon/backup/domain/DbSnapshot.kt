@@ -11,7 +11,7 @@ import javax.persistence.OneToOne
 @Entity
 @DynamicUpdate
 @DynamicInsert
-data class DbSnapshort(
+data class DbSnapshot(
         var name: String = "",
         @FieldFeature(textarea = true)
         var notes: String = "",
