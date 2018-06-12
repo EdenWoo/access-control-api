@@ -46,7 +46,7 @@
                                 <#include "/angular/layout/form-template.ftl">
 
                                 <footer>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button [permission]="permission.UPDATE_${Utils.upperUderscore(entity.name)}" type="submit" class="btn btn-primary">
                                         Submit
                                     </button>
                                 </footer>

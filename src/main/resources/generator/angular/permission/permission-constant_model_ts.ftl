@@ -5,6 +5,8 @@ export class PermissionConstant {
     CREATE_${Utils.upperUderscore(e.name)}: string;
     DELETE_${Utils.upperUderscore(e.name)}: string;
     UPDATE_${Utils.upperUderscore(e.name)}: string;
+    EXPORT_${Utils.upperUderscore(e.name)}: string;
+    IMPORT_${Utils.upperUderscore(e.name)}: string;
 </#list>
 
 }
