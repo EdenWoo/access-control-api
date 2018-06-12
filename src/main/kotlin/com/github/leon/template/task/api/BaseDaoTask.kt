@@ -6,7 +6,7 @@ import com.github.leon.template.TaskConstants
 
 class BaseDaoTask : Task(
         taskOfProject = TaskOfProject.API,
-        name = "DAO",
+        name = "BaseDao",
         folder = """ "${TaskConstants.generatedPath}"+"${TaskConstants.srcPath}"+project.packageName.replaceAll("\\.","/")+"/"+"dao/base" """,
         taskType = "multiple",
         filename = """ "Base"+entity.name+"Dao.kt" """,

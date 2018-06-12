@@ -7,7 +7,7 @@ import com.github.leon.template.TaskConstants
 class ControllerTask : Task(
         replaceFile = false,
         taskOfProject = TaskOfProject.API,
-        name = "BaseController",
+        name = "Controller",
         folder = """ "${TaskConstants.apiPath}"+"${TaskConstants.srcPath}"+project.packageName.replaceAll("\\.","/")+"/"+"controller" """,
         taskType = "multiple",
         filename = """entity.name+"Controller.kt" """,

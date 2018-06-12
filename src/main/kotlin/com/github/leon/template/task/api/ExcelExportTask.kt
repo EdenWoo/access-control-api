@@ -7,7 +7,7 @@ import com.github.leon.template.TaskConstants
 class ExcelExportTask : Task(
         active = true,
         taskOfProject = TaskOfProject.API,
-        name = "SERVICE",
+        name = "ExcelExport",
         folder = """ "${TaskConstants.generatedPath}"+"${TaskConstants.srcPath}"+project.packageName.replaceAll("\\.","/")+"/"+"excel" """,
         taskType = "multiple",
         filename = """ entity.name+"ExcelParsingRule.kt" """,

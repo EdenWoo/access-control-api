@@ -7,7 +7,7 @@ import com.github.leon.template.TaskConstants
 class ServiceTask : Task(
         replaceFile = false,
         taskOfProject = TaskOfProject.API,
-        name = "baseService",
+        name = "Service",
         folder = """ "${TaskConstants.apiPath}"+"${TaskConstants.srcPath}"+project.packageName.replaceAll("\\.","/")+"/"+"service" """,
         taskType = "multiple",
         filename = """ entity.name+"Service.kt" """,

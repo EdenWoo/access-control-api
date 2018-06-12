@@ -10,7 +10,7 @@ class AllPermissionTask : Task(
         replaceFile = true,
         active = false,
         taskOfProject = TaskOfProject.API,
-        name = "ROLE_PERMISSION_RULE",
+        name = "AllPermission",
         folder = """ "${TaskConstants.generatedPath}"+"/"+"db/" """,
         taskType = "single",
         filename = """ "permission-all.sql" """,
