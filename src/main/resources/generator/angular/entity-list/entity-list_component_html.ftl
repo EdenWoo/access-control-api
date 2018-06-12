@@ -155,7 +155,22 @@
                                             </#if>
                                         </#list>
                                         <td><a [permission]="permission.READ_${Utils.upperUderscore(entity.name)}" routerLink="/pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}-edit/{{item.id}}"><i
-                                                class="fa fa-edit"></i></a></td>
+                                                class="fa fa-edit"></i></a>
+                                        &nbsp;
+                                            <a [permission]="permission.DELETE_${Utils.upperUderscore(entity.name)}"
+                                               mwlConfirmationPopover
+                                               [title]="'Attention'"
+                                               [message]="'Are you sure to delete?'"
+                                               [confirmText]="'OK'"
+                                               [cancelText]="'Cancel'"
+                                               [placement]="'left'"
+                                               (confirm)="delete(item)"
+                                               confirmButtonType="danger"
+                                               cancelButtonType="default"
+                                               [appendToBody]="true">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
