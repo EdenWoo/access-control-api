@@ -9,6 +9,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {environment} from '../environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {ToastContainerModule, ToastNoAnimationModule, ToastrModule, ToastrService} from 'ngx-toastr';
+import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -86,7 +87,9 @@ const DROPZONE_CONFIG: DropzoneConfigInterface = {
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
-
+        ConfirmationPopoverModule.forRoot({
+            confirmButtonType: 'danger' // set defaults here
+        }),
         ModalModule.forRoot(),
         DropzoneModule.forRoot(DROPZONE_CONFIG),
 
