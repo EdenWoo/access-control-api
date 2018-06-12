@@ -1,5 +1,6 @@
 package com.github.leon.backup.controller
 
+import com.github.leon.aci.extenstions.responseEntityOk
 import com.github.leon.aci.service.AttachmentService
 import com.github.leon.aci.web.base.BaseController
 import com.github.leon.aws.s3.AmazonService
@@ -84,7 +85,7 @@ class DbSnapshortController(
 
 
     @PostMapping("rollback/{id}")
-    fun importSql(@PathVariable id: Long) {
+    fun importSql(@PathVariable id: Long):ResponseEntity<String> {
         val dbSnapshort = baseService.findOne(id)
         val filename = dbSnapshort.attachment.name
         val (_, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
@@ -105,5 +106,6 @@ class DbSnapshortController(
         writer.flush()
         writer.close()
         os.close()
+        return "success".responseEntityOk()
     }
 }
