@@ -7,6 +7,7 @@ import com.github.leon.aws.s3.UploadUtil
 import com.github.leon.backup.domain.DbSnapshort
 import com.github.leon.extentions.execCmd
 import org.apache.commons.lang3.StringUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
@@ -39,7 +40,7 @@ class DbSnapshortController(
         val attachmentService: AttachmentService
 
 ) : BaseController<DbSnapshort, Long>() {
-
+    val log = LoggerFactory.getLogger(DbSnapshortController::class.java)!!
 
     @GetMapping
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<DbSnapshort>> {
@@ -73,7 +74,6 @@ class DbSnapshortController(
 
     @PutMapping("{id}")
     override fun updateOne(@PathVariable id: Long, @RequestBody input: DbSnapshort, request: HttpServletRequest): ResponseEntity<*> {
-
         return super.updateOne(id, input, request)
     }
 
@@ -83,16 +83,21 @@ class DbSnapshortController(
     }
 
 
-    @GetMapping("/import")
-    fun importSql(filename: String) {
+    @GetMapping("/import/{id}")
+    fun importSql(@PathVariable id: Long) {
+        val dbSnapshort = baseService.findOne(id)
+        val filename = dbSnapshort.attachment.name
         val (_, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
 
         val file = amazonService.getFile(filename)
         val command = "mysql -u$username -p$password"
         val command2 = "use $db"
         val command3 = "source ${file.name}"
-        val runtime = Runtime.getRuntime()
+        log.debug("command {}", command)
+        log.debug("command2 {}", command2)
+        log.debug("command3 {}", command3)
 
+        val runtime = Runtime.getRuntime()
         val process = runtime.exec(command)
         val os = process.outputStream
         val writer = OutputStreamWriter(os)
