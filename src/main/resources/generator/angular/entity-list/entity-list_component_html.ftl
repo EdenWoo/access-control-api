@@ -21,14 +21,14 @@
                                  style="padding: 6px 7px 6px !important; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 0px;">
                                 <a class="btn btn-default" (click)="reset()"><i class="fa fa-filter"></i>Reset
                                     Filter</a>
-                                <a class="btn btn-default" routerLink="/pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}-add">
+                                <a [permission]="permission.CREATE_${Utils.upperUderscore(entity.name)}" class="btn btn-default" routerLink="/pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}-add">
                                     <i class="fa fa-plus"></i>Add
                                 </a>
-                                <a (click)="importByExcel()" class="btn btn-default">
+                                <a [permission]="permission.IMPORT_${Utils.upperUderscore(entity.name)}" (click)="importByExcel()" class="btn btn-default">
                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                     Import By Excel
                                 </a>
-                                <a (click)="download()" class="btn btn-default">
+                                <a [permission]="permission.EXPORT_${Utils.upperUderscore(entity.name)}" (click)="download()" class="btn btn-default">
                                     <i class="fa fa-cloud-download" aria-hidden="true"></i>
                                     Export
                                 </a>
@@ -80,7 +80,7 @@
                                             <#elseif false>
 
                                             <#else>
-                                            <th>${Utils.lowerCamel(f.name)}</th>
+                                            <th>${Utils.spacedCapital(f.name)}</th>
                                             </#if>
                                         </#list>
                                         <th>Action</th>
@@ -110,6 +110,7 @@
 
                                     <tr *ngFor="let item of listElements | paginate: { itemsPerPage: paging.pageSize,
                                                       currentPage: paging.pageNumber,
+                                                      id:'${Utils.lowerHyphen(entity.name)}',
                                                       totalItems: paging.totalSize }">
                                         <td>
                                             <label class="checkbox">
@@ -153,7 +154,7 @@
                                             </limit-length-td-component></td>
                                             </#if>
                                         </#list>
-                                        <td><a routerLink="/pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}-edit/{{item.id}}"><i
+                                        <td><a [permission]="permission.READ_${Utils.upperUderscore(entity.name)}" routerLink="/pages/${Utils.lowerHyphen(entity.name)}/${Utils.lowerHyphen(entity.name)}-edit/{{item.id}}"><i
                                                 class="fa fa-edit"></i></a></td>
                                     </tr>
                                     </tbody>
@@ -179,6 +180,7 @@
                                         <div class="dataTables_paginate paging_simple_numbers pagination pagination-sm"
                                              id="datatable_fixed_column_paginate">
                                             <pagination-controls
+                                                    [id]="'${Utils.lowerHyphen(entity.name)}'"
                                                     (pageChange)="pageChanged($event)"
                                                     maxSize="9"
                                                     directionLinks="true"

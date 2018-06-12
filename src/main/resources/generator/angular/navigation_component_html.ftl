@@ -11,7 +11,7 @@
                         class="menu-item-parent">{{nav.display | translate}}</span></a>
             </li>
            <#list project.entities as e>
-                <li>
+                <li [permission]="permission.INDEX_${Utils.upperUderscore(e.name)}">
                     <a routerLink="/pages/${Utils.lowerHyphen(e.name)}/${Utils.lowerHyphen(e.name)}-list" title="${Utils.upperCamel(e.name)}"><i class="fa fa-lg fa-fw fa-chevron-right"></i> <span
                             class="menu-item-parent">{{'${Utils.spacedCapital(e.name)}' | translate}}</span></a>
                 </li>
