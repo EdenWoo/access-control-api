@@ -83,7 +83,7 @@ class DbSnapshortController(
     }
 
 
-    @GetMapping("/import/{id}")
+    @PostMapping("rollback/{id}")
     fun importSql(@PathVariable id: Long) {
         val dbSnapshort = baseService.findOne(id)
         val filename = dbSnapshort.attachment.name
