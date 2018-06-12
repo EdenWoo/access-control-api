@@ -6,6 +6,7 @@ import com.github.leon.aci.web.base.BaseController
 import com.github.leon.aws.s3.AmazonService
 import com.github.leon.aws.s3.UploadUtil
 import com.github.leon.backup.domain.DbSnapshot
+import com.github.leon.backup.service.DbSnapshotService
 import com.github.leon.extentions.execCmd
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
@@ -38,14 +39,16 @@ class DbSnapshotController(
         @Autowired
         val amazonService: AmazonService,
         @Autowired
-        val attachmentService: AttachmentService
+        val attachmentService: AttachmentService,
+        @Autowired
+        val snapshotService: DbSnapshotService
 
 ) : BaseController<DbSnapshot, Long>() {
     val log = LoggerFactory.getLogger(DbSnapshotController::class.java)!!
 
     @GetMapping
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<DbSnapshot>> {
-        return baseService.findByRequestParameters(request.parameterMap,pageable).responseEntityOk()
+        return snapshotService.findByRequestParameters(request.parameterMap,pageable).responseEntityOk()
     }
 
     @GetMapping("{id}")
@@ -55,9 +58,10 @@ class DbSnapshotController(
 
     @PostMapping
     override fun saveOne(@RequestBody input: DbSnapshot, request: HttpServletRequest): ResponseEntity<*> {
-        val (host, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
+        val (hostAndPort, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
+        val (host, port) = hostAndPort.split(":")
         val name = "/tmp/${Instant.now().epochSecond}.sql"
-        val command = "mysqldump -h$host -u$username -p$password $db  "
+        val command = "mysqldump -h$host -P$port -u$username -p$password $db  "
         val result = command.execCmd()
         Files.write(Paths.get(name), result)
         return attachmentService
@@ -93,7 +97,7 @@ class DbSnapshotController(
         val file = amazonService.getFile(filename)
         val command = "mysql -u$username -p$password"
         val command2 = "use $db"
-        val command3 = "source ${file.name}"
+        val command3 = "source /tmp/${file.name}"
         log.debug("command {}", command)
         log.debug("command2 {}", command2)
         log.debug("command3 {}", command3)
