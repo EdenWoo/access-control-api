@@ -45,7 +45,7 @@ class DbSnapshortController(
 
     @GetMapping
     override fun page(pageable: Pageable, request: HttpServletRequest): ResponseEntity<Page<DbSnapshort>> {
-        return super.page(pageable, request)
+        return baseService.findByRequestParameters(request.parameterMap,pageable).responseEntityOk()
     }
 
     @GetMapping("{id}")
@@ -87,7 +87,7 @@ class DbSnapshortController(
     @PostMapping("rollback/{id}")
     fun importSql(@PathVariable id: Long):ResponseEntity<String> {
         val dbSnapshort = baseService.findOne(id)
-        val filename = dbSnapshort.attachment.name
+        val filename = dbSnapshort.attachment!!.name
         val (_, db) = StringUtils.substringBetween(jdbcUrl, "jdbc:mysql://", "?").split("/")
 
         val file = amazonService.getFile(filename)

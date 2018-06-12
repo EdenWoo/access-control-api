@@ -17,7 +17,6 @@ data class DbSnapshort(
         var notes: String = "",
         @OneToOne
         @FieldFeature(hiddenInList = true, hiddenInForm = true)
-        var attachment: Attachment
-
+        var attachment: Attachment? = null
 
 ) : BaseEntity()
