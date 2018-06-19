@@ -103,7 +103,7 @@ class DbSnapshotController(
         log.debug("command3 {}", command3)
 
         val runtime = Runtime.getRuntime()
-        val process = runtime.exec(command)q
+        val process = runtime.exec(command)
         val os = process.outputStream
         val writer = OutputStreamWriter(os)
         writer.write(command2 + "\r\n" + command3)
