@@ -11,6 +11,7 @@ import {${Utils.upperCamel(entity.name)}Service} from '../${Utils.lowerHyphen(en
 import {SortColumns} from './sort.columns';
 import {Sorts} from '../../../models/bases/sorts.model';
 import {DownloadService} from '../../../services/download.service';
+import {MyNotifyService} from '../../../services/my-notify.service';
 
 @Component({
     selector: 'sa-${Utils.lowerHyphen(entity.name)}-list',
@@ -31,6 +32,7 @@ constructor(private formBuilder: FormBuilder,
 public ${Utils.lowerCamel(entity.name)}Service: ${Utils.upperCamel(entity.name)}Service,
 public router: Router,
 public downloadService: DownloadService,
+public myNotifyService: MyNotifyService,
 public helperService: HelperService) {
 super(router, helperService);
 this.sortOprions.sortColumns = SortColumns.Columns;
@@ -85,6 +87,18 @@ this.listElements = resp.content;
 this.paging.totalSize = resp.totalElements;
 this.loading = false;
 }, err => {
+this.loading = false;
+});
+}
+
+delete(item: any) {
+this.loading = true;
+this.${Utils.lowerCamel(entity.name)}Service.delete(item.id).subscribe(resp => {
+console.log(resp);
+this.myNotifyService.notifySuccess('Delete Successfully.');
+this.refresh();
+}, err => {
+this.myNotifyService.notifyFail('Error happens, please try again.');
 this.loading = false;
 });
 }
