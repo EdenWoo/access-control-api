@@ -6,10 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties("app")
 class ApplicationProperties {
 
-
-    //@NotEmpty
-    var rateDataPath: String? = null
-
     var userClass: String? = null
 
     @NotEmpty
@@ -46,6 +42,7 @@ class ApplicationProperties {
 
         var entityScanPackages: List<String> = listOf(
                 "com.github.leon.aci.domain",
+                "com.github.leon.backup.domain",
                 "com.github.leon.email.domain",
                 "com.github.leon.setting.domain",
                 "com.github.leon.sms.domain",
