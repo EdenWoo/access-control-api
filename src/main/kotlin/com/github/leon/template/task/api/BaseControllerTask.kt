@@ -12,6 +12,6 @@ class BaseControllerTask : Task(
         folder = """ "${TaskConstants.generatedPath}"+"${TaskConstants.srcPath}"+project.packageName.replaceAll("\\.","/")+"/"+"controller/base" """,
         taskType = "multiple",
         filename = """ "Base"+entity.name+"Controller.kt" """,
-        templatePath = """ "kotlin/baseController.ftl" """,
-        entityExtProcessor = excelProcessor
+        templatePath = """ "kotlin/baseController.ftl" """
+      //  entityExtProcessor = excelProcessor
 )
