@@ -26,9 +26,9 @@ import javax.servlet.http.HttpServletRequest
 abstract class BaseController<T, ID : Serializable> {
 
     @Autowired
-    private val entityManager: EntityManager? = null
+    lateinit var entityManager: EntityManager
     @Autowired
-    private val userService: UserService? = null
+    val userService: UserService? = null
 
     @Autowired
     lateinit var baseService: BaseService<T, ID>
@@ -73,6 +73,7 @@ abstract class BaseController<T, ID : Serializable> {
         }
         fields.forEach { field ->
             val type = field.type
+            println(type)
             if (BaseEntity::class.java.isAssignableFrom(field.type)) {
                 val option = getObject(baseEntity, field, type)
                 if (option.isDefined()) {
