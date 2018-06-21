@@ -28,10 +28,9 @@ abstract class BaseController<T, ID : Serializable> {
     @Autowired
     lateinit var entityManager: EntityManager
     @Autowired
-    val userService: UserService? = null
-
-    @Autowired
     lateinit var baseService: BaseService<T, ID>
+    @Autowired
+    private val userService: UserService? = null
 
     protected val loginUser: User
         get() = SecurityContextHolder.getContext().authentication.principal as User
