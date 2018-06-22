@@ -87,7 +87,7 @@ abstract class BaseController<T, ID : Serializable> {
                             val id = Reflect.on(obj).get<Any>("id")
                             when (id) {
                                 null -> obj
-                                else -> entityManager!!.find(obj::class.java, id)
+                                else -> entityManager.find(obj::class.java, id)
                             }
                         }
                 if (!list.isEmpty()) {

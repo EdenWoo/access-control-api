@@ -21,6 +21,9 @@ fun <T> Any.copyFrom(newObj: T): T {
     if (newObj == null) {
         throw  IllegalArgumentException("from object is null")
     }
+    if (newObj !is BaseEntity){
+        throw  IllegalArgumentException("from Class is not  extended from BaseEntity")
+    }
     val method = this::class.memberFunctions.first { it.name == "copy" }
 
     val parameterNames = method
@@ -45,6 +48,8 @@ fun <T> Any.copyFrom(newObj: T): T {
             }
     return payerNew as T
 }
+
+
 
 
 
