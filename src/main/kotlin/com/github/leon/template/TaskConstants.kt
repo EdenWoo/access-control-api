@@ -10,15 +10,11 @@ object TaskConstants {
     fun init() {
         val classLoader = javaClass.classLoader
         val inputStream = classLoader.getResourceAsStream("generator/local.properties")
-
-        val rootPath = Thread.currentThread().contextClassLoader.getResource("")!!.path
-        val appConfigPath = "${File(rootPath).parent}/resources/generator/local.properties"
         val appProps = Properties()
         appProps.load(inputStream)
-        //appProps.load(FileInputStream(appConfigPath))
-        val projectName = appProps.getProperty("projectName")
-        generatedPath = "/$projectName-generated"
-        apiPath = "/$projectName-api"
+        //val projectName = appProps.getProperty("projectName")
+        generatedPath = "/code-generated"
+        apiPath = "/api"
         srcPath = "/src/main/kotlin/"
     }
 }
