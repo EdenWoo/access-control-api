@@ -8,7 +8,6 @@ class ApplicationProperties {
 
     var userClass: String? = null
 
-    @NotEmpty
     var userCookie: String? = null
 
 
