@@ -259,7 +259,7 @@ fun getRolePermissions(taskRoleList: List<TaskRole>, permissionList: List<TaskPe
 fun getRolePermissionRule(taskRolePermissionList: List<TaskRolePermission>, taskRuleList: List<TaskRule>): List<TaskRolePermissionRule> {
     val rolePermissionRuleList = mutableListOf<TaskRolePermissionRule>()
     taskRolePermissionList.map { rolePermission ->
-        taskRuleList.map { rule ->
+        listOf(taskRuleList.first()).map { rule ->
             val rolePermissionRule = TaskRolePermissionRule()
             rolePermissionRule.rolePermissionId = rolePermission.id
             rolePermissionRule.ruleId = rule.id
