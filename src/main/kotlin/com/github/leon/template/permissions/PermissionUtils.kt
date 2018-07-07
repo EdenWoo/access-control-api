@@ -274,7 +274,7 @@ fun getPermissionSql(permissionList: List<TaskPermission>): List<String> {
     val sqlList = mutableListOf<String>()
     permissionList.map { permission ->
         val sql = """
-                INSERT INTO permission (id, version, auth_key, auth_uris, display, entity, http_method, creator_id, modifier_id)
+                INSERT INTO aci_permission (id, version, auth_key, auth_uris, display, entity, http_method, creator_id, modifier_id)
                 VALUES (${permission.id},${permission.version},'${permission.authKey}','${permission.authUris}','${permission.display}','${permission.entity}','${permission.httpMethod}',${permission.creatorId}, ${permission.modifierId});
                 """.trimIndent()
 
@@ -287,7 +287,7 @@ fun getRolePermissionSql(taskRolePermissionList: List<TaskRolePermission>): List
     val sqlList = mutableListOf<String>()
     taskRolePermissionList.map { rolePermission ->
         val sql = """
-                INSERT INTO role_permission (id, version, creator_id, modifier_id, permission_id, role_id)
+                INSERT INTO aci_role_permission (id, version, creator_id, modifier_id, permission_id, role_id)
                 VALUES (${rolePermission.id}, ${rolePermission.version}, ${rolePermission.creatorId}, ${rolePermission.modifierId}, ${rolePermission.permissionId}, ${rolePermission.roleId});
                 """.trimIndent()
 
@@ -300,7 +300,7 @@ fun getRolePermissionRuleSql(rolePermissionRuleList: List<TaskRolePermissionRule
     val sqlList = mutableListOf<String>()
     rolePermissionRuleList.map { rolePermissionRule ->
         val sql = """
-                INSERT INTO role_permission_rule (role_permission_id, rule_id)
+                INSERT INTO aci_role_permission_rule (role_permission_id, rule_id)
                 VALUES (${rolePermissionRule.rolePermissionId}, ${rolePermissionRule.ruleId});
                 """.trimIndent()
 
