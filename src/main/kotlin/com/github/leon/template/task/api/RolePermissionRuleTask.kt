@@ -8,7 +8,7 @@ import com.github.leon.template.projectPermissionProcessor
 
 class RolePermissionRuleTask : Task(
         replaceFile = true,
-        active = false,
+        active = true,
         taskOfProject = TaskOfProject.API,
         name = "ROLE_PERMISSION_RULE",
         folder = """ "${TaskConstants.generatedPath}"+"/"+"db/" + com.github.leon.generator.ext.Utils.lowerHyphen(entity.name) + "/" """,

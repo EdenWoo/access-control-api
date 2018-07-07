@@ -8,7 +8,7 @@ import com.github.leon.template.projectPermissionProcessor
 
 class AllPermissionTask : Task(
         replaceFile = true,
-        active = false,
+        active = true,
         taskOfProject = TaskOfProject.API,
         name = "AllPermission",
         folder = """ "${TaskConstants.generatedPath}"+"/"+"db/" """,

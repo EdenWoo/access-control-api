@@ -8,7 +8,7 @@ import com.github.leon.template.projectPermissionProcessor
 
 class PermissionTask : Task(
         replaceFile = true,
-        active = false,
+        active = true,
         taskOfProject = TaskOfProject.API,
         name = "PERMISSION",
         folder = """ "${TaskConstants.generatedPath}"+"/"+"db/" + com.github.leon.generator.ext.Utils.lowerHyphen(entity.name) + "/" """,
