@@ -155,7 +155,6 @@ fun getRules(resultset: ResultSet): List<TaskRule> {
 fun getPermissions(entityName: String, baseId: Long): List<TaskPermission> {
 
     val permissionList = mutableListOf<TaskPermission>()
-
     permissionList.add(indexPermission(entityName))
     permissionList.add(createPermission(entityName))
     permissionList.add(readPermission(entityName))
@@ -172,9 +171,10 @@ fun getPermissions(entityName: String, baseId: Long): List<TaskPermission> {
 
 fun indexPermission(entityName: String): TaskPermission {
     val permission = TaskPermission()
+    val endPoint = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(entityName)
     permission.version = 0
     permission.authKey = "Index $entityName"
-    permission.authUris = "/v[\\d]+/$entityName"
+    permission.authUris = "/v[\\d]+/$endPoint"
     permission.display = "Index $entityName"
     permission.entity = entityName
     permission.httpMethod = "GET"
@@ -184,10 +184,11 @@ fun indexPermission(entityName: String): TaskPermission {
 }
 
 fun createPermission(entityName: String): TaskPermission {
+    val endPoint = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(entityName)
     val permission = TaskPermission()
     permission.version = 0
     permission.authKey = "Create $entityName"
-    permission.authUris = "/v[\\d]+/$entityName"
+    permission.authUris = "/v[\\d]+/$endPoint"
     permission.display = "Create $entityName"
     permission.entity = entityName
     permission.httpMethod = "POST"
@@ -197,10 +198,11 @@ fun createPermission(entityName: String): TaskPermission {
 }
 
 fun readPermission(entityName: String): TaskPermission {
+    val endPoint = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(entityName)
     val permission = TaskPermission()
     permission.version = 0
     permission.authKey = "Read $entityName"
-    permission.authUris = "/v[\\d]+/$entityName/[\\d]+"
+    permission.authUris = "/v[\\d]+/$endPoint/[\\d]+"
     permission.display = "Read $entityName"
     permission.entity = entityName
     permission.httpMethod = "GET"
@@ -210,10 +212,11 @@ fun readPermission(entityName: String): TaskPermission {
 }
 
 fun updatePermission(entityName: String): TaskPermission {
+    val endPoint = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(entityName)
     val permission = TaskPermission()
     permission.version = 0
     permission.authKey = "Update $entityName"
-    permission.authUris = "/v[\\d]+/$entityName/[\\d]+"
+    permission.authUris = "/v[\\d]+/$endPoint/[\\d]+"
     permission.display = "Update $entityName"
     permission.entity = entityName
     permission.httpMethod = "PUT"
@@ -223,10 +226,11 @@ fun updatePermission(entityName: String): TaskPermission {
 }
 
 fun deletePermission(entityName: String): TaskPermission {
+    val endPoint = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_HYPHEN).convert(entityName)
     val permission = TaskPermission()
     permission.version = 0
     permission.authKey = "Delete $entityName"
-    permission.authUris = "/v[\\d]+/$entityName/[\\d]+"
+    permission.authUris = "/v[\\d]+/$endPoint/[\\d]+"
     permission.display = "Delete $entityName"
     permission.entity = entityName
     permission.httpMethod = "DELETE"
