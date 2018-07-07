@@ -16,8 +16,8 @@ val projectPermissionProcessor: (CodeProject) -> Map<String, Any?> = {
         getConnection()
         val stmt: Statement? = null
         val resultSet: ResultSet? = null
-        val roleList = getRoles(getResultSet("role", stmt, resultSet))
-        val ruleList = getRules(getResultSet("rule", stmt, resultSet))
+        val roleList = getRoles(getResultSet("aci_role", stmt, resultSet))
+        val ruleList = getRules(getResultSet("aci_rule", stmt, resultSet))
         val permissionList = getPermissions(it.name, it.code.toLong())
         val rolePermissionList = getRolePermissions(roleList, permissionList)
         val rolePermissionRuleList = getRolePermissionRule(rolePermissionList, ruleList)

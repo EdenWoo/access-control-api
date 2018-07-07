@@ -96,7 +96,7 @@ fun getResultSet(beanName: String, statement: Statement?, resultset: ResultSet?)
     var stmt = statement
     var res = resultset
     stmt = conn!!.createStatement()
-    val sql = "SELECT * FROM collinson.$beanName;"
+    val sql = "SELECT * FROM $beanName;"
     res = stmt!!.executeQuery(sql)
 
     if (stmt.execute(sql)) {
