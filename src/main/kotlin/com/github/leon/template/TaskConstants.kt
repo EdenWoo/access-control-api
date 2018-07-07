@@ -1,6 +1,5 @@
 package com.github.leon.template
 
-import java.io.File
 import java.util.*
 
 object TaskConstants {
@@ -12,9 +11,9 @@ object TaskConstants {
         val inputStream = classLoader.getResourceAsStream("generator/local.properties")
         val appProps = Properties()
         appProps.load(inputStream)
-        //val projectName = appProps.getProperty("projectName")
-        generatedPath = "/code-generated"
-        apiPath = "/api"
+        val projectName = appProps.getProperty("projectName")
+        generatedPath = "/$projectName-generated"
+        apiPath = "/$projectName-api"
         srcPath = "/src/main/kotlin/"
     }
 }
